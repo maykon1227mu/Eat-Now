@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Painel Produtos";
+}
+
+@model IEnumerable<Produto>
+
+<h1>Painel Produtos</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Descricao</th>
+            <th>Preco</th>
+            <th> </th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in Model)
+        {
+            <tr>
+                <td>@produto.CodProd</td>
+                <td>@produto.NomeProd</td>
+                <td>@produto.Descricao</td>
+                <td>R$@produto.Preco</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Produto" asp-action="EditarProduto" asp-route-id="@produto.CodProd">Editar</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="Produto" asp-action="DeletarProduto" asp-route-id="@produto.CodProd">Deletar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

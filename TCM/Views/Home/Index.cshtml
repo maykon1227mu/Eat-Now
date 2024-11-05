@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model IEnumerable<Produto>
+
+<div class="text-center">
+    @foreach (var produto in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">@produto.NomeProd</h5>
+                <p class="card-text">@produto.Descricao</p>
+                <a asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd" class="btn btn-primary">Comprar</a>
+            </div>
+        </div>
+    }
+</div>

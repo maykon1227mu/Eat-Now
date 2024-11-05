@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Editar Produto";
+}
+
+@model TCM.Models.Produto
+
+<form asp-action="EditarProduto" method="post">
+    <div>
+        <input asp-for="@Model.CodProd" readonly/>
+        <textarea asp-for="@Model.NomeProd" maxlength="80" style="resize: none;" required></textarea>
+        <input asp-for="@Model.Descricao" required />
+        <input asp-for="@Model.Preco" type="text" required />
+    </div>
+    <div>
+        <button type="submit">Editar</button>
+    </div>
+</form>

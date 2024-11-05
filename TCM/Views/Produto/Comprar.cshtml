@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Comprar";
+}
+
+@model TCM.Models.Produto
+
+<main>
+    <div>
+        <div>
+            <img src="#" alt="Imagem" />
+        </div>
+        <div>
+            <h3>@Model.NomeProd</h3>
+            <p>@Model.Descricao</p>
+            <h3>R$@Model.Preco</h3>
+            <a class="btn btn-primary">Comprar</a>
+        </div>
+    </div>
+</main>
