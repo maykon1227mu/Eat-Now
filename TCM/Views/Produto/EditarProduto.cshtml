@@ -5,13 +5,16 @@
 @model TCM.Models.Produto
 
 <form asp-action="EditarProduto" method="post">
+    <div asp-validation-summary="ModelOnly"></div>
     <div>
-        <input asp-for="@Model.CodProd" readonly/>
-        <textarea asp-for="@Model.NomeProd" maxlength="80" style="resize: none;" required></textarea>
-        <input asp-for="@Model.Descricao" required />
-        <input asp-for="@Model.Preco" type="text" required />
+        <input asp-for="CodProd" readonly/>
+        <textarea asp-for="NomeProd" maxlength="80" style="resize: none;" required></textarea>
+        <input asp-for="Descricao" required />
+        <input asp-for="Preco" type="text" required />
+        <input asp-for="Qtd" type="number" required/>
+        <input type="file" />
     </div>
     <div>
-        <button type="submit">Editar</button>
+        <button onclick="return confirm('Deseja confirmar as alterações ?')" class="btn btn-primary" type="submit">Editar</button>
     </div>
 </form>

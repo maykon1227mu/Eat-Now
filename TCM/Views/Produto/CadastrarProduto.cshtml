@@ -3,40 +3,32 @@
 @{
     ViewData["Title"] = "Adicionar Produto";
 }
-
-<main role="main">
-    <br />
-    <br />
-    <section class="container">
-        <aside class="col-sm-4">
-            <h3 class="subtitle-doc">
-                Cadastro de Produto
-            </h3>
-            <div id="code_login_1">
-                <div class="card">
-                    <article class="card-body">
-                        <form method="post">
-                            <div class="form-group">
-                                <label>Nome do Produto</label>
-                                <input asp-for="NomeProd" required class="form-control" placeholder="Nome" type="text" maxlength="40">
-                            </div>
-                            <div class="form-group">
-                                <label>Descricao</label>
-                                <textarea asp-for="Descricao" class="form-control" placeholder="Descricao" maxlength="80" style="resize: none;"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Preco</label>
-                                <input asp-for="Preco" required class="form-control" placeholder="Preco" type="text" maxlength="9">
-                            </div>
-                            <br />
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block"> Cadastrar </button>
-
-                            </div>
-                        </form>
-                    </article>
+<div class="card">
+    <div class="card-body">
+        <form asp-action="CadastrarProduto" enctype="multipart/form-data" method="post">
+            <div class="">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input class="form-control" asp-for="NomeProd" />
                 </div>
+                <div class="form-group">
+                    <label>Descrição:</label>
+                    <input class="form-control" asp-for="Descricao" />
+                </div>
+                <div class="form-group">
+                    <label>Preço</label>
+                    <input class="form-control" asp-for="Preco" />
+                </div>
+                <div class="form-group">
+                    <label>Quantidade</label>
+                    <input class="form-control" asp-for="Qtd" />
+                </div>
+                <div class="form-group">
+                    <label>Imagem</label>
+                    <input class="form-control" type="file" name="imagem" />
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
             </div>
-        </aside>
-    </section>
-</main>
+        </form>
+    </div>
+</div>

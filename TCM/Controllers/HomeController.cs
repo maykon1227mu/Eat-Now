@@ -1,8 +1,12 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TCM.Libraries.LoginUsuarios;
 using TCM.Models;
 using TCM.Repositorio;
+using Microsoft.AspNetCore.Authorization;
+using System.Reflection.Metadata;
 
 namespace TCM.Controllers
 {
@@ -27,7 +31,20 @@ namespace TCM.Controllers
 
         public IActionResult Index()
         {
-            return View(_produtoRepositorio.TodosProdutos());
+            // Busca todos os produtos
+            var produtos = _produtoRepositorio.TodosProdutos();
+
+            // Converte as imagens para Base64
+            foreach (var produto in produtos)
+            {
+                
+                if (produto.Imagem != null)
+                {
+                    produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
+                }
+            }
+
+            return View(produtos);
         }
 
         public IActionResult Login()
@@ -36,9 +53,9 @@ namespace TCM.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(Usuario user)
+        public async Task<IActionResult> Login(Usuario user)
         {
-            Usuario loginUser = _loginRepositorio.Login(user.usuario, user.senha);
+            Usuario loginUser = await _loginRepositorio.Login(user.usuario, user.senha);
             if (loginUser.usuario != null && loginUser.senha != null)
             {
                 return new RedirectResult(Url.Action(nameof(Index)));
@@ -67,6 +84,15 @@ namespace TCM.Controllers
             {
                 return View();
             }
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            // Chama o método de Logout no repositório
+            await _loginRepositorio.Logout();
+
+            // Redireciona o usuário para a página inicial ou para a página de login
+            return RedirectToAction("Index", "Home");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -4,16 +4,17 @@
 
 @model TCM.Models.Produto
 
-<main>
-    <div>
-        <div>
-            <img src="#" alt="Imagem" />
+<div class="container">
+    <div class="container-compra">
+        <div class="compra-img">
+            <img src="data:image/png;base64,@Model.ImagemBase64" alt="Imagem do Produto" />
         </div>
-        <div>
+        <div class="compra-infos">
             <h3>@Model.NomeProd</h3>
             <p>@Model.Descricao</p>
-            <h3>R$@Model.Preco</h3>
-            <a class="btn btn-primary">Comprar</a>
+            <h3>R$@Model.Preco</h3> 
+            <p>Quantidade: @Model.Qtd</p>
+            <button class="btn btn-primary" type="submit">Comprar</button>
         </div>
     </div>
-</main>
+</div>
