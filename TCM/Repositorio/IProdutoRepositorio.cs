@@ -15,7 +15,10 @@ namespace TCM.Repositorio
         Produto AcharProduto(int id);
         //Buscar todos os produtos
         IEnumerable<Produto> TodosProdutos();
+        
 
         IEnumerable<Produto> Pesquisa(string nome);
+
+        
     }
 }

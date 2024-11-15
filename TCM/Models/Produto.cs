@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-
-namespace TCM.Models
+﻿namespace TCM.Models
 {
     public class Produto
     {

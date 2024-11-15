@@ -50,6 +50,7 @@ namespace TCM.Repositorio
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.usuario),
+                        new Claim(ClaimTypes.SerialNumber, Convert.ToString(user.CodUsu)),
                         new Claim(ClaimTypes.Role, user.tipo == null ? "Cliente" : user.tipo)
                     };
 
