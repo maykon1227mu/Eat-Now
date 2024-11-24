@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TCM.Models;
 using TCM.Repositorio;
@@ -14,6 +15,7 @@ namespace TCM.Controllers
             _loginRepositorio = loginRepositorio;
             _produtoRepositorio = produtoRepositorio;
         }
+        [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
             return View();

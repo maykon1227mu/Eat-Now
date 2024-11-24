@@ -47,6 +47,7 @@ namespace TCM.Repositorio
 
 
                     // Criando a lista de claims
+                    //Claims são um tipo de identificadores do usuario
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.usuario),
@@ -54,11 +55,14 @@ namespace TCM.Repositorio
                         new Claim(ClaimTypes.Role, user.tipo == null ? "Cliente" : user.tipo)
                     };
 
+                    //Criando o Claim de identidade do usuario, juntamente de coockies
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    //Permite que o usuario continue logado mesmo se fechar o navegador
                     var authProperties = new AuthenticationProperties
                     {
                         IsPersistent = true // Mantém o cookie ao fechar o navegador
                     };
+                        //Vai logar o usuario com o HTTP usando tanto os coockies quanto a identidade do usuario
                         await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
                     }
                     return user;

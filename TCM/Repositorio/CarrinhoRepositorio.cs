@@ -33,7 +33,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                var cmd = new MySqlCommand("SELECT tbcarrinho.ProdutoId, tbcarrinho.Quantidade, tbproduto.NomeProd, tbproduto.Preco FROM tbcarrinho JOIN tbproduto ON tbcarrinho.ProdutoId = tbproduto.CodProd WHERE tbcarrinho.UserId = @userId", conexao);
+                var cmd = new MySqlCommand("select tbcarrinho.ProdutoId, tbcarrinho.Quantidade, tbproduto.NomeProd, tbproduto.Preco from tbcarrinho join tbproduto on tbcarrinho.ProdutoId = tbproduto.CodProd where tbcarrinho.UserId = @userId", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
                 
