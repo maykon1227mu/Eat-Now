@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Painel Funcionarios";
+}
+
+@model IEnumerable<Funcionario>
+
+<h1>Painel Funcionarios</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Salario</th>
+            <th> </th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var funcionario in Model)
+        {
+            <tr>
+                <td>@funcionario.CodFunc</td>
+                <td>@funcionario.Nome</td>
+                <td>@funcionario.email</td>
+                <td>R$@funcionario.Salario</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Conta" asp-action="EditarFuncionario" asp-route-id="@funcionario.CodFunc">Editar</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="Conta" asp-action="DeletarFuncionario" asp-route-id="@funcionario.CodFunc" onclick="return confirm('Deseja excluir @funcionario.Nome ?')">Deletar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+<div>
+    <a class="btn btn-primary" asp-controller="Conta" asp-action="CadastrarFuncionario">Novo Funcionario</a>
+</div>

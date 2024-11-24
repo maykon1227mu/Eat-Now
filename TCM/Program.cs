@@ -15,27 +15,29 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Adicionando HttpContextAccessor (necessário para acessar o contexto HTTP)
 builder.Services.AddHttpContextAccessor();
 
-// Adicionando a interface de login
+// Adicionando a interface de login e outras dependências
 builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
+builder.Services.AddScoped<ICarrinhoRepositorio, CarrinhoRepositorio>();
 builder.Services.AddScoped<ILoginRepositorio, LoginRepositorio>();
-
 builder.Services.AddScoped<Usuario>();
-
-// Adicionado para manipular a Sessão
-builder.Services.AddHttpContextAccessor();
-
-// Adicionar a Interface como um serviço 
-// Adicionar serviços 
-builder.Services.AddScoped<ILoginRepositorio, LoginRepositorio>();
 builder.Services.AddScoped<TCM.Libraries.Sessao.Sessao>();
-
 builder.Services.AddScoped<LoginUsuarios>();
+
+// Adicionando o serviço de sessão
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);  // Define o tempo de expiração da sessão
+    options.Cookie.HttpOnly = true;  // Aumenta a segurança
+    options.Cookie.IsEssential = true;  // Necessário para conformidade com a GDPR
+});
 
 var app = builder.Build();
 
-app.UseAuthentication(); // Ativa a autenticação
+// Ativar autenticação e autorização
+app.UseAuthentication(); // Ativa a autenticação com cookies
 app.UseAuthorization();  // Ativa a autorização
 
 // Configure o pipeline de requisições HTTP
@@ -50,8 +52,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Ativar o middleware de sessão
+app.UseSession();  // Necessário para a sessão funcionar
+
 // Ativar autenticação e autorização
-app.UseAuthentication(); // Adicione esta linha para que a autenticação com cookies funcione
+app.UseAuthentication(); // Adicione esta linha para garantir que a autenticação funcione
 app.UseAuthorization();
 
 app.MapControllerRoute(

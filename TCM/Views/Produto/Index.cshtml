@@ -13,6 +13,7 @@
             <th>Nome</th>
             <th>Descricao</th>
             <th>Preco</th>
+            <th>Quantidade</th>
             <th> </th>
             <th> </th>
             
@@ -26,6 +27,7 @@
                 <td>@produto.NomeProd</td>
                 <td>@produto.Descricao</td>
                 <td>R$@produto.Preco</td>
+                <td>@produto.Qtd</td>
                 <td>
                     <a class="btn btn-primary" asp-controller="Produto" asp-action="EditarProduto" asp-route-id="@produto.CodProd">Editar</a>
                 </td>

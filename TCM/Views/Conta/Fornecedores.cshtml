@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Fornecedores";
+}
+
+@model IEnumerable<Fornecedor>
+
+<h1>Painel Fornecedores</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>CNPJ</th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var fornecedor in Model)
+        {
+            <tr>
+                <td>@fornecedor.CodFor</td>
+                <td>@fornecedor.usuario</td>
+                <td>@fornecedor.email</td>
+                <td>@fornecedor.CNPJ</td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="Conta" asp-action="DeletarFornecedor" asp-route-id="@fornecedor.CodFor" onclick="return confirm('Deseja excluir @fornecedor.usuario ?')">Deletar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

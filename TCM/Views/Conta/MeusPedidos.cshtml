@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Meus Pedidos";
+}
+@model IEnumerable<Pedido>
+
+@if (!Model.Any())
+{
+    <p>Você ainda não fez nenhum pedido!.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Codigo do Pedido</th>
+                <th>Nome do Produto</th>
+                <th>Preço</th>
+                <th>Quantidade do Pedido</th>
+                <th>Total</th>
+                <th>Data do Pedido</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CodPed</td>
+                    <td>@item.NomeProd</td>
+                    <td>R$@item.PrecoProd</td>
+                    <td>@item.QtdPed</td>
+                    <td>R$@item.Total</td>
+                    <td>@item.DataPed</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

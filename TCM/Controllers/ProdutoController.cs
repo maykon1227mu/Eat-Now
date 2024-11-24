@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TCM.Libraries.LoginUsuarios;
 using TCM.Models;
 using TCM.Repositorio;
@@ -11,9 +12,11 @@ namespace TCM.Controllers
     {
         //Trazendo a interface a instanciando
         private IProdutoRepositorio _produtoRepositorio;
-        public ProdutoController(IProdutoRepositorio produtoRepositorio)
+        private ICarrinhoRepositorio _carrinhoRepositorio;
+        public ProdutoController(IProdutoRepositorio produtoRepositorio, ICarrinhoRepositorio carrinhoRepositorio)
         {
             _produtoRepositorio = produtoRepositorio;
+            _carrinhoRepositorio = carrinhoRepositorio;
         }
 
         [Authorize(Roles = "Administrador")]
@@ -22,13 +25,12 @@ namespace TCM.Controllers
             return View(_produtoRepositorio.TodosProdutos());
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult CadastrarProduto()
         {
             return View();
         }
 
-        
         [HttpPost]
         public IActionResult CadastrarProduto(Produto produto, IFormFile imagem)
         {
@@ -43,7 +45,7 @@ namespace TCM.Controllers
             }
 
             _produtoRepositorio.AdicionarProduto(produto);
-            return RedirectToAction("Index", "Produto");
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize(Roles = "Administrador")]
@@ -76,7 +78,6 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Produto");
         }
 
-        
         public IActionResult Comprar(int id)
         {
             var produto = _produtoRepositorio.AcharProduto(id);
@@ -93,6 +94,7 @@ namespace TCM.Controllers
         public IActionResult Pesquisar()
         {
             string nome = Request.Form["txtpesq"];
+            if (nome == "") return RedirectToAction("Index", "Home");
             var produtos = _produtoRepositorio.Pesquisa(nome);
             foreach (var produto in produtos)
             {
@@ -103,6 +105,16 @@ namespace TCM.Controllers
                 }
             }
             return View(produtos);
+        }
+
+        public IActionResult Finalizar()
+        {
+            var carrinho = _carrinhoRepositorio.ObterCarrinhoPorUsuario(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
+            foreach (var item in carrinho)
+            {
+                _produtoRepositorio.FinalizarCompra(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value), item.ProdutoId, item.Quantidade);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

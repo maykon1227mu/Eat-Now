@@ -67,6 +67,43 @@ namespace TCM.Controllers
             }
         }
 
+        public IActionResult LoginFuncionario()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> LoginFuncionario(Funcionario funcionario)
+        {
+            Funcionario loginFunc = await _loginRepositorio.LoginFuncionario(funcionario.usuario, funcionario.senha);
+            if (loginFunc.usuario != null && loginFunc.senha != null)
+            {
+                return new RedirectResult(Url.Action(nameof(Index)));
+            }
+            else
+            {
+                ViewData["msg"] = "Usuario/Senha inválidos";
+                return View();
+            }
+        }
+        public IActionResult LoginFornecedor()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> LoginFornecedor(Fornecedor fornecedor)
+        {
+            Fornecedor loginForn = await _loginRepositorio.LoginFornecedor(fornecedor.usuario, fornecedor.senha);
+            if (loginForn.usuario != null && loginForn.senha != null)
+            {
+                return new RedirectResult(Url.Action(nameof(Index)));
+            }
+            else
+            {
+                ViewData["msg"] = "Usuario/Senha inválidos";
+                return View();
+            }
+        }
+
         public IActionResult CadastrarUsuario()
         {
             return View();
@@ -75,7 +112,7 @@ namespace TCM.Controllers
         [HttpPost]
         public IActionResult CadastrarUsuario(Usuario user)
         {
-            _loginRepositorio.Cadastrar(user.email, user.usuario, user.senha);
+            _loginRepositorio.Cadastrar(user.Nome, user.email, user.usuario, user.senha);
             if (user.email != null && user.usuario != null && user.senha != null)
             {
                 return new RedirectResult(Url.Action(nameof(Index)));

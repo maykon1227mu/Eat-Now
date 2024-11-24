@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Comprar";
+    ViewData["Title"] = $"Comprar {Model.NomeProd}";
 }
 
 @model TCM.Models.Produto
@@ -14,7 +14,20 @@
             <p>@Model.Descricao</p>
             <h3>R$@Model.Preco</h3> 
             <p>Quantidade: @Model.Qtd</p>
-            <button class="btn btn-primary" type="submit">Comprar</button>
+            <p>Publicado por: @Model.Usuario</p>
+            
+            @if(Model.Qtd == 0)
+            {
+                <h3>Sem estoque</h3>
+            }
+            else
+            {
+                <form asp-controller="Carrinho" asp-action="Adicionar">
+                    <input asp-for="CodProd" name="produtoId" id="produtoId" hidden/>
+                    <input class="form-control" type="number" name="qtd" id="qtd" value="1" min="1" max="@Model.Qtd"/>
+                    <button class="btn btn-primary" type="submit">Comprar</button>
+                </form>
+            }
         </div>
     </div>
 </div>

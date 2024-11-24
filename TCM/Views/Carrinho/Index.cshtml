@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Carrinho";
+}
+@model IEnumerable<CarrinhoItem>
+
+<h2>Carrinho de Compras</h2>
+
+@if (!Model.Any())
+{
+    <p>Seu carrinho está vazio.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Preço Unitário</th>
+                <th>Ações</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                @if(item.Quantidade > 0)
+                {
+                    <tr>
+                        <td>@item.NomeProduto</td>
+                        <td>@item.Quantidade</td>
+                        <td>R$@item.PrecoProduto</td>
+                        <td></td>
+                        <td>
+                            <a asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="1" class="btn btn-danger">Remover</a>
+                        </td>
+                        <td>
+                            <a asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="@item.Quantidade" class="btn btn-danger">Remover Todos</a>
+                        </td>
+                    </tr>
+                }
+                
+            }
+        </tbody>
+    </table>
+
+    <p>
+        <strong>Total do Carrinho:</strong> R$@Model.Sum(i => i.Total)
+    </p>
+    <div class="container">
+        <a asp-controller="Produto" asp-action="Finalizar" class="btn btn-primary">Finalizar Compra</a>
+    </div>
+}

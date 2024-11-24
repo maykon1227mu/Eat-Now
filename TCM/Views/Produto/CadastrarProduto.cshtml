@@ -1,4 +1,5 @@
-﻿@model TCM.Models.Produto
+﻿@using System.Security.Claims
+@model TCM.Models.Produto
 
 @{
     ViewData["Title"] = "Adicionar Produto";
@@ -6,7 +7,12 @@
 <div class="card">
     <div class="card-body">
         <form asp-action="CadastrarProduto" enctype="multipart/form-data" method="post">
-            <div class="">
+            <div class="container">
+                @{
+                    var serialNumber = User.FindFirst(ClaimTypes.SerialNumber)?.Value;
+                    Convert.ToInt32(serialNumber);
+                }
+                <input asp-for="UserId" value="@serialNumber" hidden/>
                 <div class="form-group">
                     <label>Nome</label>
                     <input class="form-control" asp-for="NomeProd" />

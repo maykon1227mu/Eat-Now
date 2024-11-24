@@ -30,6 +30,12 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LoginFuncionario">Login Funcionario</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LoginFornecedor">Login Fornecedor</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CadastrarUsuario">Cadastrar-se</a>
                             </li>
                         }
@@ -37,24 +43,28 @@
                         @if(User.IsInRole("Administrador"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Produto" asp-action="Index">Painel Produtos</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Conta" asp-action="Index">Painel Adm</a>
                             </li>
+                        }
+                        @{
+                            var serialNumber = User.FindFirst(ClaimTypes.SerialNumber)?.Value;
+                            Convert.ToInt32(serialNumber);
                         }
                         @if(User.Identity.Name != null)
                         {
                             <li class="nav-item usuario">
                                 <a>Olá, @User.Identity.Name</a>
                                 <ul class="lista-usuario">
-                                    <li class="nav-item"><a class="nav-link text-dark">Minha Conta</a></li>
-                                    <li class="nav-item"><a class="nav-link text-dark">Meus Pedidos</a></li>
-                                    <li class="nav-item"><a class="nav-link text-dark">Meus Dados</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Conta" asp-action="MinhaConta">Minha Conta</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Conta" asp-action="MeusPedidos">Meus Pedidos</a></li>
+                                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Conta" asp-action="EditarConta">Meus Dados</a></li>
                                     <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Logout">Sair</a></li>
                                 </ul>
                             </li>
                         }
                     </ul>
                     <form asp-controller="Produto" asp-action="Pesquisar" method="post">
-                        <input type="text" name="txtpesq" id="txtpesq"/>
+                        <input type="text" name="txtpesq" id="txtpesq" required/>
                         <button type="submit" class="btn btn-primary">Buscar</button>
                     </form>
                     
@@ -71,6 +81,9 @@
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - TCM - 
+        </div>
+        <div class="container">
+            <a asp-controller="Conta" asp-action="CadastrarFornecedor">Torne-se um fornecedor</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
