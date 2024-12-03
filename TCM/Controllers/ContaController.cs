@@ -20,7 +20,7 @@ namespace TCM.Controllers
         {
             return View();
         }
-        
+
         public IActionResult MinhaConta()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
@@ -81,6 +81,14 @@ namespace TCM.Controllers
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var pedidos = _produtoRepositorio.TodosPedidos(id);
             return View(pedidos);
+        }
+
+        [Authorize(Roles = "Fornecedor")]
+        public IActionResult PainelFornecedor()
+        {
+            int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            var fornecedor = _loginRepositorio.AcharFornecedor(id);
+            return View(fornecedor);
         }
     }
 }

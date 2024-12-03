@@ -4,47 +4,29 @@
 
 @model TCM.Models.Funcionario
 
-<main role="main">
-    <br />
-    <br />
-    <section class="container">
-        <aside class="col-sm-4">
-            <h3 class="subtitle-doc">
-                Primeiro Acesso
-            </h3>
-            <div id="code_login_1">
-                <div class="card">
-                    <article class="card-body">
-                        <h4 class="card-title mb-4 mt-1">Entrar</h4>
-                        <form method="post">
-                            <div class="form-group">
-                                <label>Nome</label>
-                                <input asp-for="Nome" required class="form-control" placeholder="Nome" type="text" maxlength="80">
-                            </div>
-                            <div class="form-group">
-                                <label>E-mail</label>
-                                <input asp-for="email" required class="form-control" placeholder="E-mail" type="text" maxlength="40">
-                            </div>
-                            <div class="form-group">
-                                <label>Usuario</label>
-                                <input asp-for="usuario" required class="form-control" placeholder="Usuario" type="text" maxlength="40">
-                            </div>
-                            <div class="form-group">
-                                <label>Senha</label>
-                                <input asp-for="senha" required class="form-control" placeholder="Senha" type="password" maxlength="16">
-                            </div>
-                            <div class="form-group">
-                                <label>Salario</label>
-                                <input asp-for="Salario" required class="form-control" placeholder="Salario" type="text" maxlength="9">
-                            </div>
-                            <br />
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block"> Cadastrar </button>
-                            </div>
-                        </form>
-                    </article>
+<main class="container-login">
+    <div class="login">
+        <div class="box-left-profile">
+            <form asp-controller="Home" asp-action="CadastrarUsuario" class="box_login">
+
+                <h1>Ca<span id="g_1">das</span>tro</h1>
+                <h4>Mais segurança, menos chatice</h4>
+                <label for="email">Email:</label>
+                <input type="email" name="email" asp-for="email" placeholder="exemplo123@exemplo.com" />
+                <label for="nome">Nome:</label>
+                <input type="text" name="Nome" asp-for="Nome" placeholder="Digite seu nome" />
+                <label for="salario">Salario:</label>
+                <input type="text" name="salario" asp-for="Salario" placeholder="Salario" />
+                <label for="usuario">Usuario:</label>
+                <input asp-for="usuario" type="text" placeholder="Seu Usuario" name="usuario" id="usuario">
+                <label for="senha">Senha:</label>
+                <input asp-for="senha" placeholder="Sua Senha" type="password" name="senha" id="senha">
+                <div class="botoes">
+                    <button type="submit">Cadatrar</button>
                 </div>
-            </div>
-        </aside>
-    </section>
+            </form>
+        </div>
+        <div class="box-right-profile">
+        </div>
+    </div>
 </main>

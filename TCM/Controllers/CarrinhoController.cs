@@ -16,9 +16,11 @@ namespace TCM.Controllers
             _carrinhoRepositorio = carrinhoRepositorio;
         }
 
-        public IActionResult Index(int id)
+        public IActionResult Index()
         {
+            int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var carrinho = _carrinhoRepositorio.ObterCarrinhoPorUsuario(id);
+            
             return View(carrinho);
         }
 
@@ -29,15 +31,25 @@ namespace TCM.Controllers
             int qtd = Convert.ToInt32(Request.Form["qtd"]);
             var produto = _produtoRepositorio.AcharProduto(id);
             _carrinhoRepositorio.SalvarItemCarrinho(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value), produto, qtd);
-            return RedirectToAction("Index", new { id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value) });
+            return RedirectToAction("Index");
         }
 
         public IActionResult Remover(int id, int qtd)
         {
-            _carrinhoRepositorio.RemoverItemCarrinho(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value), id, qtd);
-            return RedirectToAction("Index", new { id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value) });
+            int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            _carrinhoRepositorio.RemoverItemCarrinho(userId, id, qtd);
+            return RedirectToAction("Index");
         }
 
-        
+        public IActionResult LimparCarrinho()
+        {
+            int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            var carrinho = _carrinhoRepositorio.ObterCarrinhoPorUsuario(userId);
+            foreach (var item in carrinho)
+            {
+                _carrinhoRepositorio.RemoverItemCarrinho(userId, item.ProdutoId, item.Quantidade);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -1,0 +1,197 @@
+main {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: center;
+}
+
+
+.title-products {
+    margin-top: 100px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-products {
+    margin-top: 120px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 90px;
+    list-style: none;
+}
+.product-container {
+    cursor: pointer;
+    display: flex;
+    justify-content: top;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+    min-height: 200px;
+    border-bottom-right-radius: 70px;
+    width: 300px;
+    gap: 10px;
+    padding: 20px;
+    background-color: rgb(67, 67, 67);
+    border-top: 2px solid rgb(73, 73, 73);
+    color: rgb(255, 255, 255);
+    transition: 0.3s;
+    position: relative;
+    margin-top: 5rem;
+}
+.product-container .product-img-hamburguer {
+    top: -250px;
+    left: 0;
+    position: absolute;
+    width: 300px;
+    height: 270px;
+    background-color: sandybrown;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+}
+.product-container .product-img-pizza {
+    top: -250px;
+    left: 0;
+    position: absolute;
+    width: 300px;
+    height: 270px;
+    background-color: rgb(165, 98, 40);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+}
+.product-container .product-img-pizza img {
+    width: 100%;
+}
+.product-container .product-img-acai {
+    top: -250px;
+    left: 0;
+    position: absolute;
+    width: 300px;
+    height: 270px;
+    background-color: rgb(146, 91, 134);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+}
+.product-container .product-img-acai img {
+    width: 80%;
+}
+.product-container .product-img-hamburguer img {
+    width: 100%;
+}
+.product-container:hover {
+    transform: scale(1.02);
+}
+.product-container .product-img-milkshake img {
+    top: -250px;
+    left: 0;
+    position: absolute;
+    height: 250px;
+    width: 100%;
+}
+.product-name-star {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    width: 100%;
+    margin-top: 2.5rem;
+}
+.product-star {
+    display: flex;
+    gap: 5px;
+    font-size: 12px;
+    color: rgb(199, 199, 94);
+}
+.product-description {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: start;
+    width: 100%;
+}
+.button-cart {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    gap: 20px
+}
+
+.btn-carrinho {
+    cursor: pointer;
+    background-color: #2f725c;
+    color: white;
+    font-size: 30px;
+    padding: 10px 12px;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+.btn-carrinho:hover {
+    background-color: #1a4035;
+}
+
+.product-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: -250px;
+    left: 0;
+    position: absolute;
+    width: 300px;
+    height: 270px;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+}
+
+.product-img img {
+    width: 100%;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    background-color: rgb(67, 67, 67);
+}
+
+.categoria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+}
+
+.produtos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1rem 5rem;
+}
+
+.categoria-titulo {
+    margin-bottom: 15rem;
+}
+
+.container-produtos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    height: fit-content;
+}

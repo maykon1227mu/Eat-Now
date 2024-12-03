@@ -1,9 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Carrinho";
 }
-@model IEnumerable<CarrinhoItem>
+@model IEnumerable<Carrinho>
 
-<h2>Carrinho de Compras</h2>
+<h2 class="title-main">Seu <span style=color:rgb(38,155,110)>Carrinho</span></h2>
 
 @if (!Model.Any())
 {
@@ -11,43 +11,55 @@
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Preço Unitário</th>
-                <th>Ações</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                @if(item.Quantidade > 0)
+    <div class="container-carrinho">
+        <div class="container-cards-price">
+            <div class="cart-boxes">
+                @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>@item.NomeProduto</td>
-                        <td>@item.Quantidade</td>
-                        <td>R$@item.PrecoProduto</td>
-                        <td></td>
-                        <td>
-                            <a asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="1" class="btn btn-danger">Remover</a>
-                        </td>
-                        <td>
-                            <a asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="@item.Quantidade" class="btn btn-danger">Remover Todos</a>
-                        </td>
-                    </tr>
+                    if (item.ImagemProd != null)
+                    {
+                        //Transforma o blob para um jeito que dê para a imagem ser interpretada
+                        item.ImagemBase64 = Convert.ToBase64String(item.ImagemProd);
+                    }
+                    <div class="cart-box">
+                        <div class="cart-img">
+                            <img src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
+                        </div>
+                        <div>
+                            <h2>@item.NomeProduto</h2>
+                            <p>Quantidade: @item.Quantidade</p>
+                        </div>
+                        <div>
+                            <h5>Preço: R$@item.PrecoProduto</h5>
+                        </div>
+                        <div class="button-box-cart">
+                            <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
+                                <input name="produtoId" asp-for="@item.ProdutoId" hidden/>
+                                <input name="qtd" value="1" hidden/>
+                                <button class="btn-controle" type="submit">Adicionar</button>
+                            </form>
+                            <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="1" class="button-remove">Remover</a>
+                            <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="@item.Quantidade" class="button-remove">Remover Todos</a>
+                        </div>
+                    </div>
                 }
-                
-            }
-        </tbody>
-    </table>
+            </div>
+            <div class="total-price-box">
+                <h1 class="title-h1">Total a se Pagar</h1>
+                <div class="box1-total-price">
+                    <h1 class="sub-total-h1">Sub-Total: R$@Model.Sum(i => i.Total)</h1>
+                    <h2>Frete: <span style="color: rgb(81, 145, 81);">Grátis</span></h2>
+                </div>
+                <div class="total-price">
+                    Total: R$@Model.Sum(i => i.Total)
+                </div>
+                <div class="button-box-cart-price">
+                    <a asp-controller="Produto" asp-action="Finalizar" class="button-cash">Finalizar Compra</a>
+                    <a asp-controller="Carrinho" asp-action="LimparCarrinho" class="button-remove-all">Limpar Carrinho</a>
+                </div>
 
-    <p>
-        <strong>Total do Carrinho:</strong> R$@Model.Sum(i => i.Total)
-    </p>
-    <div class="container">
-        <a asp-controller="Produto" asp-action="Finalizar" class="btn btn-primary">Finalizar Compra</a>
+            </div>
+        </div>
+        
     </div>
 }

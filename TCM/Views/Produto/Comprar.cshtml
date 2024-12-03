@@ -4,8 +4,8 @@
 
 @model TCM.Models.Produto
 
-<div class="container">
-    <div class="container-compra">
+<div class="container-compra">
+    <div class="compra">
         <div class="compra-img">
             <img src="data:image/png;base64,@Model.ImagemBase64" alt="Imagem do Produto" />
         </div>
@@ -24,8 +24,8 @@
             {
                 <form asp-controller="Carrinho" asp-action="Adicionar">
                     <input asp-for="CodProd" name="produtoId" id="produtoId" hidden/>
-                    <input class="form-control" type="number" name="qtd" id="qtd" value="1" min="1" max="@Model.Qtd"/>
-                    <button class="btn btn-primary" type="submit">Comprar</button>
+                    <input type="number" name="qtd" id="qtd" value="1" min="1" max="@Model.Qtd"/>
+                    <button class="btn-comprar" type="submit">Comprar</button>
                 </form>
             }
         </div>

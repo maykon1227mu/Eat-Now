@@ -37,7 +37,13 @@ Descricao varchar(80) not null,
 Preco decimal(9,2) not null,
 Qtd int unsigned not null,
 UserId int not null,
-Imagem mediumblob not null
+Imagem mediumblob not null,
+CategoriaId int not null
+);
+
+create table tbcategoria(
+CodCat int primary key auto_increment,
+Categoria varchar(40) not null
 );
 
 create table tbpedido(
@@ -106,56 +112,43 @@ $$
 
 delimiter ;
 
+delimiter $$
+create procedure spLogin(vUsuario varchar(40), vSenha varchar(16))
+begin
+if exists(select * from tbusuario where usuario = vUsuario and senha = vSenha)then
+	select * from tbusuario where usuario = vUsuario and senha = vSenha;
+end if;
+if exists(select * from tbfornecedor where usuario = vUsuario and senha = vSenha)then
+	select * from tbfornecedor where usuario = vUsuario and senha = vSenha;
+end if;
+if exists(select * from tbfuncionario where usuario = vUsuario and senha = vSenha)then
+	select * from tbfornecedor where usuario = vUsuario and senha = vSenha;
+end if;
+end;
+$$
+
+delimiter ;
+
+call spLogin("Admin", "12345");
+delete from tbfornecedor where codfor = 1;
+
 select * from tbcarrinho;
 select * from tbproduto;
+select * from tbcategoria;
 
 alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbfornecedor(CodFor);
+alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);
 
-/*create table tbpedido(
-CodPed int primary key auto_increment,
-CodProd int,
-NomePed varchar(40),
-DescricaoPed varchar(80),
-PrecoPed decimal(9,2),
-QtdPed int
-);
+insert into tbcategoria (Categoria) values ("Sorvete");
+insert into tbcategoria (Categoria) values ("Milkshake");
+insert into tbcategoria (Categoria) values ("Pizza");
+insert into tbcategoria (Categoria) values ("Hamburguer");
+insert into tbcategoria (Categoria) values ("Aperitivos");
+insert into tbcategoria (Categoria) values ("Açai");
+insert into tbcategoria (Categoria) values ("Bebidas");
+insert into tbcategoria (Categoria) values ("Comida Japonesa");
+insert into tbcategoria (Categoria) values ("Comida Italiana");
 
-/*CREATE TABLE Produtos (
-    ProdutoID INT PRIMARY KEY,
-    Nome VARCHAR(100),
-    Preco DECIMAL(10, 2)
-);
-
-CREATE TABLE Pedidos (
-    PedidoID INT PRIMARY KEY,
-    ProdutoID INT,
-    Quantidade INT,
-    FOREIGN KEY (ProdutoID) REFERENCES Produtos(ProdutoID)
-);
-
-SELECT Pedidos.PedidoID, Pedidos.Quantidade, Produtos.Nome, Produtos.Preco
-FROM Pedidos
-JOIN Produtos ON Pedidos.ProdutoID = Produtos.ProdutoID;
-
-INSERT INTO Produtos (ProdutoID, Nome, Preco)
-VALUES 
-    (1, 'Camiseta', 29.90),
-    (2, 'Calça', 79.90),
-    (3, 'Tênis', 159.90),
-    (4, 'Jaqueta', 129.90),
-    (5, 'Boné', 19.90);
-    
-INSERT INTO Pedidos (PedidoID, ProdutoID, Quantidade)
-VALUES 
-    (1, 1, 2),  -- Pedido de 2 unidades da Camiseta
-    (2, 3, 1),  -- Pedido de 1 unidade do Tênis
-    (3, 2, 3),  -- Pedido de 3 unidades da Calça
-    (4, 4, 1),  -- Pedido de 1 unidade da Jaqueta
-    (5, 5, 4);  -- Pedido de 4 unidades do Boné
-*/
-
-insert into tbfornecedor (email, usuario, senha, cnpj, tipo) values ("admin@admin.com", "Admin", "12345", 1, "Administrador");
-insert into tbusuario (nome, email, usuario, senha, salario, tipo) values ("Administrador", "admin@admin.com", "Admin", "12345", 1, "Administrador");
-insert into tbfuncionario (nome, email, usuario, senha, tipo) values ("Administrador", "admin@admin.com", "Admin", "12345", "Administrador");
+insert into tbfornecedor (email, usuario, senha, CNPJ, tipo) values ( "admin@admin.com", "Admin", "12345", 1, "Administrador");
 
 select * from tbfornecedor;

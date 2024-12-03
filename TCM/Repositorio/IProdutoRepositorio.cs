@@ -21,5 +21,7 @@ namespace TCM.Repositorio
         void FinalizarCompra(int userId, int produtoId, int qtd);
 
         IEnumerable<Pedido> TodosPedidos(int userId);
+        IEnumerable<Categoria> TodasCategorias(); // Recuperar todas as categorias
+        IEnumerable<Produto> ProdutosPorCategoria(int categoriaId);
     }
 }

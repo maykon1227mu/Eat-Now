@@ -4,13 +4,131 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TCM</title>
+    <title>@ViewData["Title"] - Eat Now</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TCM.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/nav.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/products.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/formularios.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/compra.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <header>
+        <div class="menuToggle">
+        </div>
+        <div onclick="closeNav()" class="menuClose">
+            <i class="bi bi-arrow-left-short"></i>
+        </div>
+        <nav class="sidebar">
+            <ul>
+                <li class="logo" style="--bg: #333;">
+                    <a asp-controller="Home" asp-action="Index">
+                        <div class="icon">
+                            <img src="~/img/LogoDark.png" alt="">
+                        </div>
+                        <div class="text">Eat now</div>
+                    </a>
+                </li>
+                <div class="Menulist">
+                    <li style="--bg: #407422;" class="active">
+                        <a asp-controller="Home" asp-action="Index">
+                            <div class="icon">
+                                <ion-icon name="home-outline"></ion-icon>
+                            </div>
+                            <div class="text">Home</div>
+                        </a>
+                    </li>
+                        @if (User.Identity.Name != "")
+                        {
+                            <li style="--bg: #50834a;">
+                                <a asp-controller="Conta" asp-action="MinhaConta">
+                                    <div class="icon">
+                                        <ion-icon name="person-outline"></ion-icon>
+                                    </div>
+                                    <div class="text">Perfil</div>
+                                </a>
+                            </li>
+                        }
+
+
+                    <li style="--bg: #35af2a;">
+                    <a asp-controller="Carrinho" asp-action="Index">
+                            <div class="icon">
+                                <ion-icon name="cart-outline"></ion-icon>
+                            </div>
+                        <div class="text">Carrinho</div>
+                        </a>
+                    </li>
+                    <li style="--bg: #35af2a;" class="">
+                    <a asp-controller="Home" asp-action="Produtos">
+                            <div class="icon">
+                                <ion-icon name="bag-outline"></ion-icon>
+                            </div>
+                        <div class="text">Produto</div>
+                        </a>
+                    </li>
+                    <li style="--bg: #20cc20;">
+                    <a asp-controller="Conta" asp-action="MeusPedidos">
+                            <div class="icon">
+                                <ion-icon name="receipt-outline"></ion-icon>
+                            </div>
+                        <div class="text">Histórico</div>
+                        </a>
+                    </li>
+                </div>
+                <div class="bottom">
+                    <li style="--bg: #333;">
+                        <a href="#">
+                            <div class="icon">
+                                <div class="imgBx">
+                                    <img style="width: 20px;" src="./src/img/ImagemUser.png" alt="">
+                                </div>
+                            </div>
+                                @if(User.Identity.Name != "")
+                                {
+                                    <div class="text">@User.Identity.Name</div>
+                                }
+                        </a>
+                    </li>
+                    @if (User.IsInRole("Administrador"))
+                    {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Conta" asp-action="Index">Painel Adm</a>
+                    </li>
+                    }
+                    @if(User.Identity.Name == null)
+                    {
+                        <li style="--bg: #50834a;">
+
+                            <div class="text"><a class="nav-link text-black" asp-controller="Home" asp-action="CadastrarUsuario">Cadastrar</a></div>
+                        
+                        </li>
+                        <li style="--bg: #50834a;">
+
+
+                            <div class="text"><a class="nav-link text-black" asp-controller="Home" asp-action="Login">Login</a></div>
+                        
+                        </li>
+                    }
+                    @if(User.Identity.Name != null)
+                    {
+                    <li style="--bg: #333;">
+                        <div class="text"><a class="nav-link text-black" asp-controller="Home" asp-action="Logout">Logout</a></div>
+                    </li>
+                    }
+                    
+                </div>
+            </ul>
+        </nav>
+    </header>
+
+    @*header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TCM</a>
@@ -71,14 +189,14 @@
                 </div>
             </div>
         </nav>
-    </header>
+    </header> *@
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @*footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - TCM - 
         </div>
@@ -86,9 +204,13 @@
             <a asp-controller="Conta" asp-action="CadastrarFornecedor">Torne-se um fornecedor</a>
         </div>
     </footer>
+    *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/script.js" asp-append-version="true"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

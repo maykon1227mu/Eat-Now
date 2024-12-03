@@ -26,14 +26,14 @@ namespace TCM.Repositorio
             }
         }
 
-        public IEnumerable<CarrinhoItem> ObterCarrinhoPorUsuario(int userId)
+        public IEnumerable<Carrinho> ObterCarrinhoPorUsuario(int userId)
         {
-            var carrinho = new List<CarrinhoItem>();
+            List<Carrinho> carrinho = new List<Carrinho>();
 
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                var cmd = new MySqlCommand("select tbcarrinho.ProdutoId, tbcarrinho.Quantidade, tbproduto.NomeProd, tbproduto.Preco from tbcarrinho join tbproduto on tbcarrinho.ProdutoId = tbproduto.CodProd where tbcarrinho.UserId = @userId", conexao);
+                var cmd = new MySqlCommand("select tbcarrinho.ProdutoId, tbcarrinho.Quantidade, tbproduto.NomeProd, tbproduto.Imagem, tbproduto.Preco from tbcarrinho join tbproduto on tbcarrinho.ProdutoId = tbproduto.CodProd where tbcarrinho.UserId = @userId", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
                 
@@ -48,12 +48,13 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    carrinho.Add(new CarrinhoItem
+                    carrinho.Add(new Carrinho
                     {
                         ProdutoId = Convert.ToInt32(dr["ProdutoId"]),
                         NomeProduto = dr["NomeProd"].ToString(),
                         PrecoProduto = Convert.ToDecimal(dr["Preco"]),
-                        Quantidade = Convert.ToInt32(dr["Quantidade"])
+                        ImagemProd = (byte[])dr["imagem"],
+                        Quantidade = Convert.ToInt32(dr["Quantidade"]),
                     });
                 }
                 
@@ -97,7 +98,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                var cmd = new MySqlCommand("call spExcluirDoCarrinho(@userId, @produtoId, @qtd); call spZerosCarrinho()", conexao);
+                var cmd = new MySqlCommand("call spExcluirDoCarrinho(@userId, @produtoId, @qtd); call spZerosCarrinho();", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
                 cmd.Parameters.Add("@produtoId", MySqlDbType.Int32).Value = produtoId;
@@ -107,7 +108,5 @@ namespace TCM.Repositorio
                 conexao.Close();
             }
         }
-
-        
     }
 }

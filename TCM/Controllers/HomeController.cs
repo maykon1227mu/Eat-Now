@@ -31,13 +31,20 @@ namespace TCM.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Produtos()
+        {
             // Busca todos os produtos
             var produtos = _produtoRepositorio.TodosProdutos();
+            //Busca todas as categorias
+            ViewBag.Categorias = _produtoRepositorio.TodasCategorias();
 
             // Converte as imagens para Base64
             foreach (var produto in produtos)
             {
-                
+
                 if (produto.Imagem != null)
                 {
                     produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
@@ -72,7 +79,7 @@ namespace TCM.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> LoginFuncionario(Funcionario funcionario)
+        /*public async Task<IActionResult> LoginFuncionario(Funcionario funcionario)
         {
             Funcionario loginFunc = await _loginRepositorio.LoginFuncionario(funcionario.usuario, funcionario.senha);
             if (loginFunc.usuario != null && loginFunc.senha != null)
@@ -84,13 +91,13 @@ namespace TCM.Controllers
                 ViewData["msg"] = "Usuario/Senha inválidos";
                 return View();
             }
-        }
+        }*/
         public IActionResult LoginFornecedor()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> LoginFornecedor(Fornecedor fornecedor)
+        /*public async Task<IActionResult> LoginFornecedor(Fornecedor fornecedor)
         {
             Fornecedor loginForn = await _loginRepositorio.LoginFornecedor(fornecedor.usuario, fornecedor.senha);
             if (loginForn.usuario != null && loginForn.senha != null)
@@ -102,7 +109,7 @@ namespace TCM.Controllers
                 ViewData["msg"] = "Usuario/Senha inválidos";
                 return View();
             }
-        }
+        }*/
 
         public IActionResult CadastrarUsuario()
         {

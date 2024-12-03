@@ -28,6 +28,7 @@ namespace TCM.Controllers
         [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult CadastrarProduto()
         {
+            ViewBag.Categorias = _produtoRepositorio.TodasCategorias();
             return View();
         }
 
@@ -52,6 +53,7 @@ namespace TCM.Controllers
         public IActionResult EditarProduto(int id)
         {
             var produto = _produtoRepositorio.AcharProduto(id);
+            ViewBag.Categorias = _produtoRepositorio.TodasCategorias();
             return View(produto);
         }
 
@@ -109,10 +111,12 @@ namespace TCM.Controllers
 
         public IActionResult Finalizar()
         {
-            var carrinho = _carrinhoRepositorio.ObterCarrinhoPorUsuario(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
+            int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            var carrinho = _carrinhoRepositorio.ObterCarrinhoPorUsuario(id);
             foreach (var item in carrinho)
             {
-                _produtoRepositorio.FinalizarCompra(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value), item.ProdutoId, item.Quantidade);
+                _produtoRepositorio.FinalizarCompra(id, item.ProdutoId, item.Quantidade);
+                _carrinhoRepositorio.RemoverItemCarrinho(id, item.ProdutoId, item.Quantidade);
             }
             return RedirectToAction("Index", "Home");
         }

@@ -3,43 +3,52 @@
 }
 
 @model TCM.Models.Produto
-
-<form class="card" asp-action="EditarProduto" enctype="multipart/form-data" method="post">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div class="card-body">
-        <div class="form-group">
-            <input asp-for="CodProd" readonly hidden/>
+<div class="container-formulario">
+    <form class="formulario" asp-action="EditarProduto" enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="formulario-inputs">
+            <input asp-for="CodProd" readonly hidden />
             <span asp-validation-for="CodProd"></span>
         </div>
-        <div class="form-group">
+        <div class="formulario-inputs">
             <label class="form-label">Nome</label>
-            <input class="form-control" asp-for="NomeProd" required />
+            <input asp-for="NomeProd" required />
             <span asp-validation-for="NomeProd"></span>
         </div>
-        <div class="form-group">
+        <div class="formulario-inputs">
             <label class="form-label">Descrição</label>
             <textarea class="form-control" asp-for="Descricao" maxlength="80" style="resize: none;" required></textarea>
             <span asp-validation-for="Descricao"></span>
         </div>
-        
-        <div class="form-group">
+
+        <div class="formulario-inputs">
+            <label>Categoria</label>
+            <select name="CategoriaId" required>
+                <option value="">Selecione</option>
+                @foreach (var categoria in ViewBag.Categorias)
+                {
+                    <option value="@categoria.CodCat">@categoria.Nome</option>
+                }
+            </select>
+        </div>
+
+        <div class="formulario-inputs">
             <label class="form-label">Preço</label>
-            <input class="form-control" asp-for="Preco" type="text" required />
+            <input asp-for="Preco" type="text" required />
             <span asp-validation-for="Preco"></span>
         </div>
-        <div class="form-group">
+        <div class="formulario-inputs">
             <label class="form-label">Quantidade</label>
-            <input class="form-control" asp-for="Qtd" type="number" required />
+            <input asp-for="Qtd" type="number" required />
             <span asp-validation-for="Qtd"></span>
         </div>
-        
-        <div class="form-group">
+
+        <div class="formulario-inputs">
             <label class="form-label">Imagem</label>
-            <input class="form-control" type="file" name="imagem"/>
+            <input class="form-control" type="file" name="imagem" />
         </div>
-        
-    </div>
-    <div>
-        <button class="btn btn-primary" type="submit">Editar</button>
-    </div>
-</form>
+        <div>
+            <button class="btn-comprar" type="submit">Editar</button>
+        </div>
+    </form>
+</div>

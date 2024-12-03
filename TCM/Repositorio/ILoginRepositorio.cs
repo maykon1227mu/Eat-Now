@@ -4,11 +4,10 @@ namespace TCM.Repositorio
 {
     public interface ILoginRepositorio
     {
-        Task<Usuario> Login(string usuario, string senha);
-        Task<Funcionario> LoginFuncionario(string usuario, string senha);
-        Task<Fornecedor> LoginFornecedor(string usuario, string senha);
+        Task<dynamic> Login(string usuario, string senha);
         Task Logout();
         Usuario AcharUsuario(int id);
+        Fornecedor AcharFornecedor(int id);
         IEnumerable<Funcionario> TodosFuncionarios();
         IEnumerable<Fornecedor> TodosFornecedores();
         void DeletarUsuario(int id);

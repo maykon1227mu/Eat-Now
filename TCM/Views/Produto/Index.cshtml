@@ -5,18 +5,19 @@
 @model IEnumerable<Produto>
 
 <h1>Painel Produtos</h1>
+        
 
-<table class="table">
+
+<table class="content-table">
     <thead>
         <tr>
             <th>Código</th>
             <th>Nome</th>
-            <th>Descricao</th>
-            <th>Preco</th>
+            <th>Descrição</th>
+            <th>Preço</th>
             <th>Quantidade</th>
             <th> </th>
             <th> </th>
-            
         </tr>
     </thead>
     <tbody>
@@ -37,7 +38,6 @@
             </tr>
         }
     </tbody>
-    
 </table>
 <div>
     <a class="btn btn-primary" asp-controller="Produto" asp-action="CadastrarProduto">Novo Produto</a>

@@ -5,33 +5,40 @@
 
 @if (!Model.Any())
 {
-    <p>Você ainda não fez nenhum pedido!.</p>
+    <p>Você ainda não fez nenhum pedido!</p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Codigo do Pedido</th>
-                <th>Nome do Produto</th>
-                <th>Preço</th>
-                <th>Quantidade do Pedido</th>
-                <th>Total</th>
-                <th>Data do Pedido</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.CodPed</td>
-                    <td>@item.NomeProd</td>
-                    <td>R$@item.PrecoProd</td>
-                    <td>@item.QtdPed</td>
-                    <td>R$@item.Total</td>
-                    <td>@item.DataPed</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="container-carrinho">
+        <div class="container-cards-price">
+            <div class="cart-boxes">
+                @foreach (var item in Model)
+                {
+                    if (item.ImagemPed != null)
+                    {
+                        //Transforma o blob para um jeito que dê para a imagem ser interpretada
+                        item.ImagemBase64 = Convert.ToBase64String(item.ImagemPed);
+                    }
+                    <div class="cart-box">
+                        <div class="cart-img">
+                            <img src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
+                        </div>
+                        <div>
+                            <h2>@item.NomeProd</h2>
+                            <p>Quantidade: @item.QtdPed</p>
+                        </div>
+                        <div>
+                            <h5>Preço: R$@item.PrecoProd</h5>
+                        </div>
+                        <div>
+                            <h5>Total: R$@item.Total</h5>
+                        </div>
+                        <div>
+                            <h5>Data: @item.DataPed</h5>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 }

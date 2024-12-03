@@ -4,20 +4,71 @@
 
 @model IEnumerable<Produto>
 
-<div class="container">
-    <div class="row">
-        @foreach (var produto in Model)
-        {
-            <div class="card" style="width: 18rem;">
-                @*Interpreta a imagem*@
-                <img class="card-img-top" src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
-                <div class="card-body">
-                    <h5 class="card-title">@produto.NomeProd</h5>
-                    <p class="card-text">@produto.Descricao</p>
-                    <p class="card-text">R$@produto.Preco</p>
-                    <a asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd" class="btn btn-primary">Comprar</a>
-                </div>
-            </div>
-        }
+<div class="container-principal">
+    <div class="principal">
+        <div class="box-esquerda">
+            <h1>Eat <span class="diff">Now</span></h1>
+            <div class="animacao"></div>
+            <p>
+                Venha conhecer nosso associados e comer com desconto,<br />
+                entrega na sua casa agora.
+            </p>
+            <a class="btn-comprar" href="#compra">Comprar Agora</a>
+        </div>
+        <div class="box-direita">
+            <ul class="lista">
+                <li>
+                    <h3>Bebidas</h3>
+                </li>
+                <li>
+                    <h3>Bebidas</h3>
+                </li>
+                <li>
+                    <h3>Bebidas</h3>
+                </li>
+                <li class="icon-down"><i class="bi bi-arrow-down"></i></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container-promo">
+    <div class="promo">
+        <div class="promo-textos">
+            <h3>Nosso fornecedores te Aguardam!</h3>
+            <p class="promo-desc">Somente hoje - desconto de <span style="color: rgb(74, 201, 127);">10%</span></p>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit dolor odio, cupiditate perspiciatis ab blanditiis excepturi iure pariatur at quidem consequuntur repellat necessitatibus iusto tempora repellendus repudiandae distinctio. Placeat, magnam.</p>
+            <a class="btn-comprar" href="#compra">Ver Comidas</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-palavras">
+    <div class="palavras">
+        <h2 class="hidden">MELHORES COMIDAS</h2>
+        <div class="palavras-meio">
+            <h2 class="hidden estranho">COMIDA BARATA</h2>
+            <h2 class="hidden">ONDE QUISER</h2>
+            <h2 class="hidden">PARA VOCE</h2>
+        </div>
+        <h2 class="hidden">NA HORA</h2>
+        <h2 class="hidden">QUE QUISER</h2>
+        <div class="palavras-meio">
+            <h2 class="hidden">SEMPRE</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container-redirect">
+    <div class="redirect">
+        <div class="redirect-textos">
+            <h2>Ver Produtos</h2>
+            <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit dolor odio, cupiditate perspiciatis ab blanditiis excepturi iure pariatur at quidem consequuntur repellat necessitatibus iusto tempora repellendus repudiandae distinctio. Placeat, magnam.
+            </p>
+            <a class="btn-comprar" asp-controller="Home" asp-action="Produtos">Ver Comidas</a>
+        </div>
+        <div class="redirect-quadrado">
+
+        </div>
     </div>
 </div>

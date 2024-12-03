@@ -21,55 +21,122 @@ namespace TCM.Repositorio
             _httpContextAccessor = httpContextAccessor; 
         }
 
-        public async Task<Usuario> Login(string usuario, string senha)
+        public async Task<dynamic> Login(string usuario, string senha)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("select * from tbusuario where usuario = @usuario and senha = @senha", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spLogin(@usuario, @senha)", conexao);
                 cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
                 cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = senha;
                 
 
                 MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 
-                Usuario user = new Usuario();
-
                 if (dr.Read())
                 {
-                    // Atribuindo dados ao usuário, se encontrados no banco
-                    user.usuario = Convert.ToString(dr["usuario"]);
-                    user.senha = Convert.ToString(dr["senha"]);
-                    user.CodUsu = Convert.ToInt32(dr["codusu"]);
-                    user.tipo = Convert.ToString(dr["tipo"]);
-
-
-
-                    // Criando a lista de claims
-                    //Claims são um tipo de identificadores do usuario
-                    var claims = new List<Claim>
+                    string tipo = Convert.ToString(dr["tipo"]);
+                    if (tipo == "Cliente" || tipo == "Administrador")
                     {
-                        new Claim(ClaimTypes.Name, user.usuario),
-                        new Claim(ClaimTypes.SerialNumber, Convert.ToString(user.CodUsu)),
-                        new Claim(ClaimTypes.Role, user.tipo == null ? "Cliente" : user.tipo)
-                    };
+                        Usuario user = new Usuario();
 
-                    //Criando o Claim de identidade do usuario, juntamente de coockies
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    //Permite que o usuario continue logado mesmo se fechar o navegador
-                    var authProperties = new AuthenticationProperties
-                    {
-                        IsPersistent = true // Mantém o cookie ao fechar o navegador
-                    };
-                        //Vai logar o usuario com o HTTP usando tanto os coockies quanto a identidade do usuario
-                        await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                            // Atribuindo dados ao usuário, se encontrados no banco
+                            user.usuario = Convert.ToString(dr["usuario"]);
+                            user.senha = Convert.ToString(dr["senha"]);
+                            user.CodUsu = Convert.ToInt32(dr["codusu"]);
+                            user.tipo = Convert.ToString(dr["tipo"]);
+
+
+
+                            // Criando a lista de claims
+                            //Claims são um tipo de identificadores do usuario
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Name, user.usuario),
+                                new Claim(ClaimTypes.SerialNumber, Convert.ToString(user.CodUsu)),
+                                new Claim(ClaimTypes.Role, user.tipo == null ? "Cliente" : user.tipo)
+                            };
+
+                            //Criando o Claim de identidade do usuario, juntamente de coockies
+                            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                            //Permite que o usuario continue logado mesmo se fechar o navegador
+                            var authProperties = new AuthenticationProperties
+                            {
+                                IsPersistent = true // Mantém o cookie ao fechar o navegador
+                            };
+                            //Vai logar o usuario com o HTTP usando tanto os coockies quanto a identidade do usuario
+                            await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                        
+                        return user;
                     }
-                    return user;
-            }
+                    else if (tipo == "Fornecedor")
+                    {
+                        Fornecedor fornecedor = new Fornecedor();
+                        // Atribuindo dados ao usuário, se encontrados no banco
+                        fornecedor.usuario = Convert.ToString(dr["usuario"]);
+                        fornecedor.senha = Convert.ToString(dr["senha"]);
+                        fornecedor.CodFor = Convert.ToInt32(dr["codfor"]);
+                        fornecedor.CNPJ = Convert.ToString(dr["cnpj"]);
+                        fornecedor.tipo = Convert.ToString(dr["tipo"]);
+
+
+
+                        // Criando a lista de claims
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, fornecedor.usuario),
+                            new Claim(ClaimTypes.SerialNumber, Convert.ToString(fornecedor.CodFor)),
+                            new Claim(ClaimTypes.Role, fornecedor.tipo == null ? "Fornecedor" : fornecedor.tipo)
+                        };
+
+                        var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var authProperties = new AuthenticationProperties
+                        {
+                            IsPersistent = true // Mantém o cookie ao fechar o navegador
+                        };
+
+                        await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                        return fornecedor;
+                    }
+                    else if (tipo == "Funcionario")
+                    {
+                        Funcionario funcionario = new Funcionario();
+
+                        
+                            // Atribuindo dados ao usuário, se encontrados no banco
+                            funcionario.usuario = Convert.ToString(dr["usuario"]);
+                            funcionario.senha = Convert.ToString(dr["senha"]);
+                            funcionario.CodFunc = Convert.ToInt32(dr["codfunc"]);
+                            funcionario.Salario = Convert.ToInt32(dr["salario"]);
+                            funcionario.tipo = Convert.ToString(dr["tipo"]);
+
+
+
+                            // Criando a lista de claims
+                            var claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.Name, funcionario.usuario),
+                                new Claim(ClaimTypes.SerialNumber, Convert.ToString(funcionario.CodFunc)),
+                                new Claim(ClaimTypes.Role, funcionario.tipo == null ? "Fornecedor" : funcionario.tipo)
+                            };
+
+                            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                            var authProperties = new AuthenticationProperties
+                            {
+                                IsPersistent = true // Mantém o cookie ao fechar o navegador
+                            };
+
+                            await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                        
+                        return funcionario;
+                    }
+                } 
+            } 
+            return null;
         }
 
-        public async Task<Funcionario> LoginFuncionario(string usuario, string senha)
+        /* public async Task<Funcionario> LoginFuncionario(string usuario, string senha)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
@@ -82,36 +149,7 @@ namespace TCM.Repositorio
 
                 MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-                Funcionario funcionario = new Funcionario();
-
-                if (dr.Read())
-                {
-                    // Atribuindo dados ao usuário, se encontrados no banco
-                    funcionario.usuario = Convert.ToString(dr["usuario"]);
-                    funcionario.senha = Convert.ToString(dr["senha"]);
-                    funcionario.CodFunc = Convert.ToInt32(dr["codfunc"]);
-                    funcionario.Salario = Convert.ToInt32(dr["salario"]);
-                    funcionario.tipo = Convert.ToString(dr["tipo"]);
-
-
-
-                    // Criando a lista de claims
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, funcionario.usuario),
-                        new Claim(ClaimTypes.SerialNumber, Convert.ToString(funcionario.CodFunc)),
-                        new Claim(ClaimTypes.Role, funcionario.tipo == null ? "Fornecedor" : funcionario.tipo)
-                    };
-
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var authProperties = new AuthenticationProperties
-                    {
-                        IsPersistent = true // Mantém o cookie ao fechar o navegador
-                    };
-
-                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-                }
-                return funcionario;
+                
             }
         }
 
@@ -127,38 +165,9 @@ namespace TCM.Repositorio
 
 
                 MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                Fornecedor fornecedor = new Fornecedor();
-
-                if (dr.Read())
-                {
-                    // Atribuindo dados ao usuário, se encontrados no banco
-                    fornecedor.usuario = Convert.ToString(dr["usuario"]);
-                    fornecedor.senha = Convert.ToString(dr["senha"]);
-                    fornecedor.CodFor = Convert.ToInt32(dr["codfor"]);
-                    fornecedor.CNPJ = Convert.ToString(dr["cnpj"]);
-                    fornecedor.tipo = Convert.ToString(dr["tipo"]);
-
-
-
-                    // Criando a lista de claims
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, fornecedor.usuario),
-                        new Claim(ClaimTypes.SerialNumber, Convert.ToString(fornecedor.CodFor)),
-                        new Claim(ClaimTypes.Role, fornecedor.tipo == null ? "Fornecedor" : fornecedor.tipo)
-                    };
-
-                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var authProperties = new AuthenticationProperties
-                    {
-                        IsPersistent = true // Mantém o cookie ao fechar o navegador
-                    };
-
-                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-                }
-                return fornecedor;
+                
             }
-        }
+        }*/
 
         public IEnumerable<Funcionario> TodosFuncionarios()
         {
@@ -286,6 +295,40 @@ namespace TCM.Repositorio
                         CodUsu = Convert.ToInt32(dr["codusu"]),
                         usuario = ((string)dr["usuario"]),
                         email = ((string)dr["email"]),
+                        tipo = (string)dr["tipo"],
+                    };
+                }
+                return user;
+            }
+        }
+
+        public Fornecedor AcharFornecedor(int id)
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                Fornecedor user = new Fornecedor();
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("select * from tbfornecedor where CodFor = @codfor", conexao);
+
+                cmd.Parameters.Add("@codfor", MySqlDbType.Int32).Value = id;
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    user = new Fornecedor()
+                    {
+                        CodFor = Convert.ToInt32(dr["codusu"]),
+                        usuario = ((string)dr["usuario"]),
+                        email = ((string)dr["email"]),
+                        CNPJ = (string)dr["cnpj"],
                         tipo = (string)dr["tipo"],
                     };
                 }

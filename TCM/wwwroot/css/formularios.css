@@ -1,0 +1,26 @@
+﻿.container-formulario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.formulario {
+    display: flex;
+    justify-content: center;
+    align-items: initial;
+    flex-direction: column;
+    background-color: #222831;
+    border-radius: 8px;
+    padding: 1rem;
+    border-bottom: 3px solid #31363F;
+    gap: 20px
+}
+
+.formulario-inputs input, select {
+    border: none;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.15);
+    padding: 5px;
+    border-radius: 12px;
+}
