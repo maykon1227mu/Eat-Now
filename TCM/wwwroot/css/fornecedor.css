@@ -1,0 +1,34 @@
+﻿.container-fornecedor {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fornecedor {
+    background: url(../img/background-admin-orange.png);
+    background-position: left;
+    background-size: cover;
+    width: auto;
+    height: auto;
+    padding: 200px 7vw;
+    border-radius: 20px;
+    border-bottom-right-radius: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
+}
+.fornecedor i {
+    margin-left: 10px;
+
+}
+.fornecedor span {
+    text-decoration: underline;
+}
+.fornecedor a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}

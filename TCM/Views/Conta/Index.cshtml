@@ -2,13 +2,15 @@
     ViewData["Title"] = "Painel Administrador";
 }
 
-<h2>Seja Bem-Vindo, Administrador</h2>
-<ul class="d-flex gap-5">
-    <li><a class="btn btn-primary" asp-controller="Produto" asp-action="Index">Painel de Produtos</a></li>
-    <li><a class="btn btn-primary" asp-controller="Conta" asp-action="Funcionarios">Painel de Funcionarios</a></li>
-    <li><a class="btn btn-primary" asp-controller="Conta" asp-action="Fornecedores">Painel de Fornecedores</a></li>
-    <li><a class="btn btn-primary" asp-controller="Conta" asp-action="CadastrarFuncionario">Cadastrar Funcionario</a></li>
-    <li><a class="btn btn-primary" asp-controller="Conta" asp-action="CadastrarFornecedor">Cadastrar Fornecedor</a></li>
-</ul>
+
+<div class="container-admin">
+    <h2>Seja Bem-Vindo, <span style=color:rgb(38,155,110)>Administrador</span></h2>
+    <div class="admin">
+        <h1>Menu <span>Admin</span></h1>
+        <div class="link-admin"><a asp-controller="Produtos" asp-action="Index">Produtos <i class="bi bi-box-seam"></i></a></div>
+        <div class="link-admin"><a asp-controller="Conta" asp-action="Funcionarios">Funcionários <i class="bi bi-person-vcard-fill"></i></a></div>
+        <div class="link-admin"><a asp-controller="Conta" asp-action="Fornecedores">Fornecedores <i class="bi bi-bus-front"></i></a></div>
+    </div>
+</div>
 
 <

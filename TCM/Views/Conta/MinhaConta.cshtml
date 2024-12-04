@@ -1,12 +1,14 @@
 ﻿@{
 }
 @model TCM.Models.Usuario
+<link rel="stylesheet" href="~/css/cliente.css" asp-append-version="true" />
 
-<h1>Seja Bem-Vindo, @Model.usuario</h1>
-<div>
-    <ul>
-        <li><a>Meus Dados</a></li>
-        <li><a>Meus Pedidos</a></li>
-        <li><a>Meu Carrinho</a></li>
-    </ul>
+<div class="container-cliente">
+    <h1>Seja Bem-Vindo,<span style=color:rgb(38,155,110)>@Model.usuario</span></h1>
+    <div class="cliente">
+        <h1>Menu <span>Cliente</span></h1>
+        <div class="link-cliente"><a asp-controller="Conta" asp-action="EditarConta">Meus Dados <i class="bi bi-person-badge"></i></a></div>
+        <div class="link-cliente"><a asp-controller="Conta" asp-action="MeusPedidos">Meus Pedidos <i class="bi bi-basket"></i></a></div>
+        <div class="link-cliente"><a asp-controller="Carrinho" asp-action="Index">Meu Carrinho <i class="bi bi-cart3"></i></a></div>
+    </div>
 </div>

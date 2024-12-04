@@ -37,7 +37,7 @@ namespace TCM.Repositorio
                 if (dr.Read())
                 {
                     string tipo = Convert.ToString(dr["tipo"]);
-                    if (tipo == "Cliente" || tipo == "Administrador")
+                    if (tipo == "Cliente")
                     {
                         Usuario user = new Usuario();
 
@@ -70,7 +70,7 @@ namespace TCM.Repositorio
                         
                         return user;
                     }
-                    else if (tipo == "Fornecedor")
+                    else if (tipo == "Fornecedor" || tipo == "Administrador")
                     {
                         Fornecedor fornecedor = new Fornecedor();
                         // Atribuindo dados ao usuário, se encontrados no banco
@@ -136,39 +136,6 @@ namespace TCM.Repositorio
             return null;
         }
 
-        /* public async Task<Funcionario> LoginFuncionario(string usuario, string senha)
-        {
-            using (var conexao = new MySqlConnection(_conexaoMySQL))
-            {
-                conexao.Open();
-
-                MySqlCommand cmd = new MySqlCommand("select * from tbfuncionario where usuario = @usuario and senha = @senha", conexao);
-                cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
-                cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = senha;
-
-
-                MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-                
-            }
-        }
-
-        public async Task<Fornecedor> LoginFornecedor(string usuario, string senha)
-        {
-            using (var conexao = new MySqlConnection(_conexaoMySQL))
-            {
-                conexao.Open();
-
-                MySqlCommand cmd = new MySqlCommand("select * from tbfornecedor where usuario = @usuario and senha = @senha", conexao);
-                cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
-                cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = senha;
-
-
-                MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-                
-            }
-        }*/
-
         public IEnumerable<Funcionario> TodosFuncionarios()
         {
             List<Funcionario> funcionarioLista = new List<Funcionario>();
@@ -209,7 +176,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("select * from tbfornecedor", conexao);
+                MySqlCommand cmd = new MySqlCommand("select * from tbfornecedor where tipo = 'Fornecedor'", conexao);
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
 

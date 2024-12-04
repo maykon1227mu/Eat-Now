@@ -20,14 +20,14 @@ namespace TCM.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult MinhaConta()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var user = _loginRepositorio.AcharUsuario(id);
             return View(user);
         }
-
+        [Authorize]
         public IActionResult EditarConta()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
@@ -39,19 +39,19 @@ namespace TCM.Controllers
         public IActionResult EditarConta(Usuario user)
         {
             _loginRepositorio.EditarUsuario(user);
-            return RedirectToAction("Index", "Conta");
+            return RedirectToAction("MinhaConta", "Conta");
         }
-
+        [Authorize(Roles = "Administrador")]
         public IActionResult Funcionarios()
         {
             return View(_loginRepositorio.TodosFuncionarios());
         }
-
+        [Authorize(Roles = "Administrador")]
         public IActionResult Fornecedores()
         {
             return View(_loginRepositorio.TodosFornecedores());
         }
-
+        [Authorize(Roles = "Administrador")]
         public IActionResult CadastrarFuncionario()
         {
             return View();
@@ -75,7 +75,7 @@ namespace TCM.Controllers
             _loginRepositorio.CadastrarFornecedor(fornecedor.email, fornecedor.usuario, fornecedor.senha, fornecedor.CNPJ);
             return RedirectToAction("Index", "Conta");
         }
-
+        [Authorize]
         public IActionResult MeusPedidos()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);

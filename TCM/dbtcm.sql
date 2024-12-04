@@ -138,16 +138,16 @@ select * from tbcategoria;
 
 alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbfornecedor(CodFor);
 alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);
-
-insert into tbcategoria (Categoria) values ("Sorvete");
-insert into tbcategoria (Categoria) values ("Milkshake");
+insert into tbcategoria (Categoria) values ("Comida Japonesa");
+insert into tbcategoria (Categoria) values ("Comida Italiana");
 insert into tbcategoria (Categoria) values ("Pizza");
 insert into tbcategoria (Categoria) values ("Hamburguer");
 insert into tbcategoria (Categoria) values ("Aperitivos");
+insert into tbcategoria (Categoria) values ("Sorvete");
+insert into tbcategoria (Categoria) values ("Milkshake");
 insert into tbcategoria (Categoria) values ("Açai");
 insert into tbcategoria (Categoria) values ("Bebidas");
-insert into tbcategoria (Categoria) values ("Comida Japonesa");
-insert into tbcategoria (Categoria) values ("Comida Italiana");
+
 
 insert into tbfornecedor (email, usuario, senha, CNPJ, tipo) values ( "admin@admin.com", "Admin", "12345", 1, "Administrador");
 

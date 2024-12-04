@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TCM.Models;
 using TCM.Repositorio;
@@ -15,7 +16,7 @@ namespace TCM.Controllers
             _produtoRepositorio = produtoRepositorio;
             _carrinhoRepositorio = carrinhoRepositorio;
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
@@ -24,6 +25,7 @@ namespace TCM.Controllers
             return View(carrinho);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Adicionar()
         {
@@ -33,14 +35,14 @@ namespace TCM.Controllers
             _carrinhoRepositorio.SalvarItemCarrinho(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value), produto, qtd);
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public IActionResult Remover(int id, int qtd)
         {
             int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             _carrinhoRepositorio.RemoverItemCarrinho(userId, id, qtd);
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public IActionResult LimparCarrinho()
         {
             int userId = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);

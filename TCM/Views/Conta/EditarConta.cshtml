@@ -1,0 +1,39 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "Meus Dados";
+}
+
+@model TCM.Models.Usuario
+
+<div class="container-formulario">
+    <form class="formulario" asp-action="EditarConta" enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <div class="formulario-inputs">
+            <input asp-for="CodUsu" readonly hidden />
+            <span asp-validation-for="CodUsu"></span>
+        </div>
+
+        <div class="formulario-inputs">
+            <label class="form-label">Nome</label>
+            <input asp-for="Nome" required />
+            <span asp-validation-for="Nome"></span>
+        </div>
+
+        <div class="formulario-inputs">
+            <label class="form-label">Preço</label>
+            <input asp-for="usuario" type="text" required />
+            <span asp-validation-for="usuario"></span>
+        </div>
+
+        <div class="formulario-inputs">
+            <label class="form-label">Quantidade</label>
+            <input asp-for="email" type="email" required />
+            <span asp-validation-for="email"></span>
+        </div>
+
+        <div>
+            <button class="btn-comprar" type="submit">Editar</button>
+        </div>
+    </form>
+</div>

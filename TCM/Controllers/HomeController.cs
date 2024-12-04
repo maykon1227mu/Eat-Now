@@ -62,7 +62,7 @@ namespace TCM.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(Usuario user)
         {
-            Usuario loginUser = await _loginRepositorio.Login(user.usuario, user.senha);
+            dynamic loginUser = await _loginRepositorio.Login(user.usuario, user.senha);
             if (loginUser.usuario != null && loginUser.senha != null)
             {
                 return new RedirectResult(Url.Action(nameof(Index)));
