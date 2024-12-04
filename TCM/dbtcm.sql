@@ -61,12 +61,12 @@ select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, t
 alter table tbpedido add constraint FK_ProdutoIdPedido foreign key (ProdutoId) references tbproduto(CodProd);
 alter table tbpedido add constraint FK_UserIdPedido foreign key (UserId) references tbusuario(CodUsu);
 
-CREATE TABLE tbcarrinho (
-    Id INT AUTO_INCREMENT PRIMARY KEY,
-    UserId INT NOT NULL,
-    ProdutoId INT NOT NULL,
-    Quantidade INT unsigned NOT NULL,
-    FOREIGN KEY (ProdutoId) REFERENCES tbproduto(CodProd)
+create table tbcarrinho (
+Id int primary key auto_increment,
+UserId int not null,
+ProdutoId int not null,
+Quantidade int unsigned not null,
+foreign key (ProdutoId) references tbproduto(CodProd)
 );
 
 delimiter $$
@@ -130,14 +130,10 @@ $$
 delimiter ;
 
 call spLogin("Admin", "12345");
-delete from tbfornecedor where codfor = 1;
-
-select * from tbcarrinho;
-select * from tbproduto;
-select * from tbcategoria;
 
 alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbfornecedor(CodFor);
 alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);
+
 insert into tbcategoria (Categoria) values ("Comida Japonesa");
 insert into tbcategoria (Categoria) values ("Comida Italiana");
 insert into tbcategoria (Categoria) values ("Pizza");
@@ -148,7 +144,14 @@ insert into tbcategoria (Categoria) values ("Milkshake");
 insert into tbcategoria (Categoria) values ("Açai");
 insert into tbcategoria (Categoria) values ("Bebidas");
 
-
 insert into tbfornecedor (email, usuario, senha, CNPJ, tipo) values ( "admin@admin.com", "Admin", "12345", 1, "Administrador");
+insert into tbfornecedor (email, usuario, senha, CNPJ) values ("fornecedorteste@gmail.com", "Fornecedor teste", "12345", "00.623.904/0001-73");
+insert into tbfuncionario (Nome, email, usuario, senha, salario) values ("funcionarioteste", "funcionarioteste@gmail.com", "functeste", "12345", 1);
+insert into tbusuario (Nome, email, usuario, senha) values ("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345");
 
 select * from tbfornecedor;
+select * from tbfuncionario;
+select * from tbusuario;
+select * from tbcarrinho;
+select * from tbproduto;
+select * from tbcategoria;

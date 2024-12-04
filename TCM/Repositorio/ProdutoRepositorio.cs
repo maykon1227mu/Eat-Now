@@ -154,6 +154,51 @@ namespace TCM.Repositorio
                 }
                 return Produtoslist;
             }
+        }public IEnumerable<Produto> TodosProdutosFornecedor(int id)
+        {
+            //Criando a lista que irá receber todos os produtos[
+            List<Produto> Produtoslist = new List<Produto>();
+
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                //Abrindo a conexão com o banco de dados
+                conexao.Open();
+                //Criando o comando para listar todos os clientes
+                MySqlCommand cmd = new MySqlCommand("select CodProd, NomeProd, Descricao, Preco, Qtd, Usuario, UserId, CategoriaId, Categoria, Imagem from tbproduto join tbfornecedor on tbproduto.UserId = tbfornecedor.CodFor join tbcategoria on tbproduto.CategoriaId = tbcategoria.CodCat where UserId = @id", conexao);
+
+                cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
+
+                //Traz a tabela
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                //Cria a copia da tabela
+                DataTable dt = new DataTable();
+
+                //Separa e preenche os dados
+                da.Fill(dt);
+
+                //Fechando a conexão com o banco de dados
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Produtoslist.Add(
+                        new Produto()
+                        {
+                            CodProd = Convert.ToInt32(dr["codprod"]),
+                            NomeProd = ((string)dr["nomeprod"]),
+                            Descricao = ((string)dr["descricao"]),
+                            Preco = Convert.ToDecimal(dr["preco"]),
+                            Qtd = Convert.ToInt32(dr["qtd"]),
+                            Usuario = (string)dr["usuario"],
+                            UserId = Convert.ToInt32(dr["userid"]),
+                            CategoriaId = Convert.ToInt32(dr["categoriaid"]),
+                            NomeCategoria = (string)dr["categoria"],
+                            Imagem = (byte[])dr["imagem"],
+                        });
+                }
+                return Produtoslist;
+            }
         }
 
         public IEnumerable<Produto> Pesquisa(string nome)

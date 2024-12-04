@@ -30,7 +30,7 @@
         <nav class="sidebar">
             <ul>
                 <li class="logo" style="--bg: #333;">
-                    <a href="#">
+                    <a asp-controller="Home" asp-action="Index">
                         <div class="icon">
                             <img src="./src/img/LogoDark.png" alt="">
                         </div>
@@ -68,7 +68,7 @@
                 
 
                 <li style="--bg: #35af2a;">
-                    <a href="./src/pages/cart.html">
+                    <a asp-controller="Carrinho" asp-action="Index">
                         <div class="icon">
                             <ion-icon name="cart-outline"></ion-icon>
                         </div>
@@ -76,7 +76,7 @@
                     </a>
                 </li>
                 <li style="--bg: #35af2a;" class="">
-                    <a href="./src/pages/products.html">
+                    <a asp-controller="Home" asp-action="Produtos">
                         <div class="icon">
                             <ion-icon name="bag-outline"></ion-icon>
                         </div>

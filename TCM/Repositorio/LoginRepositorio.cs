@@ -260,8 +260,10 @@ namespace TCM.Repositorio
                     user = new Usuario()
                     {
                         CodUsu = Convert.ToInt32(dr["codusu"]),
+                        Nome = (string)dr["nome"],
                         usuario = ((string)dr["usuario"]),
                         email = ((string)dr["email"]),
+                        senha = (string)dr["senha"],
                         tipo = (string)dr["tipo"],
                     };
                 }

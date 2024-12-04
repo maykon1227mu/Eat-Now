@@ -103,6 +103,9 @@ main {
     position: absolute;
     height: 250px;
     width: 100%;
+    background-color: rgb(214, 133, 205);
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
 }
 .product-name-star {
     display: flex;
@@ -195,3 +198,4 @@ main {
     width: 100vw;
     height: fit-content;
 }
+

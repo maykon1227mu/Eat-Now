@@ -49,7 +49,7 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult EditarProduto(int id)
         {
             var produto = _produtoRepositorio.AcharProduto(id);
@@ -73,7 +73,7 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Produto");
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult DeletarProduto(int id)
         {
             _produtoRepositorio.DeletarProduto(id);
@@ -108,7 +108,7 @@ namespace TCM.Controllers
             }
             return View(produtos);
         }
-
+        [Authorize]
         public IActionResult Finalizar()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
@@ -119,6 +119,13 @@ namespace TCM.Controllers
                 _carrinhoRepositorio.RemoverItemCarrinho(id, item.ProdutoId, item.Quantidade);
             }
             return RedirectToAction("Index", "Home");
+        }
+        [Authorize(Roles = "Fornecedor")]
+        public IActionResult ProdutosFornecedor()
+        {
+            int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            var produtos = _produtoRepositorio.TodosProdutosFornecedor(id);
+            return View(produtos);
         }
     }
 }
