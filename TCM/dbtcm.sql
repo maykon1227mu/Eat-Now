@@ -54,6 +54,20 @@ QtdPed int unsigned not null,
 DataPed datetime default current_timestamp
 );
 
+create table tbPromocao(
+PromoId int primary key auto_increment,
+NomePromo varchar(80) not null,
+Porcentagem tinyint not null,
+data_exclusao datetime not null
+);
+
+create table tbPromocaoItem(
+PromoIdItem int primary key auto_increment,
+ProdutoId int not null,
+PrecoPromo decimal not null,
+data_exclusao datetime not null
+);
+
 select * from tbusuario;
 
 select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbproduto.Preco, tbpedido.QtdPed from tbpedido join tbproduto on tbpedido.ProdutoId = tbproduto.CodProd where tbpedido.UserId = 1;
@@ -129,7 +143,20 @@ $$
 
 delimiter ;
 
-call spLogin("Admin", "12345");
+call spInserirPromocao("natal", 50, "Comida Japonesa", '2024-12-26 10:58:00');
+
+select * from tbpromocao;
+select * from tbpromocaoitem;
+
+DELIMITER $$
+
+create PROCEDURE spInserirPromocao(vNomePromo VARCHAR(80), vPorcentagem int, vCategoria VARCHAR(80), vdata_exclusao DATETIME)
+BEGIN
+    
+
+END$$
+
+DELIMITER ;
 
 alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbfornecedor(CodFor);
 alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);
