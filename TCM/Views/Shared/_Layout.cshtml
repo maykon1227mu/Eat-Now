@@ -65,8 +65,6 @@
                             </a>
                         </li>
                     }
-                
-
                 <li style="--bg: #35af2a;">
                     <a asp-controller="Carrinho" asp-action="Index">
                         <div class="icon">
@@ -130,9 +128,6 @@
                             </a>
                         </li>
                     }
-                    
-
-
                 </div>
                 <div class="bottom">
                     @if(User.Identity.Name != null)
@@ -162,83 +157,16 @@
         </nav>
     </header>
 
-    @*header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TCM</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        
-                        @if(User.Identity.Name == null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LoginFuncionario">Login Funcionario</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LoginFornecedor">Login Fornecedor</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CadastrarUsuario">Cadastrar-se</a>
-                            </li>
-                        }
-                        
-                        @if(User.IsInRole("Administrador"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Conta" asp-action="Index">Painel Adm</a>
-                            </li>
-                        }
-                        @{
-                            var serialNumber = User.FindFirst(ClaimTypes.SerialNumber)?.Value;
-                            Convert.ToInt32(serialNumber);
-                        }
-                        @if(User.Identity.Name != null)
-                        {
-                            <li class="nav-item usuario">
-                                <a>Olá, @User.Identity.Name</a>
-                                <ul class="lista-usuario">
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Conta" asp-action="MinhaConta">Minha Conta</a></li>
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Conta" asp-action="MeusPedidos">Meus Pedidos</a></li>
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Conta" asp-action="EditarConta">Meus Dados</a></li>
-                                    <li class="nav-item"><a class="nav-link text-dark" asp-controller="Home" asp-action="Logout">Sair</a></li>
-                                </ul>
-                            </li>
-                        }
-                    </ul>
-                    <form asp-controller="Produto" asp-action="Pesquisar" method="post">
-                        <input type="text" name="txtpesq" id="txtpesq" required/>
-                        <button type="submit" class="btn btn-primary">Buscar</button>
-                    </form>
-                    
-                </div>
-            </div>
-        </nav>
-    </header> *@
+    <div id="timer-banner">
+        Promoção termina em: <span id="timer"></span>
+    </div>
+
     <div class="container">
         <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    @*footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - TCM - 
-        </div>
-        <div class="container">
-            <a asp-controller="Conta" asp-action="CadastrarFornecedor">Torne-se um fornecedor</a>
-        </div>
-    </footer>
-    *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -61,11 +61,12 @@ Porcentagem tinyint not null,
 data_exclusao datetime not null
 );
 
-create table tbPromocaoItem(
-PromoIdItem int primary key auto_increment,
-ProdutoId int not null,
-PrecoPromo decimal not null,
-data_exclusao datetime not null
+create TABLE tbPromocaoItem(
+    PromoIdItem INT PRIMARY KEY AUTO_INCREMENT,
+    ProdutoId INT NOT NULL,
+    PrecoPromo DECIMAL(9,2) NOT NULL,
+    data_exclusao DATETIME NOT NULL,
+    FOREIGN KEY (ProdutoId) REFERENCES tbproduto(CodProd)
 );
 
 select * from tbusuario;
@@ -143,16 +144,61 @@ $$
 
 delimiter ;
 
-call spInserirPromocao("natal", 50, "Comida Japonesa", '2024-12-26 10:58:00');
+call spInserirPromocao("natal", 50, "todos", '2024-12-26 12:04:00');
 
 select * from tbpromocao;
 select * from tbpromocaoitem;
 
+SET GLOBAL event_scheduler = ON;
+
 DELIMITER $$
 
-create PROCEDURE spInserirPromocao(vNomePromo VARCHAR(80), vPorcentagem int, vCategoria VARCHAR(80), vdata_exclusao DATETIME)
+create PROCEDURE spInserirPromocao(
+    vNomePromo VARCHAR(80), 
+    vPorcentagem TINYINT, 
+    vCategoria VARCHAR(80), 
+    vdata_exclusao DATETIME
+)
 BEGIN
+    DECLARE nome_evento VARCHAR(255);
+
+    -- Inserir na tabela tbPromocao
+    INSERT INTO tbPromocao (NomePromo, Porcentagem, data_exclusao)
+    VALUES (vNomePromo, vPorcentagem, vdata_exclusao);
     
+
+    -- Verificar a categoria e inserir na tbPromocaoItem
+    IF vCategoria = "Todos" THEN
+        -- Inserir todos os itens de todos os produtos
+        INSERT INTO tbPromocaoItem (ProdutoId, PrecoPromo, data_exclusao)
+        SELECT p.CodProd, (p.Preco * (1 - vPorcentagem / 100)), vdata_exclusao 
+        FROM tbProduto p;
+    ELSE
+        -- Inserir itens de uma categoria específica
+        INSERT INTO tbPromocaoItem (ProdutoId, PrecoPromo, data_exclusao)
+        SELECT p.CodProd, (p.Preco * (1 - vPorcentagem / 100)), vdata_exclusao
+        FROM tbProduto p
+        JOIN tbCategoria c ON p.CategoriaId = c.CodCat
+        WHERE c.Categoria = vCategoria;
+    END IF;
+
+    -- Criar evento para exclusão
+    SET nome_evento = CONCAT('excluir_promocao_', vNomePromo, "_", DATE_FORMAT(vdata_exclusao, '%d%m%y_%H%i%s'));
+
+    -- Preparar a string do evento
+    SET @sql = CONCAT(
+        'CREATE EVENT ', nome_evento, 
+        ' ON SCHEDULE AT "', DATE_FORMAT(vdata_exclusao, '%Y-%m-%d %H:%i:%s'), '" ',
+        ' DO BEGIN ',
+        '     DELETE FROM tbPromocao WHERE PromoId = ', vId, '; ',
+        '     DELETE FROM tbPromocaoItem WHERE PromoId = ', vId, '; ',
+        ' END'
+    );
+
+    -- Executar a criação do evento
+    PREPARE stmt FROM @sql;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
 
 END$$
 

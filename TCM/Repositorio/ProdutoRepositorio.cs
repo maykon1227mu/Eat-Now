@@ -1,9 +1,11 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 using System.Data;
 using TCM.Models;
 
 namespace TCM.Repositorio
 {
+
     public class ProdutoRepositorio : IProdutoRepositorio
     {
         //Declarando a variavel de string de conexão
@@ -23,8 +25,8 @@ namespace TCM.Repositorio
                 MySqlCommand cmd = new MySqlCommand("insert into tbproduto (NomeProd, Descricao, Preco, Qtd, UserId, CategoriaId, Imagem) values (@nomeprod, @descricao, @preco, @qtd, @userid, @categoriaid, @imagem)", conexao);
 
                 cmd.Parameters.Add("@nomeprod", MySqlDbType.VarChar).Value = produto.NomeProd;
-                cmd.Parameters.Add("@descricao",MySqlDbType.VarChar).Value = produto.Descricao;
-                cmd.Parameters.Add("@preco",MySqlDbType.Decimal).Value = produto.Preco;
+                cmd.Parameters.Add("@descricao", MySqlDbType.VarChar).Value = produto.Descricao;
+                cmd.Parameters.Add("@preco", MySqlDbType.Decimal).Value = produto.Preco;
                 cmd.Parameters.Add("@qtd", MySqlDbType.Int32).Value = produto.Qtd;
                 cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = produto.UserId;
                 cmd.Parameters.Add("@categoriaid", MySqlDbType.Int32).Value = produto.CategoriaId;
@@ -37,7 +39,7 @@ namespace TCM.Repositorio
 
         public void EditarProduto(Produto produto)
         {
-            
+
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
@@ -59,7 +61,7 @@ namespace TCM.Repositorio
 
         public void DeletarProduto(int id)
         {
-            using(var conexao = new MySqlConnection(_conexaoMySQL))
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
@@ -93,7 +95,7 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    produto = new Produto() 
+                    produto = new Produto()
                     {
                         CodProd = Convert.ToInt32(dr["codprod"]),
                         NomeProd = ((string)dr["nomeprod"]),
@@ -154,7 +156,8 @@ namespace TCM.Repositorio
                 }
                 return Produtoslist;
             }
-        }public IEnumerable<Produto> TodosProdutosFornecedor(int id)
+        }
+        public IEnumerable<Produto> TodosProdutosFornecedor(int id)
         {
             //Criando a lista que irá receber todos os produtos[
             List<Produto> Produtoslist = new List<Produto>();
@@ -249,7 +252,7 @@ namespace TCM.Repositorio
 
         public void FinalizarCompra(int userId, int produtoId, int qtd)
         {
-            using(var conexao = new MySqlConnection(_conexaoMySQL))
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
@@ -267,11 +270,11 @@ namespace TCM.Repositorio
         public IEnumerable<Pedido> TodosPedidos(int userId)
         {
             List<Pedido> pedidoLista = new List<Pedido>();
-            using(var conexao = new MySqlConnection(_conexaoMySQL))
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
                 MySqlCommand cmd = new MySqlCommand("select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbproduto.Preco, tbpedido.QtdPed, tbproduto.Imagem from tbpedido join tbproduto on tbpedido.ProdutoId = tbproduto.CodProd where tbpedido.UserId = @userId", conexao);
-                
+
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -378,6 +381,69 @@ namespace TCM.Repositorio
                         });
                 }
                 return Produtoslist;
+            }
+        }
+
+        public DateTime? ObterDataTerminoPromocao()
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("SELECT data_exclusao FROM tbpromocao WHERE NomePromo = 'Promoção de'", conexao);
+
+                var result = cmd.ExecuteScalar();
+
+                conexao.Close();
+                return result != null ? (DateTime?)result : null; 
+            }
+        }
+
+        // Método para obter o tempo restante da promoção em segundos
+        public int? ObterTempoRestantePromocao()
+        {
+            var dataTermino = ObterDataTerminoPromocao();
+            if (dataTermino.HasValue)
+            {
+                var tempoRestante = dataTermino.Value - DateTime.Now;
+                return (int?)tempoRestante.TotalSeconds;
+            }
+            return null;
+        }
+
+        // Método para deletar promoção e itens associados
+        public void DeletarPromocao()
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                using (var transaction = conexao.BeginTransaction())
+                {
+                    try
+                    {
+                        MySqlCommand cmdId = new MySqlCommand("Select PromoId from tbpromocao where nomepromo = 'Promoção de'");
+                        int id = Convert.ToInt32(cmdId.ExecuteNonQuery());
+
+                        MySqlCommand cmd = new MySqlCommand("DELETE FROM tbpromocaoitem WHERE PromoId = @Id", conexao, transaction);
+                        cmd.Parameters.Add("@Id", MySqlDbType.Int32).Value = id;
+                        cmd.ExecuteNonQuery();
+
+                        MySqlCommand cmdPromocao = new MySqlCommand("DELETE FROM tbpromocao WHERE NomePromo = 'Promoção de'", conexao, transaction);
+
+                        cmdPromocao.ExecuteNonQuery();
+
+                        transaction.Commit();
+
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+                
+                conexao.Close();
             }
         }
     }

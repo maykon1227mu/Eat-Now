@@ -7,7 +7,8 @@ using TCM.Repositorio;
 
 namespace TCM.Controllers
 {
-    
+    [ApiController]
+    [Route("api/[controller]")]
     public class ProdutoController : Controller
     {
         //Trazendo a interface a instanciando
@@ -126,6 +127,31 @@ namespace TCM.Controllers
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var produtos = _produtoRepositorio.TodosProdutosFornecedor(id);
             return View(produtos);
+        }
+        [HttpGet("tempo-restante")]
+        public IActionResult ObterTempoRestantePromocao()
+        {
+            var tempoRestante = _produtoRepositorio.ObterTempoRestantePromocao();
+            if (tempoRestante.HasValue)
+            {
+                return Ok(tempoRestante.Value);
+            }
+            return NotFound("Promoção não encontrada ou já expirou.");
+        }
+
+        // Endpoint para deletar a promoção e seus itens associados
+        [HttpDelete("deletar-promocao")]
+        public IActionResult DeletarPromocao()
+        {
+            try
+            {
+                _produtoRepositorio.DeletarPromocao();
+                return Ok("Promoção deletada com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao deletar a promoção: {ex.Message}");
+            }
         }
     }
 }
