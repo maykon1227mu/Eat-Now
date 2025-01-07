@@ -7,25 +7,26 @@ using TCM.Repositorio;
 
 namespace TCM.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
+    
     public class ProdutoController : Controller
     {
-        //Trazendo a interface a instanciando
-        private IProdutoRepositorio _produtoRepositorio;
-        private ICarrinhoRepositorio _carrinhoRepositorio;
+        private readonly IProdutoRepositorio _produtoRepositorio;
+        private readonly ICarrinhoRepositorio _carrinhoRepositorio;
+
         public ProdutoController(IProdutoRepositorio produtoRepositorio, ICarrinhoRepositorio carrinhoRepositorio)
         {
             _produtoRepositorio = produtoRepositorio;
             _carrinhoRepositorio = carrinhoRepositorio;
         }
 
+        
         [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
             return View(_produtoRepositorio.TodosProdutos());
         }
 
+        
         [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult CadastrarProduto()
         {
@@ -33,12 +34,12 @@ namespace TCM.Controllers
             return View();
         }
 
+        
         [HttpPost]
         public IActionResult CadastrarProduto(Produto produto, IFormFile imagem)
         {
             if (imagem != null && imagem.Length > 0)
             {
-                //Cria uma memoria temporaria para ler e escrever dados diretamente na memoria
                 using (var ms = new MemoryStream())
                 {
                     imagem.CopyTo(ms);
@@ -50,6 +51,7 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        
         [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult EditarProduto(int id)
         {
@@ -58,12 +60,12 @@ namespace TCM.Controllers
             return View(produto);
         }
 
+        
         [HttpPost]
         public IActionResult EditarProduto(Produto produto, IFormFile imagem)
         {
             if (imagem != null && imagem.Length > 0)
             {
-                //Cria uma memoria temporaria para ler e escrever dados diretamente na memoria
                 using (var ms = new MemoryStream())
                 {
                     imagem.CopyTo(ms);
@@ -74,6 +76,7 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Produto");
         }
 
+        
         [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult DeletarProduto(int id)
         {
@@ -81,18 +84,18 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Produto");
         }
 
+        
         public IActionResult Comprar(int id)
         {
             var produto = _produtoRepositorio.AcharProduto(id);
-            //Verifica se a imagem existe
             if (produto.Imagem != null)
             {
-                //Transforma o blob para um jeito que dê para a imagem ser interpretada
                 produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
             }
             return View(produto);
         }
 
+        
         [HttpPost]
         public IActionResult Pesquisar()
         {
@@ -101,7 +104,6 @@ namespace TCM.Controllers
             var produtos = _produtoRepositorio.Pesquisa(nome);
             foreach (var produto in produtos)
             {
-
                 if (produto.Imagem != null)
                 {
                     produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
@@ -109,6 +111,8 @@ namespace TCM.Controllers
             }
             return View(produtos);
         }
+
+        
         [Authorize]
         public IActionResult Finalizar()
         {
@@ -121,6 +125,8 @@ namespace TCM.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+        
         [Authorize(Roles = "Fornecedor")]
         public IActionResult ProdutosFornecedor()
         {
@@ -128,30 +134,11 @@ namespace TCM.Controllers
             var produtos = _produtoRepositorio.TodosProdutosFornecedor(id);
             return View(produtos);
         }
-        [HttpGet("tempo-restante")]
-        public IActionResult ObterTempoRestantePromocao()
-        {
-            var tempoRestante = _produtoRepositorio.ObterTempoRestantePromocao();
-            if (tempoRestante.HasValue)
-            {
-                return Ok(tempoRestante.Value);
-            }
-            return NotFound("Promoção não encontrada ou já expirou.");
-        }
 
-        // Endpoint para deletar a promoção e seus itens associados
-        [HttpDelete("deletar-promocao")]
-        public IActionResult DeletarPromocao()
+        [Authorize(Roles = "Administrador")]
+        public IActionResult PainelPromocoes()
         {
-            try
-            {
-                _produtoRepositorio.DeletarPromocao();
-                return Ok("Promoção deletada com sucesso.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erro ao deletar a promoção: {ex.Message}");
-            }
+            return View();
         }
     }
 }

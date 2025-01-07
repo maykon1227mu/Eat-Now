@@ -19,8 +19,9 @@ namespace TCM.Repositorio
         IEnumerable<Pedido> TodosPedidos(int userId);
         IEnumerable<Categoria> TodasCategorias();
         IEnumerable<Produto> ProdutosPorCategoria(int categoriaId);
-        DateTime? ObterDataTerminoPromocao();
-        int? ObterTempoRestantePromocao();
-        void DeletarPromocao();
+        void NovaPromocao(string nomepromo, int porcentagem, string categoria);
+        IEnumerable<Categoria> TodasPromocoes();
+        IEnumerable<int> ProdutosEmPromocao();
+        void DeletarPromocao(int promoId);
     }
 }

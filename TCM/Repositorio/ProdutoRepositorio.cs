@@ -384,65 +384,99 @@ namespace TCM.Repositorio
             }
         }
 
-        public DateTime? ObterDataTerminoPromocao()
+        public void NovaPromocao(string nomepromo, int procentagem, string categoria)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("SELECT data_exclusao FROM tbpromocao WHERE NomePromo = 'Promoção de'", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spInserirPromocao(@nomepromo, @procentagem, @categoria)", conexao);
 
-                var result = cmd.ExecuteScalar();
+                cmd.Parameters.Add("@nomepromo", MySqlDbType.VarChar).Value = nomepromo;
+                cmd.Parameters.Add("@procentagem", MySqlDbType.Int32).Value = procentagem;
+                cmd.Parameters.Add("@categoria", MySqlDbType.VarChar).Value = categoria;
+
+                cmd.ExecuteReader();
+                conexao.Close();
+            }
+        }
+
+        public IEnumerable<Categoria> TodasPromocoes()
+        {
+            List<Categoria> promocaoLista = new List<Categoria>();
+
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                // Vincular a conexão ao comando
+                MySqlCommand cmd = new MySqlCommand("select * from tbpromocao", conexao);
+
+                // Vincular o comando ao DataAdapter
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                // Preencher o DataTable com os dados da consulta
+                da.Fill(dt);
 
                 conexao.Close();
-                return result != null ? (DateTime?)result : null; 
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    promocaoLista.Add(new Categoria()
+                    {
+                        CodCat = Convert.ToInt32(dr["promoid"]),
+                        Nome = dr["nomepromo"].ToString() ?? string.Empty
+                    });
+                }
             }
+
+            return promocaoLista;
         }
 
-        // Método para obter o tempo restante da promoção em segundos
-        public int? ObterTempoRestantePromocao()
+        public IEnumerable<int> ProdutosEmPromocao()
         {
-            var dataTermino = ObterDataTerminoPromocao();
-            if (dataTermino.HasValue)
+            List<int> Produtoslist = new List<int>();
+
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
-                var tempoRestante = dataTermino.Value - DateTime.Now;
-                return (int?)tempoRestante.TotalSeconds;
+                //Abrindo a conexão com o banco de dados
+                conexao.Open();
+                //Criando o comando para listar todos os clientes
+                MySqlCommand cmd = new MySqlCommand("select PromoItemId from tbpromocaoitem", conexao);
+
+                //Traz a tabela
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                //Cria a copia da tabela
+                DataTable dt = new DataTable();
+
+                //Separa e preenche os dados
+                da.Fill(dt);
+
+                //Fechando a conexão com o banco de dados
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Produtoslist.Add(Convert.ToInt32(dr));
+                }
+                return Produtoslist;
             }
-            return null;
         }
 
-        // Método para deletar promoção e itens associados
-        public void DeletarPromocao()
+        public void DeletarPromocao(int promoId)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                using (var transaction = conexao.BeginTransaction())
-                {
-                    try
-                    {
-                        MySqlCommand cmdId = new MySqlCommand("Select PromoId from tbpromocao where nomepromo = 'Promoção de'");
-                        int id = Convert.ToInt32(cmdId.ExecuteNonQuery());
+                MySqlCommand cmd = new MySqlCommand("delete from tbpromocao where promoid = @promoid", conexao);
 
-                        MySqlCommand cmd = new MySqlCommand("DELETE FROM tbpromocaoitem WHERE PromoId = @Id", conexao, transaction);
-                        cmd.Parameters.Add("@Id", MySqlDbType.Int32).Value = id;
-                        cmd.ExecuteNonQuery();
+                cmd.Parameters.Add("@promoid", MySqlDbType.Int32).Value = promoId;
 
-                        MySqlCommand cmdPromocao = new MySqlCommand("DELETE FROM tbpromocao WHERE NomePromo = 'Promoção de'", conexao, transaction);
-
-                        cmdPromocao.ExecuteNonQuery();
-
-                        transaction.Commit();
-
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-                
+                cmd.ExecuteReader();
                 conexao.Close();
             }
         }
