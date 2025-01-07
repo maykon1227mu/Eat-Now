@@ -20,8 +20,13 @@ namespace TCM.Repositorio
         IEnumerable<Categoria> TodasCategorias();
         IEnumerable<Produto> ProdutosPorCategoria(int categoriaId);
         void NovaPromocao(string nomepromo, int porcentagem, string categoria);
-        IEnumerable<Categoria> TodasPromocoes();
+        IEnumerable<Promocao> TodasPromocoes();
         IEnumerable<int> ProdutosEmPromocao();
+        IEnumerable<PromocaoItem> ProdutoDaPromocao();
         void DeletarPromocao(int promoId);
+        int TotalVendas(int userId);
+        int TotalVendasSite();
+        decimal ValorTotalVendas(int userId);
+        decimal LucroSite();
     }
 }

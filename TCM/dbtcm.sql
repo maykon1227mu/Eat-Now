@@ -62,11 +62,13 @@ data_exclusao datetime not null
 );
 
 create TABLE tbPromocaoItem(
-    PromoIdItem INT PRIMARY KEY AUTO_INCREMENT,
-    ProdutoId INT NOT NULL,
-    PrecoPromo DECIMAL(9,2) NOT NULL,
-    data_exclusao DATETIME NOT NULL,
-    FOREIGN KEY (ProdutoId) REFERENCES tbproduto(CodProd)
+PromoIdItem INT PRIMARY KEY AUTO_INCREMENT,
+ProdutoId INT NOT NULL,
+PromoId INT NOT NULL,
+PrecoPromo DECIMAL(9,2) NOT NULL,
+data_exclusao DATETIME NOT NULL,
+FOREIGN KEY (ProdutoId) REFERENCES tbproduto(CodProd),
+FOREIGN KEY (PromoId) REFERENCES tbPromocao(PromoId)
 );
 
 select * from tbusuario;
@@ -85,6 +87,7 @@ foreign key (ProdutoId) references tbproduto(CodProd)
 );
 
 delimiter $$
+
 create procedure spInserirCarrinho(vUserId int, vProdutoId int , vQuantidade int)
 begin
 if(select Qtd from tbproduto where CodProd= vProdutoId != 0) then
@@ -102,6 +105,7 @@ $$
 delimiter ;
 
 delimiter $$
+
 create procedure spExcluirDoCarrinho(vUserId int, vProdutoId int , vQuantidade int)
 begin
 declare vQtd int;
@@ -119,6 +123,7 @@ $$
 delimiter ;
 
 delimiter $$
+
 create procedure spZerosCarrinho()
 begin
 	delete from tbcarrinho where Quantidade = 0;
@@ -128,28 +133,24 @@ $$
 delimiter ;
 
 delimiter $$
+
 create procedure spLogin(vUsuario varchar(40), vSenha varchar(16))
 begin
-if exists(select * from tbusuario where usuario = vUsuario and senha = vSenha)then
-	select * from tbusuario where usuario = vUsuario and senha = vSenha;
+if exists(select * from tbusuario where email = vUsuario and senha = vSenha)then
+	select * from tbusuario where email = vUsuario and senha = vSenha;
 end if;
-if exists(select * from tbfornecedor where usuario = vUsuario and senha = vSenha)then
-	select * from tbfornecedor where usuario = vUsuario and senha = vSenha;
+if exists(select * from tbfornecedor where email = vUsuario and senha = vSenha)then
+	select * from tbfornecedor where email = vUsuario and senha = vSenha;
 end if;
-if exists(select * from tbfuncionario where usuario = vUsuario and senha = vSenha)then
-	select * from tbfornecedor where usuario = vUsuario and senha = vSenha;
+if exists(select * from tbfuncionario where email = vUsuario and senha = vSenha)then
+	select * from tbfornecedor where email = vUsuario and senha = vSenha;
 end if;
 end;
 $$
 
 delimiter ;
 
-call spInserirPromocao("natal", 50, "todos", '2024-12-26 12:04:00');
 
-select * from tbpromocao;
-select * from tbpromocaoitem;
-
-SET GLOBAL event_scheduler = ON;
 
 DELIMITER $$
 
@@ -160,49 +161,38 @@ create PROCEDURE spInserirPromocao(
     vdata_exclusao DATETIME
 )
 BEGIN
-    DECLARE nome_evento VARCHAR(255);
+    DECLARE vPromoId INT;
 
     -- Inserir na tabela tbPromocao
     INSERT INTO tbPromocao (NomePromo, Porcentagem, data_exclusao)
     VALUES (vNomePromo, vPorcentagem, vdata_exclusao);
     
+    -- Obter o ID da promoção recém-inserida
+    SET vPromoId = LAST_INSERT_ID();
 
     -- Verificar a categoria e inserir na tbPromocaoItem
     IF vCategoria = "Todos" THEN
         -- Inserir todos os itens de todos os produtos
-        INSERT INTO tbPromocaoItem (ProdutoId, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, (p.Preco * (1 - vPorcentagem / 100)), vdata_exclusao 
+        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, PrecoPromo, data_exclusao)
+        SELECT p.CodProd, vPromoId, (p.Preco * (1 - vPorcentagem / 100)), vdata_exclusao 
         FROM tbProduto p;
     ELSE
         -- Inserir itens de uma categoria específica
-        INSERT INTO tbPromocaoItem (ProdutoId, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, (p.Preco * (1 - vPorcentagem / 100)), vdata_exclusao
+        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, PrecoPromo, data_exclusao)
+        SELECT p.CodProd, vPromoId, (p.Preco * (1 - vPorcentagem / 100)), vdata_exclusao
         FROM tbProduto p
         JOIN tbCategoria c ON p.CategoriaId = c.CodCat
         WHERE c.Categoria = vCategoria;
     END IF;
 
-    -- Criar evento para exclusão
-    SET nome_evento = CONCAT('excluir_promocao_', vNomePromo, "_", DATE_FORMAT(vdata_exclusao, '%d%m%y_%H%i%s'));
-
-    -- Preparar a string do evento
-    SET @sql = CONCAT(
-        'CREATE EVENT ', nome_evento, 
-        ' ON SCHEDULE AT "', DATE_FORMAT(vdata_exclusao, '%Y-%m-%d %H:%i:%s'), '" ',
-        ' DO BEGIN ',
-        '     DELETE FROM tbPromocao WHERE PromoId = ', vId, '; ',
-        '     DELETE FROM tbPromocaoItem WHERE PromoId = ', vId, '; ',
-        ' END'
-    );
-
-    -- Executar a criação do evento
-    PREPARE stmt FROM @sql;
-    EXECUTE stmt;
-    DEALLOCATE PREPARE stmt;
-
 END$$
 
 DELIMITER ;
+
+call spInserirPromocao("Promoção de natal", 50, "todos", '2025-1-5 12:00:00');
+
+select * from tbpromocao;
+select * from tbpromocaoitem;
 
 alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbfornecedor(CodFor);
 alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);

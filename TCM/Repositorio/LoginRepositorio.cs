@@ -23,6 +23,7 @@ namespace TCM.Repositorio
 
         public async Task<dynamic> Login(string usuario, string senha)
         {
+            Usuario usuarioNaN = new Usuario();
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
@@ -131,9 +132,12 @@ namespace TCM.Repositorio
                         
                         return funcionario;
                     }
-                } 
+                } else
+                {
+                    return usuarioNaN;
+                }
             } 
-            return null;
+            return usuarioNaN;
         }
 
         public IEnumerable<Funcionario> TodosFuncionarios()

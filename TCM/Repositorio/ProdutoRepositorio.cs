@@ -32,6 +32,7 @@ namespace TCM.Repositorio
                 cmd.Parameters.Add("@categoriaid", MySqlDbType.Int32).Value = produto.CategoriaId;
                 cmd.Parameters.Add("@imagem", MySqlDbType.Blob).Value = produto.Imagem;
 
+
                 cmd.ExecuteReader();
                 conexao.Close();
             }
@@ -401,9 +402,9 @@ namespace TCM.Repositorio
             }
         }
 
-        public IEnumerable<Categoria> TodasPromocoes()
+        public IEnumerable<Promocao> TodasPromocoes()
         {
-            List<Categoria> promocaoLista = new List<Categoria>();
+            List<Promocao> promocaoLista = new List<Promocao>();
 
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
@@ -424,10 +425,12 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    promocaoLista.Add(new Categoria()
+                    promocaoLista.Add(new Promocao()
                     {
-                        CodCat = Convert.ToInt32(dr["promoid"]),
-                        Nome = dr["nomepromo"].ToString() ?? string.Empty
+                        PromoId = Convert.ToInt32(dr["promoid"]),
+                        NomePromo = dr["nomepromo"].ToString() ?? string.Empty,
+                        Porcentagem = Convert.ToInt32(dr["porcentagem"]),
+                        Data_Exclusao = Convert.ToDateTime(dr["data_exclusao"])
                     });
                 }
             }
@@ -466,6 +469,45 @@ namespace TCM.Repositorio
             }
         }
 
+        public IEnumerable<PromocaoItem> ProdutoDaPromocao()
+        {
+            //Criando a lista que irá receber todos os produtos[
+            List<PromocaoItem> Produtoslist = new List<PromocaoItem>();
+
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                //Abrindo a conexão com o banco de dados
+                conexao.Open();
+                //Criando o comando para listar todos os clientes
+                MySqlCommand cmd = new MySqlCommand("select * from tbpromocaoitem", conexao);
+
+                //Traz a tabela
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                //Cria a copia da tabela
+                DataTable dt = new DataTable();
+
+                //Separa e preenche os dados
+                da.Fill(dt);
+
+                //Fechando a conexão com o banco de dados
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Produtoslist.Add(
+                        new PromocaoItem()
+                        {
+                            PromoItemId = Convert.ToInt32(dr["promoitemid"]),
+                            PromoId = Convert.ToInt32(dr["promoid"]),
+                            ProdutoId = Convert.ToInt32(dr["produtoid"]),
+                            PrecoPromo = Convert.ToDecimal(dr["precopromo"]),
+                        });
+                }
+                return Produtoslist;
+            }
+        }
+
         public void DeletarPromocao(int promoId)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
@@ -478,6 +520,74 @@ namespace TCM.Repositorio
 
                 cmd.ExecuteReader();
                 conexao.Close();
+            }
+        }
+
+        public int TotalVendas(int userId)
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("select sum(vendas) from tbproduto where UserId = @userid", conexao);
+
+                cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = userId;
+
+                int total = Convert.ToInt32(cmd.ExecuteScalar());
+
+                conexao.Close();
+
+                return total;
+            }
+        }
+
+        public int TotalVendasSite()
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("select sum(vendas) from tbproduto", conexao);
+
+                int total = Convert.ToInt32(cmd.ExecuteScalar());
+
+                conexao.Close();
+
+                return total;
+            }
+        }
+
+        public decimal ValorTotalVendas(int userId)
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("select sum(vendas * preco) from tbproduto where UserId = @userid", conexao);
+
+                cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = userId;
+
+                decimal total = Convert.ToDecimal(cmd.ExecuteScalar());
+
+                conexao.Close();
+
+                return total;
+            }
+        }
+
+        public decimal LucroSite()
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("select sum(vendas * preco) from tbproduto", conexao);
+
+                decimal total = Convert.ToDecimal(cmd.ExecuteScalar());
+
+                conexao.Close();
+
+                return total;
             }
         }
     }

@@ -7,7 +7,7 @@ using TCM.Repositorio;
 
 namespace TCM.Controllers
 {
-    
+
     public class ProdutoController : Controller
     {
         private readonly IProdutoRepositorio _produtoRepositorio;
@@ -19,14 +19,14 @@ namespace TCM.Controllers
             _carrinhoRepositorio = carrinhoRepositorio;
         }
 
-        
+
         [Authorize(Roles = "Administrador")]
         public IActionResult Index()
         {
             return View(_produtoRepositorio.TodosProdutos());
         }
 
-        
+
         [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult CadastrarProduto()
         {
@@ -34,7 +34,7 @@ namespace TCM.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         public IActionResult CadastrarProduto(Produto produto, IFormFile imagem)
         {
@@ -51,7 +51,7 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+
         [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult EditarProduto(int id)
         {
@@ -60,7 +60,7 @@ namespace TCM.Controllers
             return View(produto);
         }
 
-        
+
         [HttpPost]
         public IActionResult EditarProduto(Produto produto, IFormFile imagem)
         {
@@ -76,7 +76,7 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Produto");
         }
 
-        
+
         [Authorize(Roles = "Administrador, Fornecedor")]
         public IActionResult DeletarProduto(int id)
         {
@@ -84,7 +84,7 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Produto");
         }
 
-        
+
         public IActionResult Comprar(int id)
         {
             var produto = _produtoRepositorio.AcharProduto(id);
@@ -95,7 +95,7 @@ namespace TCM.Controllers
             return View(produto);
         }
 
-        
+
         [HttpPost]
         public IActionResult Pesquisar()
         {
@@ -112,7 +112,7 @@ namespace TCM.Controllers
             return View(produtos);
         }
 
-        
+
         [Authorize]
         public IActionResult Finalizar()
         {
@@ -126,7 +126,7 @@ namespace TCM.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+
         [Authorize(Roles = "Fornecedor")]
         public IActionResult ProdutosFornecedor()
         {
@@ -139,6 +139,30 @@ namespace TCM.Controllers
         public IActionResult PainelPromocoes()
         {
             return View();
+        }
+
+        [Authorize(Roles = "Administrador")]
+        public IActionResult NovaPromocao()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult NovaPromocao(string nomepromo, int porcentagem, string categoria)
+        {
+            _produtoRepositorio.NovaPromocao(nomepromo, porcentagem, categoria);
+            return RedirectToAction("PainelPromocoes", "Produto");
+        }
+
+        public IActionResult DeletarPromocao()
+        {
+            return View(_produtoRepositorio.TodasPromocoes());
+        }
+
+        public IActionResult DeletarPromocao(int promoId)
+        {
+            _produtoRepositorio.DeletarPromocao(promoId);
+            return RedirectToAction("PainelPromocoes", "Produto");
         }
     }
 }
