@@ -88,6 +88,10 @@ namespace TCM.Controllers
         public IActionResult Comprar(int id)
         {
             var produto = _produtoRepositorio.AcharProduto(id);
+
+            ViewBag.ProdutosPromo = _produtoRepositorio.ProdutosEmPromocao();
+            ViewBag.ProdutoPromo = _produtoRepositorio.ProdutoDaPromocao(produto.CodProd);
+
             if (produto.Imagem != null)
             {
                 produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
@@ -148,17 +152,18 @@ namespace TCM.Controllers
         }
 
         [HttpPost]
-        public IActionResult NovaPromocao(string nomepromo, int porcentagem, string categoria)
+        public IActionResult NovaPromocao(Promocao promocao)
         {
-            _produtoRepositorio.NovaPromocao(nomepromo, porcentagem, categoria);
+            _produtoRepositorio.NovaPromocao(promocao.NomePromo, promocao.Porcentagem, promocao.categoria);
             return RedirectToAction("PainelPromocoes", "Produto");
         }
 
+        [Authorize(Roles = "Administrador")]
         public IActionResult DeletarPromocao()
         {
             return View(_produtoRepositorio.TodasPromocoes());
         }
-
+        [HttpPost]
         public IActionResult DeletarPromocao(int promoId)
         {
             _produtoRepositorio.DeletarPromocao(promoId);

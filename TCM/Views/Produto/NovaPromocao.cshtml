@@ -1,0 +1,34 @@
+﻿@{
+    ViewData["Title"] = "Nova Promoção";
+}
+@model TCM.Models.Promocao
+
+<div class="container-formulario">
+    <form asp-controller="Produto" asp-action="NovaPromocao" enctype="multipart/form-data" method="post" class="formulario">
+        <h2>Criar nova Promoção</h2>
+        <div class="formulario-inputs">
+            <label>Nome:</label>
+            <input asp-for="NomePromo" />
+        </div>
+        <div class="formulario-inputs">
+            <label>Porcentagem:</label>
+            <input asp-for="Porcentagem" />
+        </div>
+        <div class="formulario-inputs">
+            <label>Data:</label>
+            <input asp-for="Data_Exclusao" />
+        </div>
+        <div class="formulario-inputs">
+            <label>Categoria:</label>
+            <select name="CategoriaId" required>
+                <option value="">Selecione</option>
+                <option value="Todas">Todas</option>
+                @foreach (var categoria in ViewBag.Categorias)
+                {
+                    <option value="@categoria.CodCat">@categoria.Nome</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn-comprar">Cadastrar Produto</button>
+    </form>
+</div>

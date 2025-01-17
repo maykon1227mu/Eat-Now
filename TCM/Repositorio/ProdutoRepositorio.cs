@@ -257,11 +257,12 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("insert into tbpedido (ProdutoId, UserId, QtdPed) values (@produtoId, @userId, @qtd)", conexao);
+                MySqlCommand cmd = new MySqlCommand("insert into tbpedido (ProdutoId, UserId, QtdPed, Vendas) values (@produtoId, @userId, @qtd, @qtdvenda)", conexao);
 
                 cmd.Parameters.Add("@produtoId", MySqlDbType.Int32).Value = produtoId;
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
                 cmd.Parameters.Add("@qtd", MySqlDbType.Int32).Value = qtd;
+                cmd.Parameters.Add("@qtdvenda", MySqlDbType.Int32).Value = qtd;
 
                 cmd.ExecuteReader();
                 conexao.Close();
@@ -271,6 +272,7 @@ namespace TCM.Repositorio
         public IEnumerable<Pedido> TodosPedidos(int userId)
         {
             List<Pedido> pedidoLista = new List<Pedido>();
+
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
@@ -447,7 +449,7 @@ namespace TCM.Repositorio
                 //Abrindo a conexão com o banco de dados
                 conexao.Open();
                 //Criando o comando para listar todos os clientes
-                MySqlCommand cmd = new MySqlCommand("select PromoItemId from tbpromocaoitem", conexao);
+                MySqlCommand cmd = new MySqlCommand("select PromoIdItem from tbpromocaoitem", conexao);
 
                 //Traz a tabela
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -469,17 +471,17 @@ namespace TCM.Repositorio
             }
         }
 
-        public IEnumerable<PromocaoItem> ProdutoDaPromocao()
+        public PromocaoItem ProdutoDaPromocao(int id)
         {
-            //Criando a lista que irá receber todos os produtos[
-            List<PromocaoItem> Produtoslist = new List<PromocaoItem>();
-
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
+                PromocaoItem produtoEmPromocao = new PromocaoItem();
                 //Abrindo a conexão com o banco de dados
                 conexao.Open();
                 //Criando o comando para listar todos os clientes
-                MySqlCommand cmd = new MySqlCommand("select * from tbpromocaoitem", conexao);
+                MySqlCommand cmd = new MySqlCommand("select * from tbpromocaoitem where produtoid = @id", conexao);
+
+                cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
 
                 //Traz a tabela
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -495,16 +497,52 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Produtoslist.Add(
-                        new PromocaoItem()
+                    
+                        produtoEmPromocao = new PromocaoItem()
                         {
                             PromoItemId = Convert.ToInt32(dr["promoitemid"]),
                             PromoId = Convert.ToInt32(dr["promoid"]),
                             ProdutoId = Convert.ToInt32(dr["produtoid"]),
                             PrecoPromo = Convert.ToDecimal(dr["precopromo"]),
-                        });
+                        };
                 }
-                return Produtoslist;
+                return produtoEmPromocao;
+            }
+        }
+
+        public IEnumerable<PromocaoItem> TodosProdutosDaPromocao()
+        {
+            List<PromocaoItem> ItensEmPromo = new List<PromocaoItem>();
+
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                //Abrindo a conexão com o banco de dados
+                conexao.Open();
+                //Criando o comando para listar todos os clientes
+                MySqlCommand cmd = new MySqlCommand("select * from tbpromocaoitem", conexao);
+                //Traz a tabela
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                //Cria a copia da tabela
+                DataTable dt = new DataTable();
+
+                //Separa e preenche os dados
+                da.Fill(dt);
+
+                //Fechando a conexão com o banco de dados
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    ItensEmPromo.Add(new PromocaoItem()
+                    {
+                        PromoItemId = Convert.ToInt32(dr["promoitemid"]),
+                        PromoId = Convert.ToInt32(dr["promoid"]),
+                        ProdutoId = Convert.ToInt32(dr["produtoid"]),
+                        PrecoPromo = Convert.ToDecimal(dr["precopromo"]),
+                    });
+                }
+                return ItensEmPromo;
             }
         }
 

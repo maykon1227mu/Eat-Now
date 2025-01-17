@@ -3,6 +3,11 @@
 }
 @model IEnumerable<Produto>
 
+@{
+    var produtosPromo = ViewBag.ProdutosPromo;
+    var todosProdutosPromo = ViewBag.TodosProdutosPromo;
+}
+
 <div id="compra" class="container-produtos">
         @foreach (var categoria in ViewBag.Categorias)
         {
@@ -55,7 +60,11 @@
                                     </div>
                                 </div>
                                 <div class="product-description">
-                                    <p>R$@produto.Preco</p>
+                                    @if(produtosPromo.Contains(produto.CodProd))
+                                    {
+                                        
+                                    }
+                                <p>R$@produto.Preco</p>
                                     <p>@produto.Descricao</p>
                                     <p>Quantidade: @produto.Qtd</p>
                                     <p>Loja: @produto.Usuario</p>

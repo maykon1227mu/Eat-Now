@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Deletar Promoção";
+}
+
+<div>
+    <form asp-controller="Produto" asp-action="DeletarPromocao" enctype="multipart/form-data" method="post" class="formulario">
+        <div class="container-formulario">
+            <label>Promoções:</label>
+            <select name="PromoId" required>
+                <option value="">Selecione</option>
+                @foreach (var promocao in ViewBag.Promocao)
+                {
+                    <option value="@promocao.PromoId">@promocao.NomePromo</option>
+                }
+            </select>
+        </div>
+        <div class="container-formulario">
+            <button type="submit">Deletar</button>
+        </div>
+    </form>
+</div>

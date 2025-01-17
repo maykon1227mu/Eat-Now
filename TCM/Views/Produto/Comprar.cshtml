@@ -12,7 +12,19 @@
         <div class="compra-infos">
             <h3>@Model.NomeProd</h3>
             <p>@Model.Descricao</p>
-            <h3>R$@Model.Preco</h3> 
+            @{
+                var produtosEmPromocao = ViewBag.ProdutosPromo;
+                PromocaoItem produtoPromocao = ViewBag.ProdutoPromo;
+            }
+            @if (produtosEmPromocao.Contains(Model.CodProd))
+            {
+                <h3>De: R$@Model.Preco</h3>
+                <h3>Por: R$@produtoPromocao.PrecoPromo<sub>@produtoPromocao.Porcentagem</sub></h3>
+            } 
+            else
+            {
+                <h3>R$@Model.Preco</h3>
+            }
             <p>Quantidade: @Model.Qtd</p>
             <p>Publicado por: @Model.Usuario</p>
             

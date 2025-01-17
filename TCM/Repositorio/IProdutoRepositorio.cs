@@ -22,7 +22,8 @@ namespace TCM.Repositorio
         void NovaPromocao(string nomepromo, int porcentagem, string categoria);
         IEnumerable<Promocao> TodasPromocoes();
         IEnumerable<int> ProdutosEmPromocao();
-        IEnumerable<PromocaoItem> ProdutoDaPromocao();
+        PromocaoItem ProdutoDaPromocao(int id);
+        IEnumerable<PromocaoItem> TodosProdutosDaPromocao();
         void DeletarPromocao(int promoId);
         int TotalVendas(int userId);
         int TotalVendasSite();

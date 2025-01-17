@@ -38,7 +38,8 @@ Preco decimal(9,2) not null,
 Qtd int unsigned not null,
 UserId int not null,
 Imagem mediumblob not null,
-CategoriaId int not null
+CategoriaId int not null,
+Vendas int not null default 0
 );
 
 create table tbcategoria(
@@ -65,18 +66,12 @@ create TABLE tbPromocaoItem(
 PromoIdItem INT PRIMARY KEY AUTO_INCREMENT,
 ProdutoId INT NOT NULL,
 PromoId INT NOT NULL,
+Porcentagem tinyint not null,
 PrecoPromo DECIMAL(9,2) NOT NULL,
 data_exclusao DATETIME NOT NULL,
 FOREIGN KEY (ProdutoId) REFERENCES tbproduto(CodProd),
 FOREIGN KEY (PromoId) REFERENCES tbPromocao(PromoId)
 );
-
-select * from tbusuario;
-
-select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbproduto.Preco, tbpedido.QtdPed from tbpedido join tbproduto on tbpedido.ProdutoId = tbproduto.CodProd where tbpedido.UserId = 1;
-
-alter table tbpedido add constraint FK_ProdutoIdPedido foreign key (ProdutoId) references tbproduto(CodProd);
-alter table tbpedido add constraint FK_UserIdPedido foreign key (UserId) references tbusuario(CodUsu);
 
 create table tbcarrinho (
 Id int primary key auto_increment,
@@ -85,6 +80,13 @@ ProdutoId int not null,
 Quantidade int unsigned not null,
 foreign key (ProdutoId) references tbproduto(CodProd)
 );
+
+select * from tbusuario;
+
+select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbproduto.Preco, tbpedido.QtdPed from tbpedido join tbproduto on tbpedido.ProdutoId = tbproduto.CodProd where tbpedido.UserId = 1;
+
+alter table tbpedido add constraint FK_ProdutoIdPedido foreign key (ProdutoId) references tbproduto(CodProd);
+alter table tbpedido add constraint FK_UserIdPedido foreign key (UserId) references tbusuario(CodUsu);
 
 delimiter $$
 
@@ -136,21 +138,24 @@ delimiter $$
 
 create procedure spLogin(vUsuario varchar(40), vSenha varchar(16))
 begin
-if exists(select * from tbusuario where email = vUsuario and senha = vSenha)then
-	select * from tbusuario where email = vUsuario and senha = vSenha;
-end if;
-if exists(select * from tbfornecedor where email = vUsuario and senha = vSenha)then
-	select * from tbfornecedor where email = vUsuario and senha = vSenha;
-end if;
-if exists(select * from tbfuncionario where email = vUsuario and senha = vSenha)then
-	select * from tbfornecedor where email = vUsuario and senha = vSenha;
-end if;
+    -- Verifica se o usuário existe na tabela tbusuario
+    if exists(select 1 from tbusuario where email = vUsuario and senha = vSenha) then
+        select * from tbusuario where email = vUsuario and senha = vSenha;
+    end if;
+
+    -- Verifica se o usuário existe na tabela tbfornecedor
+    if exists(select 1 from tbfornecedor where email = vUsuario and senha = vSenha) then
+        select * from tbfornecedor where email = vUsuario and senha = vSenha;
+    end if;
+
+    -- Verifica se o usuário existe na tabela tbfuncionario
+    if exists(select 1 from tbfuncionario where email = vUsuario and senha = vSenha) then
+        select * from tbfuncionario where email = vUsuario and senha = vSenha;
+    end if;
 end;
 $$
 
 delimiter ;
-
-
 
 DELIMITER $$
 
@@ -173,13 +178,13 @@ BEGIN
     -- Verificar a categoria e inserir na tbPromocaoItem
     IF vCategoria = "Todos" THEN
         -- Inserir todos os itens de todos os produtos
-        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, vPromoId, (p.Preco * (1 - vPorcentagem / 100)), vdata_exclusao 
+        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
+        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - ((vPorcentagem / p.Preco) * 100)), vdata_exclusao 
         FROM tbProduto p;
     ELSE
         -- Inserir itens de uma categoria específica
-        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, vPromoId, (p.Preco * (1 - vPorcentagem / 100)), vdata_exclusao
+        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
+        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - ((vPorcentagem / p.Preco) * 100)), vdata_exclusao
         FROM tbProduto p
         JOIN tbCategoria c ON p.CategoriaId = c.CodCat
         WHERE c.Categoria = vCategoria;
@@ -189,7 +194,7 @@ END$$
 
 DELIMITER ;
 
-call spInserirPromocao("Promoção de natal", 50, "todos", '2025-1-5 12:00:00');
+select sum(vendas * preco) from tbproduto;
 
 select * from tbpromocao;
 select * from tbpromocaoitem;
@@ -207,7 +212,7 @@ insert into tbcategoria (Categoria) values ("Milkshake");
 insert into tbcategoria (Categoria) values ("Açai");
 insert into tbcategoria (Categoria) values ("Bebidas");
 
-insert into tbfornecedor (email, usuario, senha, CNPJ, tipo) values ( "admin@admin.com", "Admin", "12345", 1, "Administrador");
+insert into tbfornecedor (email, usuario, senha, CNPJ, tipo) values ("admin@admin.com", "Admin", "12345", 1, "Administrador");
 insert into tbfornecedor (email, usuario, senha, CNPJ) values ("fornecedorteste@gmail.com", "Fornecedor teste", "12345", "00.623.904/0001-73");
 insert into tbfuncionario (Nome, email, usuario, senha, salario) values ("funcionarioteste", "funcionarioteste@gmail.com", "functeste", "12345", 1);
 insert into tbusuario (Nome, email, usuario, senha) values ("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345");

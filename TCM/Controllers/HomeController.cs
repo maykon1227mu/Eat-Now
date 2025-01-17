@@ -40,6 +40,8 @@ namespace TCM.Controllers
             var produtos = _produtoRepositorio.TodosProdutos();
             //Busca todas as categorias
             ViewBag.Categorias = _produtoRepositorio.TodasCategorias();
+            ViewBag.ProdutosPromo = _produtoRepositorio.ProdutosEmPromocao();
+            ViewBag.ProdutoPromo = _produtoRepositorio.TodosProdutosDaPromocao();
 
             // Converte as imagens para Base64
             foreach (var produto in produtos)
