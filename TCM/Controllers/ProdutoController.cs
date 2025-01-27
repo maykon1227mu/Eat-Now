@@ -142,28 +142,25 @@ namespace TCM.Controllers
         [Authorize(Roles = "Administrador")]
         public IActionResult PainelPromocoes()
         {
-            return View();
+            return View(_produtoRepositorio.TodasPromocoes());
         }
 
         [Authorize(Roles = "Administrador")]
         public IActionResult NovaPromocao()
         {
+            ViewBag.Categorias = _produtoRepositorio.TodasCategorias();
             return View();
         }
 
         [HttpPost]
         public IActionResult NovaPromocao(Promocao promocao)
         {
-            _produtoRepositorio.NovaPromocao(promocao.NomePromo, promocao.Porcentagem, promocao.categoria);
+            string categoria = Request.Form["CategoriaId"];
+            _produtoRepositorio.NovaPromocao(promocao.NomePromo, promocao.Porcentagem, categoria, promocao.Data_Exclusao);
             return RedirectToAction("PainelPromocoes", "Produto");
         }
 
         [Authorize(Roles = "Administrador")]
-        public IActionResult DeletarPromocao()
-        {
-            return View(_produtoRepositorio.TodasPromocoes());
-        }
-        [HttpPost]
         public IActionResult DeletarPromocao(int promoId)
         {
             _produtoRepositorio.DeletarPromocao(promoId);

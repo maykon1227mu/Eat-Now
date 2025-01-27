@@ -22,10 +22,10 @@
             <label>Categoria:</label>
             <select name="CategoriaId" required>
                 <option value="">Selecione</option>
-                <option value="Todas">Todas</option>
+                <option value="Todos">Todas</option>
                 @foreach (var categoria in ViewBag.Categorias)
                 {
-                    <option value="@categoria.CodCat">@categoria.Nome</option>
+                    <option value="@categoria.Nome">@categoria.Nome</option>
                 }
             </select>
         </div>

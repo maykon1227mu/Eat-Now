@@ -59,7 +59,8 @@ create table tbPromocao(
 PromoId int primary key auto_increment,
 NomePromo varchar(80) not null,
 Porcentagem tinyint not null,
-data_exclusao datetime not null
+data_exclusao datetime not null,
+CategoriaId int
 );
 
 create TABLE tbPromocaoItem(
@@ -87,6 +88,7 @@ select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, t
 
 alter table tbpedido add constraint FK_ProdutoIdPedido foreign key (ProdutoId) references tbproduto(CodProd);
 alter table tbpedido add constraint FK_UserIdPedido foreign key (UserId) references tbusuario(CodUsu);
+alter table tbpromocao add constraint FK_CategoriaIdPromocao foreign key (CategoriaId) references tbcategoria(CodCat);
 
 delimiter $$
 
@@ -157,7 +159,19 @@ $$
 
 delimiter ;
 
+
+
+delimiter $$
+create procedure spExcluirPromocao(vPromocaoId int)
+begin
+	delete from tbpromocaoitem where PromoId = vPromocaoId;
+    delete from tbpromocao where PromoId = vPromocaoId;
+end$$
+delimiter ;
+
 DELIMITER $$
+
+call spInserirPromocao("teste", 1, "Todos", current_timestamp());
 
 create PROCEDURE spInserirPromocao(
     vNomePromo VARCHAR(80), 
@@ -167,21 +181,22 @@ create PROCEDURE spInserirPromocao(
 )
 BEGIN
     DECLARE vPromoId INT;
-
-    -- Inserir na tabela tbPromocao
-    INSERT INTO tbPromocao (NomePromo, Porcentagem, data_exclusao)
-    VALUES (vNomePromo, vPorcentagem, vdata_exclusao);
-    
-    -- Obter o ID da promoção recém-inserida
-    SET vPromoId = LAST_INSERT_ID();
+    declare vCategoriaId int;
 
     -- Verificar a categoria e inserir na tbPromocaoItem
     IF vCategoria = "Todos" THEN
+		INSERT INTO tbPromocao (NomePromo, Porcentagem, data_exclusao)
+		VALUES (vNomePromo, vPorcentagem, vdata_exclusao);
+        SET vPromoId = LAST_INSERT_ID();
         -- Inserir todos os itens de todos os produtos
         INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
         SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - ((vPorcentagem / p.Preco) * 100)), vdata_exclusao 
         FROM tbProduto p;
     ELSE
+		set vCategoriaId := (select CodCat from tbcategoria where Categoria = vCategoria);
+		INSERT INTO tbPromocao (NomePromo, Porcentagem, data_exclusao, CategoriaId)
+		VALUES (vNomePromo, vPorcentagem, vdata_exclusao, vCategoriaId);
+        SET vPromoId = LAST_INSERT_ID();
         -- Inserir itens de uma categoria específica
         INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
         SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - ((vPorcentagem / p.Preco) * 100)), vdata_exclusao
@@ -198,6 +213,7 @@ select sum(vendas * preco) from tbproduto;
 
 select * from tbpromocao;
 select * from tbpromocaoitem;
+
 
 alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbfornecedor(CodFor);
 alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);

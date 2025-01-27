@@ -387,17 +387,18 @@ namespace TCM.Repositorio
             }
         }
 
-        public void NovaPromocao(string nomepromo, int procentagem, string categoria)
+        public void NovaPromocao(string nomepromo, int procentagem, string categoria, DateTime data)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("call spInserirPromocao(@nomepromo, @procentagem, @categoria)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spInserirPromocao(@nomepromo, @procentagem, @categoria, @data)", conexao);
 
                 cmd.Parameters.Add("@nomepromo", MySqlDbType.VarChar).Value = nomepromo;
                 cmd.Parameters.Add("@procentagem", MySqlDbType.Int32).Value = procentagem;
                 cmd.Parameters.Add("@categoria", MySqlDbType.VarChar).Value = categoria;
+                cmd.Parameters.Add("@data", MySqlDbType.DateTime).Value = data;
 
                 cmd.ExecuteReader();
                 conexao.Close();
@@ -413,7 +414,7 @@ namespace TCM.Repositorio
                 conexao.Open();
 
                 // Vincular a conexão ao comando
-                MySqlCommand cmd = new MySqlCommand("select * from tbpromocao", conexao);
+                MySqlCommand cmd = new MySqlCommand("select PromoId, NomePromo, Porcentagem, Data_Exclusao, CategoriaId, Categoria from tbpromocao left join tbcategoria on tbpromocao.CategoriaId = tbcategoria.CodCat", conexao);
 
                 // Vincular o comando ao DataAdapter
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -432,7 +433,8 @@ namespace TCM.Repositorio
                         PromoId = Convert.ToInt32(dr["promoid"]),
                         NomePromo = dr["nomepromo"].ToString() ?? string.Empty,
                         Porcentagem = Convert.ToInt32(dr["porcentagem"]),
-                        Data_Exclusao = Convert.ToDateTime(dr["data_exclusao"])
+                        Data_Exclusao = Convert.ToDateTime(dr["data_exclusao"]),
+                        Categoria = Convert.ToString(dr["categoria"])
                     });
                 }
             }
@@ -465,7 +467,7 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Produtoslist.Add(Convert.ToInt32(dr));
+                    Produtoslist.Add(Convert.ToInt32(dr["PromoIdItem"]));
                 }
                 return Produtoslist;
             }
@@ -500,10 +502,11 @@ namespace TCM.Repositorio
                     
                         produtoEmPromocao = new PromocaoItem()
                         {
-                            PromoItemId = Convert.ToInt32(dr["promoitemid"]),
+                            PromoItemId = Convert.ToInt32(dr["promoiditem"]),
                             PromoId = Convert.ToInt32(dr["promoid"]),
                             ProdutoId = Convert.ToInt32(dr["produtoid"]),
                             PrecoPromo = Convert.ToDecimal(dr["precopromo"]),
+                            Porcentagem = Convert.ToInt32(dr["porcentagem"])
                         };
                 }
                 return produtoEmPromocao;
@@ -536,10 +539,11 @@ namespace TCM.Repositorio
                 {
                     ItensEmPromo.Add(new PromocaoItem()
                     {
-                        PromoItemId = Convert.ToInt32(dr["promoitemid"]),
+                        PromoItemId = Convert.ToInt32(dr["promoiditem"]),
                         PromoId = Convert.ToInt32(dr["promoid"]),
                         ProdutoId = Convert.ToInt32(dr["produtoid"]),
                         PrecoPromo = Convert.ToDecimal(dr["precopromo"]),
+                        Porcentagem = Convert.ToInt32(dr["porcentagem"])
                     });
                 }
                 return ItensEmPromo;
@@ -552,7 +556,7 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("delete from tbpromocao where promoid = @promoid", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spExcluirPromocao(@promoid)", conexao);
 
                 cmd.Parameters.Add("@promoid", MySqlDbType.Int32).Value = promoId;
 

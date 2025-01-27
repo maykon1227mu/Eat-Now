@@ -19,7 +19,7 @@ namespace TCM.Repositorio
         IEnumerable<Pedido> TodosPedidos(int userId);
         IEnumerable<Categoria> TodasCategorias();
         IEnumerable<Produto> ProdutosPorCategoria(int categoriaId);
-        void NovaPromocao(string nomepromo, int porcentagem, string categoria);
+        void NovaPromocao(string nomepromo, int porcentagem, string categoria, DateTime data);
         IEnumerable<Promocao> TodasPromocoes();
         IEnumerable<int> ProdutosEmPromocao();
         PromocaoItem ProdutoDaPromocao(int id);

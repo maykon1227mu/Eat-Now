@@ -4,8 +4,8 @@
 @model IEnumerable<Produto>
 
 @{
-    var produtosPromo = ViewBag.ProdutosPromo;
-    var todosProdutosPromo = ViewBag.TodosProdutosPromo;
+    List<int> produtosPromo = ViewBag.ProdutosPromo;
+    List<PromocaoItem> todosProdutosPromo = ViewBag.TodosProdutosPromo;
 }
 
 <div id="compra" class="container-produtos">
@@ -60,10 +60,15 @@
                                     </div>
                                 </div>
                                 <div class="product-description">
-                                    @if(produtosPromo.Contains(produto.CodProd))
+                                    @*@if(produtosPromo.Contains(produto.CodProd))
                                     {
-                                        
-                                    }
+                                    if (todosProdutosPromo != null)
+                                    {
+                                        PromocaoItem itemPromo = todosProdutosPromo.FirstOrDefault(p => p.ProdutoId == produto.CodProd);
+                                        <p>De: R$@produto.Preco</p>
+                                        <p>Por: R$@itemPromo.PrecoPromo <sub>@itemPromo.Promocao</sub></p>
+                                    } 
+                                    }*@
                                 <p>R$@produto.Preco</p>
                                     <p>@produto.Descricao</p>
                                     <p>Quantidade: @produto.Qtd</p>
