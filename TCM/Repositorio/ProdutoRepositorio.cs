@@ -257,10 +257,10 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("insert into tbpedido (ProdutoId, UserId, QtdPed, Vendas) values (@produtoId, @userId, @qtd, @qtdvenda)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spFinalizarCompra(@userId, @produtoId, @qtd, @qtdvenda)", conexao);
 
-                cmd.Parameters.Add("@produtoId", MySqlDbType.Int32).Value = produtoId;
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
+                cmd.Parameters.Add("@produtoId", MySqlDbType.Int32).Value = produtoId;
                 cmd.Parameters.Add("@qtd", MySqlDbType.Int32).Value = qtd;
                 cmd.Parameters.Add("@qtdvenda", MySqlDbType.Int32).Value = qtd;
 
@@ -276,7 +276,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbproduto.Preco, tbpedido.QtdPed, tbproduto.Imagem from tbpedido join tbproduto on tbpedido.ProdutoId = tbproduto.CodProd where tbpedido.UserId = @userId", conexao);
+                MySqlCommand cmd = new MySqlCommand("select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbproduto.Imagem from tbpedido join tbproduto on tbpedido.ProdutoId = tbproduto.CodProd where tbpedido.UserId = @userId", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
 
@@ -298,7 +298,7 @@ namespace TCM.Repositorio
                             ImagemPed = (byte[])(dr["imagem"]),
                             DataPed = Convert.ToDateTime(dr["dataped"]),
                             NomeProd = Convert.ToString(dr["nomeprod"]),
-                            PrecoProd = Convert.ToDecimal(dr["preco"]),
+                            PrecoPed = Convert.ToDecimal(dr["precoped"]),
                             QtdPed = Convert.ToInt32(dr["qtdped"]),
                         });
                 }
@@ -451,7 +451,7 @@ namespace TCM.Repositorio
                 //Abrindo a conexão com o banco de dados
                 conexao.Open();
                 //Criando o comando para listar todos os clientes
-                MySqlCommand cmd = new MySqlCommand("select PromoIdItem from tbpromocaoitem", conexao);
+                MySqlCommand cmd = new MySqlCommand("select ProdutoId from tbpromocaoitem", conexao);
 
                 //Traz a tabela
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -467,7 +467,7 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    Produtoslist.Add(Convert.ToInt32(dr["PromoIdItem"]));
+                    Produtoslist.Add(Convert.ToInt32(dr["ProdutoId"]));
                 }
                 return Produtoslist;
             }

@@ -52,6 +52,7 @@ CodPed int primary key auto_increment,
 ProdutoId int not null,
 UserId int not null,
 QtdPed int unsigned not null,
+PrecoPed decimal(9,2) not null,
 DataPed datetime default current_timestamp
 );
 
@@ -79,6 +80,7 @@ Id int primary key auto_increment,
 UserId int not null,
 ProdutoId int not null,
 Quantidade int unsigned not null,
+PrecoCar decimal(9,2) not null,
 foreign key (ProdutoId) references tbproduto(CodProd)
 );
 
@@ -94,10 +96,17 @@ delimiter $$
 
 create procedure spInserirCarrinho(vUserId int, vProdutoId int , vQuantidade int)
 begin
-if(select Qtd from tbproduto where CodProd= vProdutoId != 0) then
+declare vPreco decimal(9,2); 
+if(select Qtd from tbproduto where CodProd = vProdutoId != 0) then
 	if not exists(select * from tbcarrinho where UserId = vUserId and ProdutoId = vProdutoId) then
-		insert into tbcarrinho (UserId, ProdutoId, Quantidade) values (vUserId, vProdutoId, vQuantidade);
-        update tbproduto set Qtd = Qtd - vQuantidade where CodProd = vProdutoId;
+		if exists(select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId) then
+			set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
+            insert into tbcarrinho (UserId, ProdutoId, Quantidade, PrecoCar) values (vUserId, vProdutoId, vQuantidade, vPreco);
+		else
+			set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
+			insert into tbcarrinho (UserId, ProdutoId, Quantidade, PrecoCar) values (vUserId, vProdutoId, vQuantidade, vPreco);
+			update tbproduto set Qtd = Qtd - vQuantidade where CodProd = vProdutoId;
+        end if;
 	else 
     update tbcarrinho set Quantidade = Quantidade + vQuantidade where UserId = vUserId and ProdutoId = vProdutoId;
     update tbproduto set Qtd = Qtd - vQuantidade where CodProd = vProdutoId;
@@ -169,9 +178,21 @@ begin
 end$$
 delimiter ;
 
-DELIMITER $$
+delimiter $$
+create procedure spFinalizarCompra(vUserId int, vProdutoId int, vQtdVenda int, vVenda int)
+begin
+	declare vPreco decimal(9,2);
+	if exists(select ProdutoId from tbpromocaoitem where ProdutoId = vProdutoId) then
+		set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
+		insert into tbpedido (ProdutoId, UserId, PrecoPed, QtdPed, Vendas) values (vProdutoId, vUserId, vPreco, vQtdVenda, vVenda);
+	else
+		set vPreco := (select Preco from tbproduto where CodProd = vProdutoId);
+        insert into tbpedido (ProdutoId, UserId, PrecoPed, QtdPed, Vendas) values (vProdutoId, vUserId, vPreco, vQtdVenda, vVenda);
+	end if;
+end$$
+delimiter ;
 
-call spInserirPromocao("teste", 1, "Todos", current_timestamp());
+DELIMITER $$
 
 create PROCEDURE spInserirPromocao(
     vNomePromo VARCHAR(80), 
@@ -190,7 +211,7 @@ BEGIN
         SET vPromoId = LAST_INSERT_ID();
         -- Inserir todos os itens de todos os produtos
         INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - ((vPorcentagem / p.Preco) * 100)), vdata_exclusao 
+        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagem)), vdata_exclusao 
         FROM tbProduto p;
     ELSE
 		set vCategoriaId := (select CodCat from tbcategoria where Categoria = vCategoria);
@@ -199,7 +220,7 @@ BEGIN
         SET vPromoId = LAST_INSERT_ID();
         -- Inserir itens de uma categoria específica
         INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - ((vPorcentagem / p.Preco) * 100)), vdata_exclusao
+        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagem)), vdata_exclusao
         FROM tbProduto p
         JOIN tbCategoria c ON p.CategoriaId = c.CodCat
         WHERE c.Categoria = vCategoria;
@@ -221,6 +242,7 @@ alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (Categ
 insert into tbcategoria (Categoria) values ("Comida Japonesa");
 insert into tbcategoria (Categoria) values ("Comida Italiana");
 insert into tbcategoria (Categoria) values ("Pizza");
+insert into tbcategoria (Categoria) values ("Massas");
 insert into tbcategoria (Categoria) values ("Hamburguer");
 insert into tbcategoria (Categoria) values ("Aperitivos");
 insert into tbcategoria (Categoria) values ("Sorvete");

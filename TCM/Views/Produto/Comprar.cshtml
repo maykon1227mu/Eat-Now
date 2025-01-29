@@ -4,6 +4,11 @@
 
 @model TCM.Models.Produto
 
+@{
+    List<int> produtosEmPromocao = ViewBag.ProdutosPromo;
+    PromocaoItem produtoPromocao = ViewBag.ProdutoPromo;
+}
+
 <div class="container-compra">
     <div class="compra">
         <div class="compra-img">
@@ -12,14 +17,11 @@
         <div class="compra-infos">
             <h3>@Model.NomeProd</h3>
             <p>@Model.Descricao</p>
-            @{
-                var produtosEmPromocao = ViewBag.ProdutosPromo;
-                PromocaoItem produtoPromocao = ViewBag.ProdutoPromo;
-            }
-            @if (produtosEmPromocao.Contains(Model.CodProd))
+            
+            @if (produtosEmPromocao.Contains(Convert.ToInt32(Model.CodProd)))
             {
                 <h3>De: R$@Model.Preco</h3>
-                <h3>Por: R$@produtoPromocao.PrecoPromo<sub>@produtoPromocao.Porcentagem</sub></h3>
+                <h3>Por: R$@produtoPromocao.PrecoPromo<sup>@produtoPromocao.Porcentagem% OFF</sup></h3>
             } 
             else
             {
@@ -36,8 +38,14 @@
             {
                 <form asp-controller="Carrinho" asp-action="Adicionar">
                     <input asp-for="CodProd" name="produtoId" id="produtoId" hidden/>
-                    <input type="number" name="qtd" id="qtd" value="1" min="1" max="@Model.Qtd"/>
-                    <button class="btn-comprar" type="submit">Comprar</button>
+                    <div>
+                        <input type="number" name="qtd" id="qtd" value="1" min="1" max="@Model.Qtd" />
+                    </div>
+                    
+                    <div>
+                        <button class="btn-comprar" type="submit">Comprar</button>
+                    </div>
+                    
                 </form>
             }
         </div>

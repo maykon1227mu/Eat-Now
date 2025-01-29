@@ -9,100 +9,102 @@
 }
 
 <div id="compra" class="container-produtos">
-        @foreach (var categoria in ViewBag.Categorias)
-        {
-            <div class="categoria">
-                <h2 class="categoria-titulo">@categoria.Nome</h2>
-                <div class="produtos">
-                    @foreach (var produto in Model)
+    @foreach (var categoria in ViewBag.Categorias)
+    {
+        <div class="categoria">
+            <h2 class="categoria-titulo">@categoria.Nome</h2>
+            <div class="produtos">
+                @foreach (var produto in Model)
+                {
+                    @if (produto.NomeCategoria == categoria.Nome)
                     {
-                        @if(produto.NomeCategoria == categoria.Nome)
-                        {
-                            <div class="product-container">
-                                @{
-                                    string divCerta;
-                                }
-                                @if (produto.NomeCategoria == "Milkshake")
+                        <div class="product-container">
+                            @{
+                                string divCerta;
+                            }
+                            @if (produto.NomeCategoria == "Milkshake")
+                            {
+                                divCerta = "product-img-milkshake";
+                            }
+                            else if (produto.NomeCategoria == "Pizza")
+                            {
+                                divCerta = "product-img-pizza";
+                            }
+                            else if (produto.NomeCategoria == "Hamburguer")
+                            {
+                                divCerta = "product-img-hamburguer";
+                            }
+                            else if (produto.NomeCategoria == "Açai")
+                            {
+                                divCerta = "product-img-acai";
+                            }
+                            else
+                            {
+                                divCerta = "product-img";
+                            }
+                            <div class=@divCerta>
+                                <img class="card-img-top" src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
+                            </div>
+
+                            <div class="product-name-star">
+                                <div>
+                                    <h2>@produto.NomeProd</h2>
+                                </div>
+                                <div class="product-star">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <p>4.0</p>
+                                </div>
+                            </div>
+                            <div class="product-description">
+
+                                @if (produtosPromo.Contains(produto.CodProd))
                                 {
-                                    divCerta = "product-img-milkshake";
-                                }
-                                else if (produto.NomeCategoria == "Pizza")
-                                {
-                                    divCerta = "product-img-pizza";
-                                }
-                                else if (produto.NomeCategoria == "Hamburguer")
-                                {
-                                    divCerta = "product-img-hamburguer";
-                                }
-                                else if (produto.NomeCategoria == "Açai")
-                                {
-                                    divCerta = "product-img-acai";
+                                    var itemPromo = todosProdutosPromo.FirstOrDefault(p => p.ProdutoId == produto.CodProd);
+                                    if (itemPromo != null)
+                                    {
+                                        <p>De: R$@produto.Preco</p>
+                                        <p>Por: R$@itemPromo.PrecoPromo <sub>@itemPromo.Promocao</sub></p>
+                                    }
                                 }
                                 else
                                 {
-                                    divCerta = "product-img";
+                                    <p>R$@produto.Preco</p>
                                 }
-                                <div class=@divCerta>
-                                    <img class="card-img-top" src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
-                                </div>
-
-                                <div class="product-name-star">
-                                    <div>
-                                        <h2>@produto.NomeProd</h2>
-                                    </div>
-                                    <div class="product-star">
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                        <p>4.0</p>
-                                    </div>
-                                </div>
-                                <div class="product-description">
-                                    @*@if(produtosPromo.Contains(produto.CodProd))
-                                    {
-                                    if (todosProdutosPromo != null)
-                                    {
-                                        PromocaoItem itemPromo = todosProdutosPromo.FirstOrDefault(p => p.ProdutoId == produto.CodProd);
-                                        <p>De: R$@produto.Preco</p>
-                                        <p>Por: R$@itemPromo.PrecoPromo <sub>@itemPromo.Promocao</sub></p>
-                                    } 
-                                    }*@
-                                <p>R$@produto.Preco</p>
-                                    <p>@produto.Descricao</p>
-                                    <p>Quantidade: @produto.Qtd</p>
-                                    <p>Loja: @produto.Usuario</p>
-                                </div>
-                                <div class="button-cart">
-                                    <a class="btn-comprar" asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd">Comprar</a>
-                                    <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
-                                        <input name="produtoId" id="produtoId" asp-for="@produto.CodProd" hidden/>
-                                        <input name="qtd" id="qtd" asp-for="@produto.Qtd" value="1" hidden />
-                                        @if (produto.NomeCategoria == "Milkshake")
-                                        {
-                                            <button class="btn-carrinho" style="background-color: rgb(214, 133, 205);" type="submit"><i class="bi bi-cart3"></i></button>
-                                        }
-                                        else if (produto.NomeCategoria == "Pizza" || produto.NomeCategoria == "Hamburguer")
-                                        {
-                                            <button class="btn-carrinho" style="background-color: rgb(187, 118, 28);" type="submit"><i class="bi bi-cart3"></i></button>
-                                        }
-
-                                        else if (produto.NomeCategoria == "Açai")
-                                        {
-                                            <button class="btn-carrinho" style="background-color: rgb(146, 91, 134);" type="submit"><i class="bi bi-cart3"></i></button>
-                                        }
-                                        else
-                                        {
-                                            <button class="btn-carrinho" type="submit"><i class="bi bi-cart3"></i></button>
-                                        }
-                                    </form>
-                                </div>
+                                <p>@produto.Descricao</p>
+                                <p>Quantidade: @produto.Qtd</p>
+                                <p>Loja: @produto.Usuario</p>
                             </div>
-                        }
+                            <div class="button-cart">
+                                <a class="btn-comprar" asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd">Comprar</a>
+                                <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
+                                    <input name="produtoId" id="produtoId" asp-for="@produto.CodProd" hidden />
+                                    <input name="qtd" id="qtd" asp-for="@produto.Qtd" value="1" hidden />
+                                    @if (produto.NomeCategoria == "Milkshake")
+                                    {
+                                        <button class="btn-carrinho" style="background-color: rgb(214, 133, 205);" type="submit"><i class="bi bi-cart3"></i></button>
+                                    }
+                                    else if (produto.NomeCategoria == "Pizza" || produto.NomeCategoria == "Hamburguer")
+                                    {
+                                        <button class="btn-carrinho" style="background-color: rgb(187, 118, 28);" type="submit"><i class="bi bi-cart3"></i></button>
+                                    }
+                                    else if (produto.NomeCategoria == "Açai")
+                                    {
+                                        <button class="btn-carrinho" style="background-color: rgb(146, 91, 134);" type="submit"><i class="bi bi-cart3"></i></button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-carrinho" type="submit"><i class="bi bi-cart3"></i></button>
+                                    }
+                                </form>
+                            </div>
+                        </div>
                     }
-                </div>
+                }
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>

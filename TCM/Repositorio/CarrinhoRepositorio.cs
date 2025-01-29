@@ -14,8 +14,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                var cmd = new MySqlCommand(
-                    "call spInserirCarrinho(@userId, @produtoId, @quantidade)", conexao);
+                var cmd = new MySqlCommand("call spInserirCarrinho(@userId, @produtoId, @quantidade)", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
                 cmd.Parameters.Add("@produtoId", MySqlDbType.Int32).Value = item.CodProd;
@@ -33,7 +32,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                var cmd = new MySqlCommand("select tbcarrinho.ProdutoId, tbcarrinho.Quantidade, tbproduto.NomeProd, tbproduto.Imagem, tbproduto.Preco from tbcarrinho join tbproduto on tbcarrinho.ProdutoId = tbproduto.CodProd where tbcarrinho.UserId = @userId", conexao);
+                var cmd = new MySqlCommand("select tbcarrinho.ProdutoId, tbcarrinho.Quantidade, tbproduto.NomeProd, tbproduto.Imagem, tbcarrinho.PrecoCar from tbcarrinho join tbproduto on tbcarrinho.ProdutoId = tbproduto.CodProd where tbcarrinho.UserId = @userId", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
                 
