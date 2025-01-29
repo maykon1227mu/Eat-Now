@@ -51,7 +51,7 @@ namespace TCM.Repositorio
                     {
                         ProdutoId = Convert.ToInt32(dr["ProdutoId"]),
                         NomeProduto = dr["NomeProd"].ToString(),
-                        PrecoProduto = Convert.ToDecimal(dr["Preco"]),
+                        PrecoProduto = Convert.ToDecimal(dr["PrecoCar"]),
                         ImagemProd = (byte[])dr["imagem"],
                         Quantidade = Convert.ToInt32(dr["Quantidade"]),
                     });
