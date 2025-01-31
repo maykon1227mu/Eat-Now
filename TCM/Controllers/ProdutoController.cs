@@ -155,6 +155,7 @@ namespace TCM.Controllers
         [HttpPost]
         public IActionResult NovaPromocao(Promocao promocao)
         {
+            
             string categoria = Request.Form["CategoriaId"];
             _produtoRepositorio.NovaPromocao(promocao.NomePromo, promocao.Porcentagem, categoria, promocao.Data_Exclusao);
             return RedirectToAction("PainelPromocoes", "Produto");
@@ -165,6 +166,20 @@ namespace TCM.Controllers
         {
             _produtoRepositorio.DeletarPromocao(promoId);
             return RedirectToAction("PainelPromocoes", "Produto");
+        }
+
+        public IActionResult Vendas()
+        {
+            ViewBag.TotalVendas = _produtoRepositorio.TotalVendasSite();
+            ViewBag.Lucro = _produtoRepositorio.LucroSite();
+            return View();
+        }
+
+        public IActionResult VendasFornecedor()
+        {
+            ViewBag.TotalVendas = _produtoRepositorio.TotalVendas(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
+            ViewBag.Lucro = _produtoRepositorio.ValorTotalVendas(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
+            return View();
         }
     }
 }

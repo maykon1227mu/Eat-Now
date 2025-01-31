@@ -93,7 +93,6 @@ alter table tbpedido add constraint FK_UserIdPedido foreign key (UserId) referen
 alter table tbpromocao add constraint FK_CategoriaIdPromocao foreign key (CategoriaId) references tbcategoria(CodCat);
 
 delimiter $$
-
 create procedure spInserirCarrinho(vUserId int, vProdutoId int , vQuantidade int)
 begin
 declare vPreco decimal(9,2); 
@@ -102,6 +101,7 @@ if(select Qtd from tbproduto where CodProd = vProdutoId != 0) then
 		if exists(select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId) then
 			set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
             insert into tbcarrinho (UserId, ProdutoId, Quantidade, PrecoCar) values (vUserId, vProdutoId, vQuantidade, vPreco);
+            update tbproduto set Qtd = Qtd - vQuantidade where CodProd = vProdutoId;
 		else
 			set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
 			insert into tbcarrinho (UserId, ProdutoId, Quantidade, PrecoCar) values (vUserId, vProdutoId, vQuantidade, vPreco);
@@ -203,6 +203,8 @@ create PROCEDURE spInserirPromocao(
 BEGIN
     DECLARE vPromoId INT;
     declare vCategoriaId int;
+    declare vPorcentagemCerta decimal(3,2);
+    set vPorcentagemCerta := concat("0,", vPorcentagem);
 
     -- Verificar a categoria e inserir na tbPromocaoItem
     IF vCategoria = "Todos" THEN
@@ -211,7 +213,7 @@ BEGIN
         SET vPromoId = LAST_INSERT_ID();
         -- Inserir todos os itens de todos os produtos
         INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagem)), vdata_exclusao 
+        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagemCerta)), vdata_exclusao 
         FROM tbProduto p;
     ELSE
 		set vCategoriaId := (select CodCat from tbcategoria where Categoria = vCategoria);
@@ -220,7 +222,7 @@ BEGIN
         SET vPromoId = LAST_INSERT_ID();
         -- Inserir itens de uma categoria específica
         INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagem)), vdata_exclusao
+        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagemCerta)), vdata_exclusao
         FROM tbProduto p
         JOIN tbCategoria c ON p.CategoriaId = c.CodCat
         WHERE c.Categoria = vCategoria;
