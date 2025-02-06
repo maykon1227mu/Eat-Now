@@ -72,7 +72,7 @@ namespace TCM.Controllers
         [HttpPost]
         public IActionResult CadastrarFornecedor(Fornecedor fornecedor)
         {
-            _loginRepositorio.CadastrarFornecedor(fornecedor.email, fornecedor.usuario, fornecedor.senha, fornecedor.CNPJ);
+            _loginRepositorio.CadastrarFornecedor(fornecedor.nome, fornecedor.email, fornecedor.usuario, fornecedor.senha, fornecedor.CNPJ);
             return RedirectToAction("Index", "Conta");
         }
         [Authorize]

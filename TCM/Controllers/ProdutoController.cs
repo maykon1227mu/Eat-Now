@@ -91,11 +91,21 @@ namespace TCM.Controllers
 
             ViewBag.ProdutosPromo = _produtoRepositorio.ProdutosEmPromocao();
             ViewBag.ProdutoPromo = _produtoRepositorio.ProdutoDaPromocao(produto.CodProd);
+            ViewBag.Avaliacoes = _produtoRepositorio.TotalAvaliacoes(produto.CodProd);
+            var comentarios = _produtoRepositorio.ComentariosProduto(produto.CodProd);
 
             if (produto.Imagem != null)
             {
                 produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
             }
+            foreach(var comentario in comentarios)
+            {
+                if(comentario.FotoPerfil != null)
+                {
+                    comentario.FotoPerfilBase64 = Convert.ToBase64String(comentario.FotoPerfil);
+                }
+            }
+            ViewBag.Comentarios = comentarios;
             return View(produto);
         }
 
@@ -180,6 +190,15 @@ namespace TCM.Controllers
             ViewBag.TotalVendas = _produtoRepositorio.TotalVendas(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
             ViewBag.Lucro = _produtoRepositorio.ValorTotalVendas(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
             return View();
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Comentar(Comentario comentarios)
+        {
+            comentarios.UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            _produtoRepositorio.Comentar(comentarios);
+            return RedirectToAction("Comprar", "Produto", new { id = comentarios.ProdutoId });
         }
     }
 }

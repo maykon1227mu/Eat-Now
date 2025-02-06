@@ -14,7 +14,7 @@ namespace TCM.Repositorio
         void EditarUsuario(Usuario user);
         void Cadastrar(string nome, string email, string usuario, string senha);
         void CadastrarFuncionario(string nome, string email, string usuario, string senha, decimal salario);
-        void CadastrarFornecedor(string email, string usuario, string senha, string cnpj);
+        void CadastrarFornecedor(string nome, string email, string usuario, string senha, string cnpj);
 
     }
 }

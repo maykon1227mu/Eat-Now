@@ -146,7 +146,7 @@ namespace TCM.Repositorio
             using(var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("select * from tbfuncionario", conexao);
+                MySqlCommand cmd = new MySqlCommand("select * from tbusuario join tbfuncionario", conexao);
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
 
@@ -180,7 +180,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("select * from tbfornecedor where tipo = 'Fornecedor'", conexao);
+                MySqlCommand cmd = new MySqlCommand("select * from tbusuario join tbfornecedor where tipo = 'Fornecedor'", conexao);
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
 
@@ -282,7 +282,7 @@ namespace TCM.Repositorio
                 Fornecedor user = new Fornecedor();
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("select * from tbfornecedor where CodFor = @codfor", conexao);
+                MySqlCommand cmd = new MySqlCommand("select * from tbusuario where CodUsu = @codfor join tbfornecedor where CodFor = @codfor", conexao);
 
                 cmd.Parameters.Add("@codfor", MySqlDbType.Int32).Value = id;
 
@@ -325,7 +325,7 @@ namespace TCM.Repositorio
                 conexao.Open();
 
                 //Variavel cmd que recebe o comando insert do banco de dados inserindo o usuario e senha
-                MySqlCommand cmd = new MySqlCommand("insert into tbusuario (nome, email, usuario, senha) values (@nome, @email, @usuario, @senha)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spCadastrarUsuario(@nome, @email, @usuario, @senha)", conexao);
 
                 //Adicionando os parametros email, usuario e senha
                 cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
@@ -344,7 +344,7 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("insert into tbfuncionario (Nome, Email, Usuario, Senha, Salario) values (@nome, @email, @usuario, @senha, @salario)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spCadastrarFuncionario(@nome, @email, @usuario, @senha, @salario)", conexao);
                 
                 cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
                 cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = email;
@@ -357,14 +357,15 @@ namespace TCM.Repositorio
             }
         }
 
-        public void CadastrarFornecedor(string email, string usuario, string senha, string cnpj)
+        public void CadastrarFornecedor(string nome, string email, string usuario, string senha, string cnpj)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("insert into tbfornecedor (Email, Usuario, Senha, CNPJ) values (@email, @usuario, @senha, @cnpj)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spCadastrarFornecedor(@email, @nome, @usuario, @senha, @cnpj)", conexao);
 
+                cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
                 cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = email;
                 cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
                 cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = senha;

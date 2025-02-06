@@ -5,7 +5,7 @@ use dbtcm;
 create table tbusuario(
 CodUsu int primary key auto_increment,
 Nome varchar(80) not null,
-Email varchar(40) not null,
+Email varchar(40) not null unique,
 Usuario varchar(40) not null,
 Senha varchar(16) not null,
 Tipo varchar(28) default "Cliente"
@@ -13,21 +13,14 @@ Tipo varchar(28) default "Cliente"
 
 create table tbfuncionario(
 CodFunc int primary key auto_increment,
-Nome varchar(80) not null,
-Email varchar(40) not null,
-Usuario varchar(40) not null,
-Senha varchar(16) not null,
 Salario decimal(9,2) not null,
-Tipo varchar(28) default "Funcionario"
+foreign key (CodFunc) references tbusuario(CodUsu) on delete cascade
 );
 
 create table tbfornecedor(
 CodFor int primary key auto_increment,
-Email varchar(40) not  null,
-Usuario varchar(40) not null,
-Senha varchar(16) not null,
 CNPJ varchar(20) not null,
-Tipo varchar(28) default "Fornecedor"
+foreign key (CodFor) references tbusuario(CodUsu) on delete cascade
 );
 
 create table tbproduto(
@@ -39,7 +32,8 @@ Qtd int unsigned not null,
 UserId int not null,
 Imagem mediumblob not null,
 CategoriaId int not null,
-Vendas int not null default 0
+Vendas int not null default 0,
+Avaliacoes int not null default 0
 );
 
 create table tbcategoria(
@@ -83,6 +77,18 @@ Quantidade int unsigned not null,
 PrecoCar decimal(9,2) not null,
 foreign key (ProdutoId) references tbproduto(CodProd)
 );
+
+create table tbcomentario(
+ComentId int primary key auto_increment,
+UserId int not null,
+ProdutoId int not null,
+Comentario varchar(255),
+DataComent datetime default	current_timestamp,
+Avaliacao int not null
+);
+
+alter table tbcomentario add constraint FK_UserIdComentario foreign key (UserId) references tbusuario(CodUsu);
+alter table tbcomentario add constraint FK_ProdutoIdComentario foreign key (ProdutoId) references tbproduto(CodProd);
 
 select * from tbusuario;
 
@@ -149,26 +155,11 @@ delimiter $$
 
 create procedure spLogin(vUsuario varchar(40), vSenha varchar(16))
 begin
-    -- Verifica se o usuário existe na tabela tbusuario
-    if exists(select 1 from tbusuario where email = vUsuario and senha = vSenha) then
-        select * from tbusuario where email = vUsuario and senha = vSenha;
-    end if;
-
-    -- Verifica se o usuário existe na tabela tbfornecedor
-    if exists(select 1 from tbfornecedor where email = vUsuario and senha = vSenha) then
-        select * from tbfornecedor where email = vUsuario and senha = vSenha;
-    end if;
-
-    -- Verifica se o usuário existe na tabela tbfuncionario
-    if exists(select 1 from tbfuncionario where email = vUsuario and senha = vSenha) then
-        select * from tbfuncionario where email = vUsuario and senha = vSenha;
-    end if;
+	select * from tbusuario where Email = vUsuario and Senha = vSenha;
 end;
 $$
 
 delimiter ;
-
-
 
 delimiter $$
 create procedure spExcluirPromocao(vPromocaoId int)
@@ -184,12 +175,46 @@ begin
 	declare vPreco decimal(9,2);
 	if exists(select ProdutoId from tbpromocaoitem where ProdutoId = vProdutoId) then
 		set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
-		insert into tbpedido (ProdutoId, UserId, PrecoPed, QtdPed, Vendas) values (vProdutoId, vUserId, vPreco, vQtdVenda, vVenda);
+		insert into tbpedido (ProdutoId, UserId, PrecoPed, QtdPed) values (vProdutoId, vUserId, vPreco, vQtdVenda);
+        update tbproduto set Vendas = Vendas + vVenda where CodProd = vProdutoId;
 	else
 		set vPreco := (select Preco from tbproduto where CodProd = vProdutoId);
-        insert into tbpedido (ProdutoId, UserId, PrecoPed, QtdPed, Vendas) values (vProdutoId, vUserId, vPreco, vQtdVenda, vVenda);
+        insert into tbpedido (ProdutoId, UserId, PrecoPed, QtdPed) values (vProdutoId, vUserId, vPreco, vQtdVenda);
+        update tbproduto set Vendas = Vendas + vVenda where CodProd = vProdutoId;
 	end if;
 end$$
+delimiter ;
+
+delimiter $$
+
+create procedure spCadastrarUsuario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16))
+begin
+	insert into tbusuario(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Cliente");
+end
+$$
+
+delimiter ;
+
+delimiter $$
+
+create procedure spCadastrarFuncionario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vSalario decimal(9,2))
+begin
+	insert into tbusuario(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Funcionario");
+    insert into tbfuncionario(CodFunc, Salario) values (last_insert_id(), vSalario);
+end
+$$
+
+delimiter ;
+
+delimiter $$
+
+create procedure spCadastrarFornecedor(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vCNPJ varchar(20))
+begin
+	insert into tbusuario(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Fornecedor");
+    insert into tbfornecedor(CodFor, CNPJ) values (last_insert_id(), vCNPJ);
+end
+$$
+
 delimiter ;
 
 DELIMITER $$
@@ -204,7 +229,7 @@ BEGIN
     DECLARE vPromoId INT;
     declare vCategoriaId int;
     declare vPorcentagemCerta decimal(3,2);
-    set vPorcentagemCerta := concat("0,", vPorcentagem);
+    set vPorcentagemCerta := concat("0.", vPorcentagem);
 
     -- Verificar a categoria e inserir na tbPromocaoItem
     IF vCategoria = "Todos" THEN
@@ -238,7 +263,7 @@ select * from tbpromocao;
 select * from tbpromocaoitem;
 
 
-alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbfornecedor(CodFor);
+alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbfornecedor(CodUsu);
 alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);
 
 insert into tbcategoria (Categoria) values ("Comida Japonesa");
@@ -252,13 +277,14 @@ insert into tbcategoria (Categoria) values ("Milkshake");
 insert into tbcategoria (Categoria) values ("Açai");
 insert into tbcategoria (Categoria) values ("Bebidas");
 
-insert into tbfornecedor (email, usuario, senha, CNPJ, tipo) values ("admin@admin.com", "Admin", "12345", 1, "Administrador");
-insert into tbfornecedor (email, usuario, senha, CNPJ) values ("fornecedorteste@gmail.com", "Fornecedor teste", "12345", "00.623.904/0001-73");
-insert into tbfuncionario (Nome, email, usuario, senha, salario) values ("funcionarioteste", "funcionarioteste@gmail.com", "functeste", "12345", 1);
-insert into tbusuario (Nome, email, usuario, senha) values ("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345");
+call spCadastrarUsuario("Admin", "admin@gmail.com", "Admin1", "12345");
+update tbusuario set tipo = "Administrador" where codusu = 1;
+call spCadastrarFornecedor("nome da empresa real","fornecedorteste@gmail.com", "Fornecedor teste", "12345", "00.623.904/0001-73");
+call spCadastrarFuncionario("funcionarioteste", "funcionarioteste@gmail.com", "functeste", "12345", 1);
+call spCadastrarUsuario("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345");
 
-select * from tbfornecedor;
-select * from tbfuncionario;
+select * from tbusuario join tbfornecedor where tipo = "Fornecedor";
+select * from tbusuario join tbfuncionario where tipo = "Funcionario";
 select * from tbusuario;
 select * from tbcarrinho;
 select * from tbproduto;

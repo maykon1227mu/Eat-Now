@@ -24,3 +24,26 @@ body {
     background: var(--clr);
     overflow-x: hidden;
 }
+
+.avaliacao div {
+    color: #ffe400;
+}
+
+.avaliacao .input-estrela {
+    display: none;
+}
+
+.avaliacao .input-estrela + .label-estrela {
+    font-size: 60px;
+    text-shadow: 1px 1px 0 #ffe400;
+    cursor: pointer;
+}
+
+.avaliacao input:checked + .label-estrela ~ .label-estrela {
+    color: #838383;
+}
+
+.avaliacao .label-estrela:active {
+    transform: scale(0.8);
+    transition: .3s ease;
+}

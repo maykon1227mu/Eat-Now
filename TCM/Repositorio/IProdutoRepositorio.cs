@@ -29,5 +29,10 @@ namespace TCM.Repositorio
         int TotalVendasSite();
         decimal ValorTotalVendas(int userId);
         decimal LucroSite();
+        void Comentar(Comentario comentario);
+        void RemoverComentario(int comentId);
+        IEnumerable<Comentario> TodosComentarios();
+        IEnumerable<Comentario> ComentariosProduto(int produtoId);
+        int TotalAvaliacoes(int produtoId);
     }
 }

@@ -82,7 +82,7 @@ namespace TCM.Repositorio
                 Produto produto = new Produto();
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("select CodProd, NomeProd, Descricao, Preco, Qtd, Usuario, Categoria, CategoriaId, Imagem from tbproduto join tbfornecedor on tbproduto.UserId = tbfornecedor.CodFor join tbcategoria on tbproduto.CategoriaId = tbcategoria.CodCat where CodProd = @codprod;", conexao);
+                MySqlCommand cmd = new MySqlCommand("select CodProd, NomeProd, Descricao, Preco, Qtd, Usuario, Categoria, CategoriaId, Imagem, Avaliacoes from tbproduto join tbusuario on tbproduto.UserId = tbusuario.CodUsu join tbcategoria on tbproduto.CategoriaId = tbcategoria.CodCat where CodProd = @codprod;", conexao);
 
                 cmd.Parameters.Add("@codprod", MySqlDbType.Int32).Value = id;
 
@@ -107,9 +107,9 @@ namespace TCM.Repositorio
                         CategoriaId = Convert.ToInt32(dr["categoriaid"]),
                         NomeCategoria = (string)dr["categoria"],
                         Imagem = (byte[])dr["imagem"],
+                        Avaliacoes = Convert.ToInt32(dr["avaliacoes"])
                     };
                 }
-
                 return produto;
             }
         }
@@ -124,7 +124,7 @@ namespace TCM.Repositorio
                 //Abrindo a conexão com o banco de dados
                 conexao.Open();
                 //Criando o comando para listar todos os clientes
-                MySqlCommand cmd = new MySqlCommand("select CodProd, NomeProd, Descricao, Preco, Qtd, Usuario, UserId, CategoriaId, Categoria, Imagem from tbproduto join tbfornecedor on tbproduto.UserId = tbfornecedor.CodFor join tbcategoria on tbproduto.CategoriaId = tbcategoria.CodCat", conexao);
+                MySqlCommand cmd = new MySqlCommand("select CodProd, NomeProd, Descricao, Preco, Qtd, Usuario, UserId, CategoriaId, Categoria, Imagem, Avaliacoes from tbproduto join tbusuario on tbproduto.UserId = tbusuario.CodUsu join tbcategoria on tbproduto.CategoriaId = tbcategoria.CodCat", conexao);
 
                 //Traz a tabela
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -153,6 +153,7 @@ namespace TCM.Repositorio
                             CategoriaId = Convert.ToInt32(dr["categoriaid"]),
                             NomeCategoria = (string)dr["categoria"],
                             Imagem = (byte[])dr["imagem"],
+                            Avaliacoes = Convert.ToInt32(dr["avaliacoes"])
                         });
                 }
                 return Produtoslist;
@@ -168,7 +169,7 @@ namespace TCM.Repositorio
                 //Abrindo a conexão com o banco de dados
                 conexao.Open();
                 //Criando o comando para listar todos os clientes
-                MySqlCommand cmd = new MySqlCommand("select CodProd, NomeProd, Descricao, Preco, Qtd, Usuario, UserId, CategoriaId, Categoria, Imagem from tbproduto join tbfornecedor on tbproduto.UserId = tbfornecedor.CodFor join tbcategoria on tbproduto.CategoriaId = tbcategoria.CodCat where UserId = @id", conexao);
+                MySqlCommand cmd = new MySqlCommand("select CodProd, NomeProd, Descricao, Preco, Qtd, Usuario, UserId, CategoriaId, Categoria, Imagem from tbproduto join tbusuario on tbproduto.UserId = tbusuario.CodUsu join tbcategoria on tbproduto.CategoriaId = tbcategoria.CodCat where UserId = @id", conexao);
 
                 cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
 
@@ -245,6 +246,7 @@ namespace TCM.Repositorio
                             Qtd = Convert.ToInt32(dr["qtd"]),
                             UserId = Convert.ToInt32(dr["userid"]),
                             Imagem = ((byte[])dr["imagem"]),
+                            Avaliacoes = Convert.ToInt32(dr["avaliacoes"])
                         });
                 }
                 return Produtoslist;
@@ -499,15 +501,15 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    
-                        produtoEmPromocao = new PromocaoItem()
-                        {
-                            PromoItemId = Convert.ToInt32(dr["promoiditem"]),
-                            PromoId = Convert.ToInt32(dr["promoid"]),
-                            ProdutoId = Convert.ToInt32(dr["produtoid"]),
-                            PrecoPromo = Convert.ToDecimal(dr["precopromo"]),
-                            Porcentagem = Convert.ToInt32(dr["porcentagem"])
-                        };
+
+                    produtoEmPromocao = new PromocaoItem()
+                    {
+                        PromoItemId = Convert.ToInt32(dr["promoiditem"]),
+                        PromoId = Convert.ToInt32(dr["promoid"]),
+                        ProdutoId = Convert.ToInt32(dr["produtoid"]),
+                        PrecoPromo = Convert.ToDecimal(dr["precopromo"]),
+                        Porcentagem = Convert.ToInt32(dr["porcentagem"])
+                    };
                 }
                 return produtoEmPromocao;
             }
@@ -632,5 +634,131 @@ namespace TCM.Repositorio
                 return total;
             }
         }
+
+        public void Comentar(Comentario comentario)
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("insert into tbcomentario (UserId, ProdutoId, Comentario, Avaliacao) values (@userid, @produtoid, @comentario, @avaliacao); update tbproduto set avaliacao = avaliacao + 1 where CodProd = @produtoid;", conexao);
+
+                cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = comentario.UserId;
+                cmd.Parameters.Add("@produtoid", MySqlDbType.Int32).Value = comentario.ProdutoId;
+                cmd.Parameters.Add("@comentario", MySqlDbType.VarChar).Value = comentario.comentario;
+                cmd.Parameters.Add("@avaliacao", MySqlDbType.Int32).Value = comentario.Avaliacao;
+
+                cmd.ExecuteReader();
+                conexao.Close();
+            }
+        }
+
+        public void RemoverComentario(int comentId)
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+                MySqlCommand id = new MySqlCommand("select ProdutoId from tbcomentario where ComentId = @comentid", conexao);
+                int produtoid = Convert.ToInt32(id.ExecuteScalar());
+
+                MySqlCommand cmd = new MySqlCommand("delete from tbcomentario where ComentId = @comentid; update tbproduto set avaliacao = avaliacao - 1 where CodProd = @produtoid", conexao);
+
+                cmd.Parameters.Add("@comentid", MySqlDbType.Int32).Value = comentId;
+                cmd.Parameters.Add("@produtoid", MySqlDbType.Int32).Value = produtoid;
+
+                cmd.ExecuteReader();
+                conexao.Close();
+            }
+        }
+
+        public IEnumerable<Comentario> TodosComentarios()
+        {
+            List<Comentario> comentariosList = new List<Comentario>();
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("select * from tbcomentario", conexao);
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    comentariosList.Add(new Comentario()
+                    {
+                        ComentId = Convert.ToInt32(dr["comentid"]),
+                        UserId = Convert.ToInt32(dr["userid"]),
+                        ProdutoId = Convert.ToInt32(dr["produtoid"]),
+                        comentario = dr["comentario"].ToString() ?? string.Empty,
+                        DataComent = Convert.ToDateTime(dr["datacoment"]),
+                        Avaliacao = Convert.ToInt32(dr["avaliacao"])
+                    });
+                }
+                return comentariosList;
+            }
+        }
+        public IEnumerable<Comentario> ComentariosProduto(int produtoid)
+        {
+            List<Comentario> comentariosList = new List<Comentario>();
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("select ComentId, UserId, Usuario, FotoPerfil, ProdutoId, Comentario, DataComent, Avaliacao from tbcomentario join tbusuario on tbcomentario.UserId = tbusuario.CodUsu where ProdutoId = @produtoid ", conexao);
+
+                cmd.Parameters.Add("@produtoid", MySqlDbType.Int32).Value = produtoid;
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    comentariosList.Add(new Comentario()
+                    {
+                        ComentId = Convert.ToInt32(dr["comentid"]),
+                        UserId = Convert.ToInt32(dr["userid"]),
+                        UserName = Convert.ToString(dr["usuario"]),
+                        FotoPerfil = (byte[])dr["fotoperfil"],
+                        ProdutoId = Convert.ToInt32(dr["produtoid"]),
+                        comentario = dr["comentario"].ToString() ?? string.Empty,
+                        DataComent = Convert.ToDateTime(dr["datacoment"]),
+                        Avaliacao = Convert.ToInt32(dr["avaliacao"])
+                    });
+                }
+                return comentariosList;
+            }
+        }
+        public int TotalAvaliacoes(int produtoId)
+        {
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand("SELECT SUM(Avaliacao) FROM tbcomentario WHERE ProdutoId = @produtoid", conexao);
+                cmd.Parameters.Add("@produtoid", MySqlDbType.Int32).Value = produtoId;
+
+                var resultado = cmd.ExecuteScalar();
+
+                // Verifica se é DBNull ou null antes de converter
+                if (resultado == DBNull.Value || resultado == null)
+                {
+                    return 0;
+                }
+
+                return Convert.ToInt32(resultado);
+            }
+        }
+
     }
 }
