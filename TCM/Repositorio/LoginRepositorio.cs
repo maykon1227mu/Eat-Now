@@ -38,7 +38,7 @@ namespace TCM.Repositorio
                 if (dr.Read())
                 {
                     string tipo = Convert.ToString(dr["tipo"]);
-                    if (tipo == "Cliente")
+                    if (tipo == "Cliente" || tipo == "Administrador")
                     {
                         Usuario user = new Usuario();
 
@@ -71,7 +71,7 @@ namespace TCM.Repositorio
                         
                         return user;
                     }
-                    else if (tipo == "Fornecedor" || tipo == "Administrador")
+                    else if (tipo == "Fornecedor")
                     {
                         Fornecedor fornecedor = new Fornecedor();
                         // Atribuindo dados ao usuário, se encontrados no banco

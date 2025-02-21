@@ -8,8 +8,6 @@
     List<int> produtosEmPromocao = ViewBag.ProdutosPromo;
     PromocaoItem produtoPromocao = ViewBag.ProdutoPromo;
     List<Comentario> comentarios = ViewBag.Comentarios;
-    var avaliacao = ViewBag.Avaliacao;
-    var mediaAvaliacao = avaliacao / Model.Avaliacoes;
 }
 
 <div class="container-compra">
@@ -20,7 +18,7 @@
         <div class="compra-infos">
             <h3>@Model.NomeProd</h3>
             <p>@Model.Descricao</p>
-            @if(mediaAvaliacao < 1)
+            @if(Model.Nota < 1)
             {
                 <div class="product-star">
                     <i class="bi bi-star"></i>
@@ -28,52 +26,53 @@
                     <i class="bi bi-star"></i>
                     <i class="bi bi-star"></i>
                     <i class="bi bi-star"></i>
-                    <p>@mediaAvaliacao</p>
+                    <p>@Model.Nota</p>
                 </div>
             }
-            else if(mediaAvaliacao == 1)
+            else if (Model.Nota == 1)
             {
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star"></i>
                 <i class="bi bi-star"></i>
                 <i class="bi bi-star"></i>
                 <i class="bi bi-star"></i>
-                <p>@mediaAvaliacao</p>
-            } else if(mediaAvaliacao == 2)
+                <p>@Model.Nota</p>
+            }
+            else if (Model.Nota <= 2 && Model.Nota >= 1.5)
             {
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star"></i>
                 <i class="bi bi-star"></i>
                 <i class="bi bi-star"></i>
-                <p>@mediaAvaliacao</p>
+                <p>@Model.Nota</p>
             } 
-            else if(mediaAvaliacao == 3)
+            else if (Model.Nota <= 3 && Model.Nota >= 3.5)
             {
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star"></i>
                 <i class="bi bi-star"></i>
-                <p>@mediaAvaliacao</p>
+                <p>@Model.Nota</p>
             }
-            else if(mediaAvaliacao == 4)
+            else if (Model.Nota <= 4 && Model.Nota >= 3.5)
             {
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star"></i>
-                <p>@mediaAvaliacao</p>
+                <p>@Model.Nota</p>
             }
-            else if(mediaAvaliacao == 5)
+            else if (Model.Nota <= 5 && Model.Nota >= 4.5)
             {
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
-                <p>@mediaAvaliacao</p>
+                <p>@Model.Nota</p>
             }
             @if (produtosEmPromocao.Contains(Convert.ToInt32(Model.CodProd)))
             {
@@ -134,7 +133,8 @@
             @foreach(var comentario in comentarios)
             {
                 <div class="comentario">
-                    <img src="data:image/png;base64,@comentario.FotoPerfilBase64" alt="Imagem do Produto" />
+                    <img src="data:image/png;base64,@comentario.FotoPerfilBase64" alt="Foto de Perfil" />
+                    <p>@comentario.UserName</p>
                     @if (comentario.Avaliacao < 1)
                     {
                         <div class="product-star">
@@ -192,6 +192,7 @@
                         <p>@comentario.Avaliacao</p>
                     }
                     <p>@comentario.comentario</p>
+                    <p>@comentario.DataComent</p>
                 </div>
 
             }

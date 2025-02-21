@@ -4,71 +4,158 @@
 
 @model IEnumerable<Produto>
 
-<div class="container-principal">
-    <div class="principal">
-        <div class="box-esquerda">
-            <h1>Eat <span class="diff">Now</span></h1>
-            <div class="animacao"></div>
-            <p>
-                Venha conhecer nosso associados e comer com desconto,<br />
-                entrega na sua casa agora.
-            </p>
-            <a class="btn-comprar" href="#compra">Comprar Agora</a>
-        </div>
-        <div class="box-direita">
-            <ul class="lista">
-                <li>
-                    <h3>Bebidas</h3>
-                </li>
-                <li>
-                    <h3>Bebidas</h3>
-                </li>
-                <li>
-                    <h3>Bebidas</h3>
-                </li>
-                <li class="icon-down"><i class="bi bi-arrow-down"></i></li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div class="container-promo">
-    <div class="promo">
-        <div class="promo-textos">
-            <h3>Nosso fornecedores te Aguardam!</h3>
-            <p class="promo-desc">Somente hoje - desconto de <span style="color: rgb(74, 201, 127);">10%</span></p>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit dolor odio, cupiditate perspiciatis ab blanditiis excepturi iure pariatur at quidem consequuntur repellat necessitatibus iusto tempora repellendus repudiandae distinctio. Placeat, magnam.</p>
-            <a class="btn-comprar" href="#compra">Ver Comidas</a>
-        </div>
-    </div>
-</div>
+@{
+    List<int> produtosPromo = ViewBag.ProdutosPromo;
+    List<PromocaoItem> todosProdutosPromo = ViewBag.TodosProdutosPromo;
+}
 
-<div class="container-palavras">
-    <div class="palavras">
-        <h2 class="hidden">MELHORES COMIDAS</h2>
-        <div class="palavras-meio">
-            <h2 class="hidden estranho">COMIDA BARATA</h2>
-            <h2 class="hidden">ONDE QUISER</h2>
-            <h2 class="hidden">PARA VOCE</h2>
-        </div>
-        <h2 class="hidden">NA HORA</h2>
-        <h2 class="hidden">QUE QUISER</h2>
-        <div class="palavras-meio">
-            <h2 class="hidden">SEMPRE</h2>
-        </div>
-    </div>
-</div>
+<div id="compra" class="container-produtos">
+    @foreach (var categoria in ViewBag.Categorias)
+    {
+        <div class="categoria">
+            <h2 class="categoria-titulo">@categoria.Nome</h2>
+            <div class="produtos">
+                @foreach (var produto in Model)
+                {
+                    @if (produto.NomeCategoria == categoria.Nome)
+                    {
+                        <div class="product-container">
+                            @{
+                                string divCerta;
+                            }
+                            @if (produto.NomeCategoria == "Milkshake")
+                            {
+                                divCerta = "product-img-milkshake";
+                            }
+                            else if (produto.NomeCategoria == "Pizza")
+                            {
+                                divCerta = "product-img-pizza";
+                            }
+                            else if (produto.NomeCategoria == "Hamburguer")
+                            {
+                                divCerta = "product-img-hamburguer";
+                            }
+                            else if (produto.NomeCategoria == "Açai")
+                            {
+                                divCerta = "product-img-acai";
+                            }
+                            else
+                            {
+                                divCerta = "product-img";
+                            }
+                            <div class=@divCerta>
+                                <img class="card-img-top" src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
+                            </div>
 
-<div class="container-redirect">
-    <div class="redirect">
-        <div class="redirect-textos">
-            <h2>Ver Produtos</h2>
-            <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit dolor odio, cupiditate perspiciatis ab blanditiis excepturi iure pariatur at quidem consequuntur repellat necessitatibus iusto tempora repellendus repudiandae distinctio. Placeat, magnam.
-            </p>
-            <a class="btn-comprar" asp-controller="Home" asp-action="Produtos">Ver Comidas</a>
-        </div>
-        <div class="redirect-quadrado">
+                            <div class="product-name-star">
+                                <div>
+                                    <h2>@produto.NomeProd</h2>
+                                </div>
+                                <div class="product-star">
+                                    @if (produto.Nota < 1)
+                                    {
+                                        <div class="product-star">
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <i class="bi bi-star"></i>
+                                            <p>@produto.Nota</p>
+                                        </div>
+                                    }
+                                    else if (produto.Nota == 1)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <p>@produto.Nota</p>
+                                    }
+                                    else if (produto.Nota <= 2 && produto.Nota >= 1.5)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <p>@produto.Nota</p>
+                                    }
+                                    else if (produto.Nota <= 3 && produto.Nota >= 3.5)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                        <i class="bi bi-star"></i>
+                                        <p>@produto.Nota</p>
+                                    }
+                                    else if (produto.Nota <= 4 && produto.Nota >= 3.5)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star"></i>
+                                        <p>@produto.Nota</p>
+                                    }
+                                    else if (produto.Nota <= 5 && produto.Nota >= 4.5)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <p>@produto.Nota</p>
+                                    }
+                                </div>
+                            </div>
+                            <div class="product-description">
 
+                                @if (produtosPromo.Contains(produto.CodProd))
+                                {
+                                    var itemPromo = todosProdutosPromo.FirstOrDefault(p => p.ProdutoId == produto.CodProd);
+                                    if (itemPromo != null)
+                                    {
+                                        <p>De: R$@produto.Preco</p>
+                                        <p>Por: R$@itemPromo.PrecoPromo <sub>@itemPromo.Promocao</sub></p>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>R$@produto.Preco</p>
+                                }
+                                <p>@produto.Descricao</p>
+                                <p>Quantidade: @produto.Qtd</p>
+                                <p>Loja: @produto.Usuario</p>
+                            </div>
+                            <div class="button-cart">
+                                <a class="btn-comprar" asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd">Comprar</a>
+                                <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
+                                    <input name="produtoId" id="produtoId" asp-for="@produto.CodProd" hidden />
+                                    <input name="qtd" id="qtd" asp-for="@produto.Qtd" value="1" hidden />
+                                    @if (produto.NomeCategoria == "Milkshake")
+                                    {
+                                        <button class="btn-carrinho" style="background-color: rgb(214, 133, 205);" type="submit"><i class="bi bi-cart3"></i></button>
+                                    }
+                                    else if (produto.NomeCategoria == "Pizza" || produto.NomeCategoria == "Hamburguer")
+                                    {
+                                        <button class="btn-carrinho" style="background-color: rgb(187, 118, 28);" type="submit"><i class="bi bi-cart3"></i></button>
+                                    }
+                                    else if (produto.NomeCategoria == "Açai")
+                                    {
+                                        <button class="btn-carrinho" style="background-color: rgb(146, 91, 134);" type="submit"><i class="bi bi-cart3"></i></button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-carrinho" type="submit"><i class="bi bi-cart3"></i></button>
+                                    }
+                                </form>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
         </div>
-    </div>
+    }
 </div>

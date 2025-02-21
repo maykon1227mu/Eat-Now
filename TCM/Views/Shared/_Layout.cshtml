@@ -7,65 +7,48 @@
     <title>@ViewData["Title"] - Eat Now</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/TCM.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/nav.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/products.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/cart.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/formularios.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/compra.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/nav.css" asp-append-version="true" />
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <header>
-        <div class="menuToggle">
-        </div>
-        <div onclick="closeNav()" class="menuClose">
-            <i class="bi bi-arrow-left-short"></i>
-        </div>
-        <nav class="sidebar">
+        <div class="mobileNav">
             <ul>
-                <li class="logo" style="--bg: #333;">
+                
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                     <a asp-controller="Home" asp-action="Index">
-                        <div class="icon">
-                            <img src="./src/img/LogoDark.png" alt="">
-                        </div>
-                        <div class="text">Eat now</div>
-                    </a>
-                </li>
-                <div class="Menulist">
-                <li style="--bg: #407422;" class="active">
-                    <a href="#">
                         <div class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </div>
                         <div class="text">Home</div>
                     </a>
                 </li>
-                    @if(User.Identity.Name == null) 
-                    {
-                        <li style="--bg: #50834a;">
-                            <a asp-controller="Home" asp-action="Login">
-                                <div class="icon">
-                                    <ion-icon name="person-outline"></ion-icon>
-                                </div>
-                                <div class="text">Login</div>
-                            </a>
-                        </li>
-                        <li style="--bg: #35af2a;" class="">
-                            <a asp-controller="Home" asp-action="CadastrarUsuario">
-                                <div class="icon">
-                                    <ion-icon name="person-add-outline"></ion-icon>
-                                </div>
-                                <div class="text">Cadastro</div>
-                            </a>
-                        </li>
-                    }
-                <li style="--bg: #35af2a;">
+
+                @if (User.Identity.Name == null)
+                {
+                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Login" ? "active" : "")">
+                        <a asp-controller="Home" asp-action="Login">
+                            <div class="icon">
+                                <ion-icon name="person-outline"></ion-icon>
+                            </div>
+                            <div class="text">Login</div>
+                        </a>
+                    </li>
+                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "CadastrarUsuario" ? "active" : "")">
+                        <a asp-controller="Home" asp-action="CadastrarUsuario">
+                            <div class="icon">
+                                <ion-icon name="person-add-outline"></ion-icon>
+                            </div>
+                            <div class="text">Cadastro</div>
+                        </a>
+                    </li>
+                }
+
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Carrinho" ? "active" : "")">
                     <a asp-controller="Carrinho" asp-action="Index">
                         <div class="icon">
                             <ion-icon name="cart-outline"></ion-icon>
@@ -73,78 +56,70 @@
                         <div class="text">Carrinho</div>
                     </a>
                 </li>
-                <li style="--bg: #35af2a;" class="">
-                    <a asp-controller="Home" asp-action="Produtos">
-                        <div class="icon">
-                            <ion-icon name="bag-outline"></ion-icon>
-                        </div>
-                        <div class="text">Produtos</div>
-                    </a>
-                </li>
-                    @if(User.Identity.Name != null)
-                    {
-                        <li style="--bg: #20cc20;">
-                            <a asp-controller="Conta" asp-action="MeusPedidos">
-                                <div class="icon">
-                                    <ion-icon name="receipt-outline"></ion-icon>
-                                </div>
-                                <div class="text">Histórico</div>
-                            </a>
-                        </li>
-                    }
-                    
-                    @if(User.IsInRole("Administrador"))
-                    {
-                        <li style="--bg: #35af2a;" class="">
-                            <a asp-controller="Conta" asp-action="Index">
-                                <div class="icon">
-                                    <ion-icon name="create-outline"></ion-icon>
-                                </div>
-                                <div class="text">Editar/Admin</div>
-                            </a>
-                        </li>
-                    }
-                    
-                    @if (User.IsInRole("Cliente"))
-                    {
-                        <li style="--bg: #35af2a;" class="">
-                            <a asp-controller="Conta" asp-action="MinhaConta">
-                                <div class="icon">
-                                    <ion-icon name="create-outline"></ion-icon>
-                                </div>
-                                <div class="text">Minha Conta</div>
-                            </a>
-                        </li>
-                    }
-                    
-                    @if (User.IsInRole("Fornecedor"))
-                    {
-                        <li style="--bg: #35af2a;" class="">
-                            <a asp-controller="Conta" asp-action="PainelFornecedor">
-                                <div class="icon">
-                                    <ion-icon name="create-outline"></ion-icon>
-                                </div>
-                                <div class="text">Fornecedor</div>
-                            </a>
-                        </li>
-                    }
-                </div>
-                <div class="bottom">
-                    @if(User.Identity.Name != null)
-                    {
-                        <li style="--bg: #333;">
-                            <a asp-controller="Conta" asp-action="MinhaConta">
-                                <div class="icon">
-                                    <div class="imgBx">
-                                        <img style="width: 20px;" src="./src/img/ImagemUser.png" alt="">
-                                    </div>
-                                </div>
-                                <div class="text">@User.Identity.Name</div>
-                            </a>
-                        </li>
-                    }
-                    
-                <li style="--bg: #af2a2a;">
+
+                @if (User.Identity.Name != null)
+                {
+                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MeusPedidos" ? "active" : "")">
+                        <a asp-controller="Conta" asp-action="MeusPedidos">
+                            <div class="icon">
+                                <ion-icon name="receipt-outline"></ion-icon>
+                            </div>
+                            <div class="text">Histórico</div>
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole("Administrador"))
+                {
+                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                        <a asp-controller="Conta" asp-action="Index">
+                            <div class="icon">
+                                <ion-icon name="create-outline"></ion-icon>
+                            </div>
+                            <div class="text">Admin</div>
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole("Cliente"))
+                {
+                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "active" : "")">
+                        <a asp-controller="Conta" asp-action="MinhaConta">
+                            <div class="icon">
+                                <ion-icon name="person-outline"></ion-icon>
+                            </div>
+                            <div class="text">Minha Conta</div>
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole("Fornecedor"))
+                {
+                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "active" : "")">
+                        <a asp-controller="Conta" asp-action="PainelFornecedor">
+                            <div class="icon">
+                                <ion-icon name="create-outline"></ion-icon>
+                            </div>
+                            <div class="text">Fornecedor</div>
+                        </a>
+                    </li>
+                }
+
+                @if (User.Identity.Name != null)
+                {
+                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "active" : "")">
+                        <a asp-controller="Conta" asp-action="MinhaConta">
+                            <div class="icon">
+                                <span class="imgBx">
+                                    <ion-icon name="person-outline"></ion-icon>
+                                </span>
+                            </div>
+                            <div class="text">@User.Identity.Name</div>
+                        </a>
+                    </li>
+                }
+
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "active" : "")">
                     <a asp-controller="Home" asp-action="Logout">
                         <div class="icon">
                             <ion-icon name="settings-outline"></ion-icon>
@@ -152,9 +127,11 @@
                         <div class="text">Logout</div>
                     </a>
                 </li>
-                </div>
+                <div class="bolinha"></div>
             </ul>
-        </nav>
+            
+        </div>
+
     </header>
 
     <div class="container">
@@ -162,7 +139,25 @@
             @RenderBody()
         </main>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Seleciona todos os links dentro do menu
+            const links = document.querySelectorAll(".mobileNav a");
 
+            links.forEach(link => {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault(); // Impede a navegação imediata
+
+                    const destino = this.href; // Captura o destino do link
+
+                    // Aguarda 2 segundos antes de redirecionar
+                    setTimeout(() => {
+                        window.location.href = destino;
+                    }, 500);
+                });
+            });
+        });
+    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -172,3 +167,7 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+@*
+    
+*@

@@ -91,7 +91,7 @@ namespace TCM.Controllers
 
             ViewBag.ProdutosPromo = _produtoRepositorio.ProdutosEmPromocao();
             ViewBag.ProdutoPromo = _produtoRepositorio.ProdutoDaPromocao(produto.CodProd);
-            ViewBag.Avaliacoes = _produtoRepositorio.TotalAvaliacoes(produto.CodProd);
+            ViewBag.Avaliacoes = _produtoRepositorio.TotalAvaliacoes(id);
             var comentarios = _produtoRepositorio.ComentariosProduto(produto.CodProd);
 
             if (produto.Imagem != null)
