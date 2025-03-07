@@ -5,8 +5,8 @@
     width: 99vw;
     height: 100px;
     transform: translate(-50%, -50%);
-    background-color: #fff;
-    display: flex;
+    background-color: var(--color-secundaria);
+    display: none;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
@@ -28,18 +28,22 @@
     flex-direction: column;
     width: 70px;
     height: 70px;
-    color: var(--clr);
+    color: var(--bg-color);
     z-index: 1;
 }
 
 .mobileNav ul li .icon {
     font-size: 20px;
-    color: var(--clr);
+    color: var(--bg-color);
+}
+.mobileNav ul li .text {
+    font-size: 14px;
+    text-transform: uppercase;
 }
 
 .mobileNav ul li a {
     text-decoration: none;
-    color: var(--clr);
+    color: var(--bg-color);
 }
 
 .bolinha {
@@ -51,11 +55,185 @@
     background-color: #29fd53;
     border-radius: 50%;
     transition: transform 0.5s ease-in-out;
-    border: 6px solid var(--clr);
+    border: 6px solid var(--bg-color);
 }
 
 .mobileNav ul li.active ~ .bolinha {
     transform: translateX(var(--translateX, 0px));
+}
+
+nav {
+    position: fixed;
+    top: 10%;
+    width: 80px;
+    height: 80vh;
+    transition: 0.5s;
+    padding-left: 10px;
+    background-color: var(--color-secundaria);
+    overflow: hidden;
+    border-radius: 10px;
+    margin-left: 1rem;
+}
+
+nav ul {
+    position: relative;
+    height: 100vh;
+    padding-left: 0;
+}
+
+nav ul li {
+    position: relative;
+    list-style: none;
+}
+
+nav ul li.logo {
+    margin-bottom: 50px;
+}
+
+nav ul li.logo .iconeNav{
+    font-size: 2em;
+    color: var(--bg-color);
+}
+
+nav ul li.logo .textoNav{
+    font-size: 1.2em;
+    font-weight: 500;
+    color: var(--bg-color);
+}
+
+nav ul li a{
+    position: relative;
+    display: flex;
+    text-decoration: none;
+}
+
+nav ul li a .iconeNav {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
+    height: 70px;
+    font-size: 1.5em;
+    color: var(--color-principal);
+    transition: 0.5s;
+    padding-left: 10px;
+}
+
+nav ul li a .textoNav {
+    position: relative;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    color: var(--color-principal);
+    padding-left: 15px;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 0.05em;
+}
+
+nav ul li:hover a .iconeNav,
+nav ul li:hover a .textoNav{
+    color: #5CB338;
+}
+
+.menuToggle {
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 14px;
+    margin-right: 0.5rem;
+    transition: 0.5s
+}
+
+.menuToggle.ativo .linha:nth-child(1) {
+    transform: translateY(16px) rotate(45deg);
+}
+
+.menuToggle.ativo .linha:nth-child(3) {
+    transform: translateY(-16px) rotate(-45deg);
+}
+
+.menuToggle.ativo .linha:nth-child(2) {
+    width: 0;
+}
+
+.litoggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.linha {
+    width: 50px;
+    height: 2px;
+    background-color: var(--color-principal);
+    transition: 0.4s;
+}
+
+nav.ativo {
+    width: 220px;
+}
+
+nav ul li.ativo {
+    background-color:var(--bg-color);
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+}
+
+nav ul li.ativo::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 5px 5px 0 5px var(--bg-color);
+    background-color: transparent;
+}
+
+nav ul li.ativo::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 5px -5px 0 5px var(--bg-color);
+    background-color: transparent;
+}
+
+nav ul li.ativo a .iconeNav {
+    color: var(--color-principal);
+}
+
+nav ul li.ativo a .textoNav {
+    color: var(--color-font);
+}
+
+nav ul li.ativo a .iconeNav::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    width: 60px;
+    background-color: #5CB338;
+    border-radius: 50%;
+    transition: 0.5s;
+}
+
+@media (width <= 1024px) {
+    .mobileNav {
+        display: flex;
+    }
+    nav {
+        display: none;
+    }
 }
 
 @media (width <= 500px) {
@@ -69,7 +247,7 @@
     .mobileNav ul li .text {
         opacity: 0;
         transition: 0.5s;
-        margin: 0.5rem 1rem 0 0;
+        margin-right: 1rem;
         font-size: 16px;
     }
 
@@ -82,6 +260,7 @@
         .text {
                   color: #5CB338;
                   opacity: 1;
+                  margin-top: 1rem;
               }
         .icon {
             color: #5CB338;

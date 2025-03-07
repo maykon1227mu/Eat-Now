@@ -1,0 +1,20 @@
+﻿.container-fornecedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.fornecedor {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cinza-escuro);
+    color: var(--color-font-alt);
+    row-gap: 20px;
+}
+
+.link-fornecedor a{
+    text-decoration: underline;
+    color: #56A05B;
+}

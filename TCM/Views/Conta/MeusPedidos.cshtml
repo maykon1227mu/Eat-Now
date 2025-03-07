@@ -1,17 +1,44 @@
 ﻿@{
     ViewData["Title"] = "Meus Pedidos";
 }
+
+@{
+    decimal total = 0;
+}
+
 @model IEnumerable<Pedido>
 
-@if (!Model.Any())
+@*@if (!Model.Any())
 {
     <p>Você ainda não fez nenhum pedido!</p>
 }
 else
-{
+{ *@
     <div class="container-carrinho">
-        <div class="container-cards-price">
-            <div class="cart-boxes">
+        <div class="carrinho">
+            <div class="carrinho-pedidos">
+                <div class="pedidos">
+                <div class="pedido-img">
+                    <img style="width: 200px;" src="~/img/waffles.png" alt="Imagem do Produto" />
+                </div>
+                <div class="">
+                    <h2>Waffles</h2>
+                </div>
+                <div>
+                    <h5>1 x R$12,90</h5>
+                </div>
+                <div class="botoes-carrinho">
+                    <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
+                        <input name="produtoId" value="1" hidden />
+                        <input name="qtd" value="1" />
+                        <button class="btn-controle" type="submit">Adicionar</button>
+                    </form>
+                    <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="" asp-route-qtd="1" class="button-remove">Remover</a>
+                    <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="" asp-route-qtd="" class="button-remove">Remover Todos</a>
+                </div>
+                </div>
+                
+            </div>
                 @foreach (var item in Model)
                 {
                     if (item.ImagemPed != null)
@@ -19,26 +46,27 @@ else
                         //Transforma o blob para um jeito que dê para a imagem ser interpretada
                         item.ImagemBase64 = Convert.ToBase64String(item.ImagemPed);
                     }
-                    <div class="cart-box">
-                        <div class="cart-img">
+                    total += item.Total;
+                    <div class="pedidos">
+                        <div class="pedido-img">
                             <img src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
                         </div>
                         <div>
                             <h2>@item.NomeProd</h2>
-                            <p>Quantidade: @item.QtdPed</p>
+                            <h2></h2>
                         </div>
                         <div>
-                            <h5>Preço: R$@item.PrecoPed</h5>
-                        </div>
-                        <div>
-                            <h5>Total: R$@item.Total</h5>
-                        </div>
-                        <div>
+                            <p>@item.QtdPed x R$@item.PrecoPed</p>
                             <h5>Data: @item.DataPed</h5>
                         </div>
                     </div>
                 }
             </div>
+            <div class="carrinho-total">
+                <h4>Resumo</h4>
+                <span class="divisor"></span>
+                <p>Subtotal: R$@total</p>
+                <p>Total: R$@total</p>
+            </div>
         </div>
-    </div>
-}
+@*}*@

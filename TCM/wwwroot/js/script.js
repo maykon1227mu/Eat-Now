@@ -1,3 +1,12 @@
+let menuToggle = document.querySelector('.menuToggle');
+let sidebar = document.querySelector('.navprincipal');
+
+menuToggle.onclick = function () {
+    menuToggle.classList.toggle('ativo');
+    sidebar.classList.toggle('ativo');
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const bolinha = document.querySelector(".bolinha");
     const items = document.querySelectorAll(".mobileNav ul li");
@@ -27,4 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
             updateBolinha();
         });
     });
+});
+
+
+const btn = document.getElementById('btn-toggle');
+const html = document.getElementById('html');
+
+btn.addEventListener('click', function () {
+    html.classList.toggle('dark');
 });

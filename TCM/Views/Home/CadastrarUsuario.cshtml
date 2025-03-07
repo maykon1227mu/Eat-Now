@@ -6,19 +6,29 @@
 
 <main class="container-login">
     <div class="login">
-        <div class="box-left-profile">
-            <form asp-controller="Home" asp-action="CadastrarUsuario" class="box_login">
+            <form asp-controller="Home" asp-action="CadastrarUsuario">
                 
-                <h1>Ca<span id="g_1">das</span>tro</h1>
-                <h4>Mais segurança, menos chatice</h4>
-                <label for="email">Email:</label>
-                <input type="email" name="email" asp-for="email" placeholder="exemplo123@exemplo.com"/>
-                <label for="nome">Nome:</label>
-                <input type="text" name="Nome" asp-for="Nome" placeholder="Digite seu nome"/>
-                <label for="usuario">Usuario:</label>
-                <input asp-for="usuario" type="text" placeholder="Seu Usuario" name="usuario" id="usuario">
-                <label for="senha">Senha:</label>
-                <input asp-for="senha" placeholder="Sua Senha" type="password" name="senha" id="senha">
+                <h1>Cadastro</h1>
+                <label for="email">Email</label>
+                <div class="login-inputs">
+                    <input type="email" name="email" asp-for="email"/>
+                </div>
+                
+                <label for="nome">Nome</label>
+                <div class="login-inputs">
+                    <input type="text" name="Nome" asp-for="Nome" />
+                </div>
+                
+                <label for="usuario">Email</label>
+                <div class="login-inputs">
+                    <input asp-for="usuario" type="text" name="usuario" id="usuario">
+                </div>
+                
+                <label for="senha">Senha</label>
+                <div class="login-inputs">
+                    <input asp-for="senha" type="password" name="senha" id="senha">
+                </div>
+                
                 <div class="botoes">
                     <button type="submit">Cadatrar</button>
                 </div>

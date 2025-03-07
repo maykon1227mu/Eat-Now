@@ -6,26 +6,25 @@
 
 <main class="container-login">
     <div class="login">
-        <div class="box-left-profile">
-            <form asp-controller="Home" asp-action="Login" class="box_login">
+            <form asp-controller="Home" asp-action="Login">
                 @if (ViewData["msg"] != null)
                 {
                     @* O HTML Raw pode ser usado para: Procurar e baixar páginas HTML, Procurar e baixar cabeçalhos.*@
                     <p class="alert alert-danger">@Html.Raw(ViewData["msg"])</p>
                 }
-                <h1>Lo<span id="g_1">g</span>in</h1>
-                <h4>Mais segurança, menos chatice</h4>
-                <label for="usuario">Usuario:</label>
-                <input type="text" placeholder="Seu Email" name="usuario" id="usuario">
-                <label for="senha">Senha:</label>
-                <input placeholder="Sua Senha" type="password" name="senha" id="senha">
+                <h2>Login</h2>
+                <label for="usuario">Email</label>
+                <div class="login-inputs">
+                    <input class="input-email" placeholder="Seu Email" type="text" name="usuario" id="usuario">
+                </div>
+                <label for="senha">Senha</label>
+                <div class="login-inputs">
+                    <input class="input-senha" placeholder="Sua Senha" type="password" name="senha" id="senha">
+                </div>
                 <div class="botoes">
                     <button type="submit">Login</button>
                 </div>
             </form>
-        </div>
-        <div class="box-right-profile">
-        </div>
     </div>
 </main>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

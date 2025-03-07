@@ -12,8 +12,28 @@
 else
 {
     <div class="container-carrinho">
-        <div class="container-cards-price">
-            <div class="cart-boxes">
+        <div class="carrinho">
+            <div class="carrinho-pedidos">
+                <div class="pedidos">
+                        <div class="pedido-img">
+                            <img style="width: 200px;" src="./img/waffles.png" alt="Imagem do Produto" />
+                        </div>
+                        <div class="">
+                            <h2>Waffles</h2>
+                        </div>
+                        <div>
+                            <h5>1 x R$12,90</h5>
+                        </div>
+                        <div class="botoes-carrinho">
+                            <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
+                                <input name="produtoId" value="1" hidden/>
+                                <input name="qtd" value="1"/>
+                                <button class="btn-controle" type="submit">Adicionar</button>
+                            </form>
+                            <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="" asp-route-qtd="1" class="button-remove">Remover</a>
+                            <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="" asp-route-qtd="" class="button-remove">Remover Todos</a>
+                        </div>
+                    </div>
                 @foreach (var item in Model)
                 {
                     if (item.ImagemProd != null)
@@ -21,18 +41,17 @@ else
                         //Transforma o blob para um jeito que dê para a imagem ser interpretada
                         item.ImagemBase64 = Convert.ToBase64String(item.ImagemProd);
                     }
-                    <div class="cart-box">
-                        <div class="cart-img">
+                    <div class="pedidos">
+                        <div class="pedido-img">
                             <img src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
                         </div>
-                        <div>
+                        <div class="">
                             <h2>@item.NomeProduto</h2>
-                            <p>Quantidade: @item.Quantidade</p>
                         </div>
                         <div>
-                            <h5>Preço: R$@item.PrecoProduto</h5>
+                            <h5>@item.Quantidade x R$@item.PrecoProduto</h5>
                         </div>
-                        <div class="button-box-cart">
+                        <div class="botoes-carrinho">
                             <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
                                 <input name="produtoId" asp-for="@item.ProdutoId" hidden/>
                                 <input name="qtd" value="1" hidden/>
@@ -44,14 +63,11 @@ else
                     </div>
                 }
             </div>
-            <div class="total-price-box">
-                <h1 class="title-h1">Total a se Pagar</h1>
-                <div class="box1-total-price">
-                    <h1 class="sub-total-h1">Sub-Total: R$@Model.Sum(i => i.Total)</h1>
-                    <h2>Frete: <span style="color: rgb(81, 145, 81);">Grátis</span></h2>
-                </div>
-                <div class="total-price">
-                    Total: R$@Model.Sum(i => i.Total)
+            <div class="carrinho-total">
+                <h1>Total a se Pagar</h1>
+                <div>
+                    <h2>Sub-Total: R$@Model.Sum(i => i.Total)</h2>
+                    <h2>Total: R$@Model.Sum(i => i.Total)</h2>
                 </div>
                 <div class="button-box-cart-price">
                     <a asp-controller="Produto" asp-action="Finalizar" class="button-cash">Finalizar Compra</a>

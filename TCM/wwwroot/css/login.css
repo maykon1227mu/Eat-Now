@@ -1,0 +1,59 @@
+﻿.container-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+.login {
+    display: flex;
+    width: 400px;
+    padding: 40px;
+    background-color: var(--bg-color-sec);
+    border-radius: 35px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: var(--color-font-sec);
+}
+
+.login form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.login-inputs {
+    display: flex;
+    align-items: center;
+}
+
+.login-inputs input {
+    background: transparent;
+    color: var(--color-font-sec);
+    border-bottom: 1px solid var(--color-principal);
+    width: 300px;
+}
+
+.input-email::placeholder {
+    background: url("../img/icone-email.png") no-repeat;
+    background-size: 24px;
+    background-position: right;
+}
+.input-senha::placeholder {
+    background: url("../img/icons8-chave-24.png") no-repeat;
+    background-size: 24px;
+    background-position: right;
+}
+
+.login form button {
+    background-color: #5EA963;
+    border-radius: 12px;
+    padding: 5px;
+    color: var(--color-font-alt);
+    width: 100px;
+}
+
+.login form .botoes {
+    display: flex;
+    justify-content: end;
+}

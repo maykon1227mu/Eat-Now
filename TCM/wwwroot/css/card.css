@@ -1,0 +1,41 @@
+﻿.card-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 350px;
+    padding: 1.5rem;
+    background-color: var(--cinza-escuro);
+    color: var(--color-font-alt);
+}
+
+.card-imagem img {
+    width: 250px;
+}
+
+.card-meio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.card-botoes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-botoes a {
+    text-decoration: none;
+}
+
+.btn-comprar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 0.3rem;
+}

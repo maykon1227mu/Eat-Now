@@ -5,6 +5,7 @@
     min-width: 400px;
     border-radius: 5px;
     overflow: hidden;
+    color: var(--color-font-alt);
 }
 
 .content-table thead tr {

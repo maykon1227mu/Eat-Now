@@ -1,0 +1,19 @@
+﻿.container-produtos {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.categoria {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+}
+
+.produtos {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5rem;
+}

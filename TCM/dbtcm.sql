@@ -83,6 +83,8 @@ PrecoCar decimal(9,2) not null,
 foreign key (ProdutoId) references tbproduto(CodProd)
 );
 
+select * from tbcarrinho;
+
 create table tbcomentario(
 ComentId int primary key auto_increment,
 UserId int not null,
@@ -107,14 +109,18 @@ delimiter $$
 create procedure spInserirCarrinho(vUserId int, vProdutoId int , vQuantidade int)
 begin
 declare vPreco decimal(9,2); 
+if exists(select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId)then
+	set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
+else
+	set vPreco := (select Preco from tbproduto where CodProd = vProdutoId);
+end if;
+
 if(select Qtd from tbproduto where CodProd = vProdutoId != 0) then
 	if not exists(select * from tbcarrinho where UserId = vUserId and ProdutoId = vProdutoId) then
 		if exists(select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId) then
-			set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
             insert into tbcarrinho (UserId, ProdutoId, Quantidade, PrecoCar) values (vUserId, vProdutoId, vQuantidade, vPreco);
             update tbproduto set Qtd = Qtd - vQuantidade where CodProd = vProdutoId;
 		else
-			set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
 			insert into tbcarrinho (UserId, ProdutoId, Quantidade, PrecoCar) values (vUserId, vProdutoId, vQuantidade, vPreco);
 			update tbproduto set Qtd = Qtd - vQuantidade where CodProd = vProdutoId;
         end if;

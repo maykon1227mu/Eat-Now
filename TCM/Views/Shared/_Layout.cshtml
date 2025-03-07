@@ -1,6 +1,6 @@
 ﻿@using System.Security.Claims;
 <!DOCTYPE html>
-<html lang="pt-br">
+<html id="html" lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,128 +11,270 @@
     <link rel="stylesheet" href="~/css/formularios.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/nav.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/card.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/indexhome.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/indexconta.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/painelfornecedor.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/pedidos.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
     <header>
-        <div class="mobileNav">
+        <form method="get" asp-controller="Home" asp-action="Pesquisar">
+            <input class="barra-pesquisa" type="text" name="txtpesq" id="txtpesq" placeholder="Pesquisar">
+        </form>
+    </header>
+
+    <nav class="navprincipal">
             <ul>
-                
-                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                <li class="logo" style="--bg: #333;">
+                    <a href="#">
+                        <div class="iconeNav">
+                            <img style="width: 50px;" src="~/img/LogoDark.png"/>
+                        </div>
+                        <div class="textoNav">EatNow</div>
+                    </a>
+                </li>
+                <div class="listaMenu">
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "ativo" : "")">
                     <a asp-controller="Home" asp-action="Index">
-                        <div class="icon">
+                        <div class="iconeNav">
                             <ion-icon name="home-outline"></ion-icon>
                         </div>
-                        <div class="text">Home</div>
+                        <div class="textoNav">Home</div>
                     </a>
                 </li>
 
-                @if (User.Identity.Name == null)
-                {
-                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Login" ? "active" : "")">
+                    @if (User.Identity.Name == null)
+                    {
+                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Login" ? "ativo" : "")">
                         <a asp-controller="Home" asp-action="Login">
-                            <div class="icon">
+                            <div class="iconeNav">
                                 <ion-icon name="person-outline"></ion-icon>
                             </div>
-                            <div class="text">Login</div>
+                            <div class="textoNav">Login</div>
                         </a>
                     </li>
-                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "CadastrarUsuario" ? "active" : "")">
+                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "CadastrarUsuario" ? "ativo" : "")">
                         <a asp-controller="Home" asp-action="CadastrarUsuario">
-                            <div class="icon">
+                            <div class="iconeNav">
                                 <ion-icon name="person-add-outline"></ion-icon>
                             </div>
-                            <div class="text">Cadastro</div>
+                            <div class="textoNav">Cadastro</div>
                         </a>
                     </li>
-                }
+                    }
 
-                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Carrinho" ? "active" : "")">
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Carrinho" ? "ativo" : "")">
                     <a asp-controller="Carrinho" asp-action="Index">
-                        <div class="icon">
+                        <div class="iconeNav">
                             <ion-icon name="cart-outline"></ion-icon>
                         </div>
-                        <div class="text">Carrinho</div>
+                        <div class="textoNav">Carrinho</div>
                     </a>
                 </li>
 
-                @if (User.Identity.Name != null)
-                {
-                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MeusPedidos" ? "active" : "")">
+                    @if (User.Identity.Name != null)
+                    {
+                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MeusPedidos" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MeusPedidos">
-                            <div class="icon">
+                            <div class="iconeNav">
                                 <ion-icon name="receipt-outline"></ion-icon>
                             </div>
-                            <div class="text">Histórico</div>
+                            <div class="textoNav">Histórico</div>
                         </a>
                     </li>
-                }
+                    }
 
-                @if (User.IsInRole("Administrador"))
-                {
-                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                    @if (User.IsInRole("Administrador"))
+                    {
+                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="Index">
-                            <div class="icon">
+                            <div class="iconeNav">
                                 <ion-icon name="create-outline"></ion-icon>
                             </div>
-                            <div class="text">Admin</div>
+                            <div class="textoNav">Admin</div>
                         </a>
                     </li>
-                }
+                    }
 
-                @if (User.IsInRole("Cliente"))
-                {
-                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "active" : "")">
+                    @if (User.IsInRole("Cliente"))
+                    {
+                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MinhaConta">
-                            <div class="icon">
+                            <div class="iconeNav">
                                 <ion-icon name="person-outline"></ion-icon>
                             </div>
-                            <div class="text">Minha Conta</div>
+                            <div class="textoNav">Minha Conta</div>
                         </a>
                     </li>
-                }
+                    }
 
-                @if (User.IsInRole("Fornecedor"))
-                {
-                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "active" : "")">
+                    @if (User.IsInRole("Fornecedor"))
+                    {
+                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="PainelFornecedor">
-                            <div class="icon">
+                            <div class="iconeNav">
                                 <ion-icon name="create-outline"></ion-icon>
                             </div>
-                            <div class="text">Fornecedor</div>
+                            <div class="textoNav">Fornecedor</div>
                         </a>
                     </li>
-                }
+                    }
 
-                @if (User.Identity.Name != null)
-                {
-                    <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "active" : "")">
+                    @if (User.Identity.Name != null)
+                    {
+                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MinhaConta">
-                            <div class="icon">
-                                <span class="imgBx">
+                            <div class="iconeNav">
+                                <div class="imgBx">
                                     <ion-icon name="person-outline"></ion-icon>
-                                </span>
+                                </div>
                             </div>
-                            <div class="text">@User.Identity.Name</div>
+                            <div class="textoNav">@User.Identity.Name</div>
                         </a>
                     </li>
-                }
+                    }
 
-                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "active" : "")">
+                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "ativo" : "")">
                     <a asp-controller="Home" asp-action="Logout">
-                        <div class="icon">
+                        <div class="iconeNav">
                             <ion-icon name="settings-outline"></ion-icon>
                         </div>
-                        <div class="text">Logout</div>
+                        <div class="textoNav">Logout</div>
                     </a>
                 </li>
-                <div class="bolinha"></div>
+                <li class="litoggle">
+                    <div class="iconeNav">
+                        <button class="menuToggle">
+                            <span class="linha"></span>
+                            <span class="linha"></span>
+                            <span class="linha"></span>
+                        </button>
+                    </div>
+                </li>
+                </div>
+                <li><button id="btn-toggle">tema</button></li>
             </ul>
-            
-        </div>
+        </nav>
 
-    </header>
+    <div class="mobileNav">
+        <ul>
+
+            <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                <a asp-controller="Home" asp-action="Index">
+                    <div class="icon">
+                        <ion-icon name="home-outline"></ion-icon>
+                    </div>
+                    <div class="text">Home</div>
+                </a>
+            </li>
+
+            @if (User.Identity.Name == null)
+            {
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Login" ? "active" : "")">
+                    <a asp-controller="Home" asp-action="Login">
+                        <div class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </div>
+                        <div class="text">Login</div>
+                    </a>
+                </li>
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "CadastrarUsuario" ? "active" : "")">
+                    <a asp-controller="Home" asp-action="CadastrarUsuario">
+                        <div class="icon">
+                            <ion-icon name="person-add-outline"></ion-icon>
+                        </div>
+                        <div class="text">Cadastro</div>
+                    </a>
+                </li>
+            }
+
+            <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Carrinho" ? "active" : "")">
+                <a asp-controller="Carrinho" asp-action="Index">
+                    <div class="icon">
+                        <ion-icon name="cart-outline"></ion-icon>
+                    </div>
+                    <div class="text">Carrinho</div>
+                </a>
+            </li>
+
+            @if (User.Identity.Name != null)
+            {
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MeusPedidos" ? "active" : "")">
+                    <a asp-controller="Conta" asp-action="MeusPedidos">
+                        <div class="icon">
+                            <ion-icon name="receipt-outline"></ion-icon>
+                        </div>
+                        <div class="text">Histórico</div>
+                    </a>
+                </li>
+            }
+
+            @if (User.IsInRole("Administrador"))
+            {
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                    <a asp-controller="Conta" asp-action="Index">
+                        <div class="icon">
+                            <ion-icon name="create-outline"></ion-icon>
+                        </div>
+                        <div class="text">Admin</div>
+                    </a>
+                </li>
+            }
+
+            @if (User.IsInRole("Cliente"))
+            {
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "active" : "")">
+                    <a asp-controller="Conta" asp-action="MinhaConta">
+                        <div class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </div>
+                        <div class="text">Minha Conta</div>
+                    </a>
+                </li>
+            }
+
+            @if (User.IsInRole("Fornecedor"))
+            {
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "active" : "")">
+                    <a asp-controller="Conta" asp-action="PainelFornecedor">
+                        <div class="icon">
+                            <ion-icon name="create-outline"></ion-icon>
+                        </div>
+                        <div class="text">Fornecedor</div>
+                    </a>
+                </li>
+            }
+
+            @if (User.Identity.Name != null)
+            {
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "active" : "")">
+                    <a asp-controller="Conta" asp-action="MinhaConta">
+                        <div class="icon">
+                            <span class="imgBx">
+                                <ion-icon name="person-outline"></ion-icon>
+                            </span>
+                        </div>
+                        <div class="text">@User.Identity.Name</div>
+                    </a>
+                </li>
+            }
+
+            <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "active" : "")">
+                <a asp-controller="Home" asp-action="Logout">
+                    <div class="icon">
+                        <ion-icon name="settings-outline"></ion-icon>
+                    </div>
+                    <div class="text">Logout</div>
+                </a>
+            </li>
+            <div class="bolinha"></div>
+        </ul>
+
+    </div>
 
     <div class="container">
         <main role="main">
