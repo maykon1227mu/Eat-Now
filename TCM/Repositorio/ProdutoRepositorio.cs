@@ -219,7 +219,7 @@ namespace TCM.Repositorio
                 //Abrindo a conexão com o banco de dados
                 conexao.Open();
                 //Criando o comando para listar todos os clientes
-                MySqlCommand cmd = new MySqlCommand("select * from tbproduto where NomeProd like @nome", conexao);
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM tbproduto JOIN tbusuario ON tbproduto.UserId = tbusuario.CodUsu JOIN tbcategoria ON tbproduto.CategoriaId = tbcategoria.CodCat WHERE tbproduto.NomeProd LIKE @nome", conexao);
 
                 string nsei = nome + "%";
 
@@ -247,8 +247,11 @@ namespace TCM.Repositorio
                             Descricao = ((string)dr["descricao"]),
                             Preco = Convert.ToDecimal(dr["preco"]),
                             Qtd = Convert.ToInt32(dr["qtd"]),
+                            Usuario = (string)dr["usuario"],
                             UserId = Convert.ToInt32(dr["userid"]),
-                            Imagem = ((byte[])dr["imagem"]),
+                            CategoriaId = Convert.ToInt32(dr["categoriaid"]),
+                            NomeCategoria = (string)dr["categoria"],
+                            Imagem = (byte[])dr["imagem"],
                             Avaliacoes = Convert.ToInt32(dr["avaliacoes"]),
                             Nota = Convert.ToDouble(dr["nota"])
                         });

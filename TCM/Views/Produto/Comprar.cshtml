@@ -99,104 +99,123 @@
                     </div>
                     
                     <div>
-                        <button class="btn-comprar" type="submit">Comprar</button>
+                        <button class="btn-basico" type="submit">Comprar</button>
                     </div>
                     
                 </form>
             }
         </div>
     </div>
-</div>
-<div class="container-comentarios">
-    <div>
-        <h3>Comentários</h3>
-        <form asp-controller="Produto" asp-action="Comentar" method="post">
-            <input asp-for="CodProd" name="produtoId" id="produtoId" hidden/>
-            <div class="avaliacao">
-                <div class="star-icon">
-                    <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao1" value="1" required />
-                    <label class="bi bi-star-fill label-estrela" for="avaliacao1"></label>
-                    <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao2" value="2" required />
-                    <label class="bi bi-star-fill label-estrela" for="avaliacao2"></label>
-                    <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao3" value="3" required />
-                    <label class="bi bi-star-fill label-estrela" for="avaliacao3"></label>
-                    <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao4" value="4" required />
-                    <label class="bi bi-star-fill label-estrela" for="avaliacao4"></label>
-                    <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao5" value="5" required />
-                    <label class="bi bi-star-fill label-estrela" for="avaliacao5"></label>
+    <div class="container-comentarios">
+        <div>
+            <h3>Comentários</h3>
+            <form asp-controller="Produto" asp-action="Comentar" method="post">
+                <input asp-for="CodProd" name="produtoId" id="produtoId" hidden />
+                <div class="avaliacao">
+                    <div class="star-icon">
+                        <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao1" value="1" required />
+                        <label class="bi bi-star-fill label-estrela" for="avaliacao1"></label>
+                        <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao2" value="2" required />
+                        <label class="bi bi-star-fill label-estrela" for="avaliacao2"></label>
+                        <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao3" value="3" required />
+                        <label class="bi bi-star-fill label-estrela" for="avaliacao3"></label>
+                        <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao4" value="4" required />
+                        <label class="bi bi-star-fill label-estrela" for="avaliacao4"></label>
+                        <input class="input-estrela" type="radio" name="avaliacao" id="avaliacao5" value="5" required />
+                        <label class="bi bi-star-fill label-estrela" for="avaliacao5"></label>
+                    </div>
                 </div>
-            </div>
-            <textarea name="comentario" id="comentario" maxlength="255" style="resize: none"></textarea>
-            <button type="submit">Comentar</button>
-        </form>
-        <div class="comentarios">
-            @foreach(var comentario in comentarios)
-            {
-                <div class="comentario">
-                    <img src="data:image/png;base64,@comentario.FotoPerfilBase64" alt="Foto de Perfil" />
-                    <p>@comentario.UserName</p>
-                    @if (comentario.Avaliacao < 1)
-                    {
-                        <div class="product-star">
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
-                            <i class="bi bi-star"></i>
-                            <p>@comentario.Avaliacao</p>
-                        </div>
-                    }
-                    else if (comentario.Avaliacao == 1)
-                    {
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <p>@comentario.Avaliacao</p>
-                    }
-                    else if (comentario.Avaliacao == 2)
-                    {
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <p>@comentario.Avaliacao</p>
-                    }
-                    else if (comentario.Avaliacao == 3)
-                    {
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <p>@comentario.Avaliacao</p>
-                    }
-                    else if (comentario.Avaliacao == 4)
-                    {
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star"></i>
-                        <p>@comentario.Avaliacao</p>
-                    }
-                    else if (comentario.Avaliacao == 5)
-                    {
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <p>@comentario.Avaliacao</p>
-                    }
-                    <p>@comentario.comentario</p>
-                    <p>@comentario.DataComent</p>
-                </div>
+                <textarea class="text-comentario" placeholder="Comentario" name="comentario" id="comentario" maxlength="255" style="resize: none"></textarea>
+                <button class="btn-basico" type="submit">Comentar</button>
+            </form>
+            <div class="comentarios">
+                @foreach (var comentario in comentarios)
+                {
+                    <div class="comentario">
+                        <div class="comentario-infos">
+                            <img src="data:image/png;base64,@comentario.FotoPerfilBase64" alt="" />
+                            <p>@comentario.UserName</p>
+                            @if (comentario.Avaliacao < 1)
+                            {
+                                <div class="product-star">
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <p>@comentario.Avaliacao</p>
+                                </div>
+                            }
+                            else if (comentario.Avaliacao == 1)
+                            {
+                                <div class="product-star">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <p>@comentario.Avaliacao</p>
+                                </div>
 
-            }
+                            }
+                            else if (comentario.Avaliacao == 2)
+                            {
+                                <div class="product-star">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <p>@comentario.Avaliacao</p>
+                                </div>
+
+                            }
+                            else if (comentario.Avaliacao == 3)
+                            {
+                                <div class="product-star">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <i class="bi bi-star"></i>
+                                    <p>@comentario.Avaliacao</p>
+                                </div>
+
+                            }
+                            else if (comentario.Avaliacao == 4)
+                            {
+                                <div class="product-star">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star"></i>
+                                    <p>@comentario.Avaliacao</p>
+                                </div>
+
+                            }
+                            else if (comentario.Avaliacao == 5)
+                            {
+                                <div class="product-star">
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <i class="bi bi-star-fill"></i>
+                                    <p>@comentario.Avaliacao</p>
+                                </div>
+                            }
+                        </div>
+                        
+                        <div class="comentario-texto">
+                            <p>@comentario.comentario</p>
+                            <p>@comentario.DataComent</p>
+                        </div> 
+                    </div>
+
+                }
+            </div>
+
         </div>
-            
     </div>
 </div>

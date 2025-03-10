@@ -113,6 +113,8 @@ namespace TCM.Controllers
         [HttpPost]
         public IActionResult Pesquisar()
         {
+            ViewBag.ProdutosPromo = _produtoRepositorio.ProdutosEmPromocao();
+            ViewBag.TodosProdutosPromo = _produtoRepositorio.TodosProdutosDaPromocao();
             string nome = Request.Form["txtpesq"];
             if (nome == "") return RedirectToAction("Index", "Home");
             var produtos = _produtoRepositorio.Pesquisa(nome);

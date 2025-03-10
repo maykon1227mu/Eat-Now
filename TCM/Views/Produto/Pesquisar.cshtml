@@ -1,4 +1,10 @@
 ﻿@{
+
+}
+
+@{
+    List<int> produtosPromo = ViewBag.ProdutosPromo;
+    List<PromocaoItem> todosProdutosPromo = ViewBag.TodosProdutosPromo;
 }
 
 @model IEnumerable<Produto>
@@ -7,14 +13,96 @@
     <div class="row">
         @foreach (var produto in Model)
         {
-            <div class="card" style="width: 18rem;">
-                @*Interpreta a imagem*@
-                <img class="card-img-top" src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
-                <div class="card-body">
-                    <h5 class="card-title">@produto.NomeProd</h5>
-                    <p class="card-text">@produto.Descricao</p>
-                    <p class="card-text">R$@produto.Preco</p>
-                    <a asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd" class="btn btn-primary">Comprar</a>
+            <div class="card-container">
+
+                <div class="card-imagem">
+                    <img class="card-img-top" src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
+                </div>
+
+                <div class="card-meio">
+                    <div class="card-nome">
+                        <h2>@produto.NomeProd</h2>
+                    </div>
+
+                </div>
+                <div class="card-descricao">
+                    <div class="card-estrelas">
+                        @if (produto.Nota < 1)
+                        {
+                            <div class="product-star">
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <i class="bi bi-star"></i>
+                                <p>@produto.Nota</p>
+                            </div>
+                        }
+                        else if (produto.Nota == 1)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <p>@produto.Nota</p>
+                        }
+                        else if (produto.Nota <= 2 && produto.Nota >= 1.5)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <p>@produto.Nota</p>
+                        }
+                        else if (produto.Nota <= 3 && produto.Nota >= 3.5)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <i class="bi bi-star"></i>
+                            <p>@produto.Nota</p>
+                        }
+                        else if (produto.Nota <= 4 && produto.Nota >= 3.5)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <p>@produto.Nota</p>
+                        }
+                        else if (produto.Nota <= 5 && produto.Nota >= 4.5)
+                        {
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <p>@produto.Nota</p>
+                        }
+                    </div>
+
+
+                </div>
+                <div class="card-botoes">
+                    @if (produtosPromo.Contains(produto.CodProd))
+                    {
+                        var itemPromo = todosProdutosPromo.FirstOrDefault(p => p.ProdutoId == produto.CodProd);
+                        if (itemPromo != null)
+                        {
+                            <p>De: R$@produto.Preco</p>
+                            <p>Por: R$@itemPromo.PrecoPromo <sub>@itemPromo.Promocao</sub></p>
+                        }
+                    }
+                    else
+                    {
+                        <p>R$@produto.Preco</p>
+                    }
+                    <a class="btn-comprar" asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd">Comprar</a>
+
                 </div>
             </div>
         }
