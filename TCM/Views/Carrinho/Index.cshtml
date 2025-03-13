@@ -14,26 +14,6 @@ else
     <div class="container-carrinho">
         <div class="carrinho">
             <div class="carrinho-pedidos">
-                <div class="pedidos">
-                        <div class="pedido-img">
-                            <img style="width: 200px;" src="./img/waffles.png" alt="Imagem do Produto" />
-                        </div>
-                        <div class="">
-                            <h2>Waffles</h2>
-                        </div>
-                        <div>
-                            <h5>1 x R$12,90</h5>
-                        </div>
-                        <div class="botoes-carrinho">
-                            <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
-                                <input name="produtoId" value="1" hidden/>
-                                <input name="qtd" value="1"/>
-                                <button class="btn-controle" type="submit">Adicionar</button>
-                            </form>
-                            <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="" asp-route-qtd="1" class="button-remove">Remover</a>
-                            <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="" asp-route-qtd="" class="button-remove">Remover Todos</a>
-                        </div>
-                    </div>
                 @foreach (var item in Model)
                 {
                     if (item.ImagemProd != null)
@@ -43,13 +23,11 @@ else
                     }
                     <div class="pedidos">
                         <div class="pedido-img">
-                            <img src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
-                        </div>
-                        <div class="">
-                            <h2>@item.NomeProduto</h2>
+                            <img style="width: 200px;" src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
                         </div>
                         <div>
-                            <h5>@item.Quantidade x R$@item.PrecoProduto</h5>
+                            <h2>@item.NomeProduto</h2>
+                            <h5>@item.Quantidade x R$<span style="color: #CDA978;">@item.PrecoProduto</span></h5>
                         </div>
                         <div class="botoes-carrinho">
                             <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
@@ -64,15 +42,19 @@ else
                 }
             </div>
             <div class="carrinho-total">
-                <h1>Total a se Pagar</h1>
-                <div>
-                    <h2>Sub-Total: R$@Model.Sum(i => i.Total)</h2>
-                    <h2>Total: R$@Model.Sum(i => i.Total)</h2>
+                <div class="total">
+                    <h1>Total a se Pagar</h1>
+                    <div>
+                        <h2>Sub-Total: R$@Model.Sum(i => i.Total)</h2>
+                        <h2>Total: R$@Model.Sum(i => i.Total)</h2>
+                    </div>
+                    <div class="button-box-cart-price">
+                        <a asp-controller="Produto" asp-action="Finalizar" class="button-cash">Finalizar Compra</a>
+                        <a asp-controller="Carrinho" asp-action="LimparCarrinho" class="button-remove-all">Limpar Carrinho</a>
+                    </div>
                 </div>
-                <div class="button-box-cart-price">
-                    <a asp-controller="Produto" asp-action="Finalizar" class="button-cash">Finalizar Compra</a>
-                    <a asp-controller="Carrinho" asp-action="LimparCarrinho" class="button-remove-all">Limpar Carrinho</a>
-                </div>
+                
+                
 
             </div>
         </div>

@@ -59,6 +59,7 @@
     width: 500px;
     background-color: var(--cinza-escuro);
     margin-top: 1rem;
+    color: var(--color-font-alt);
 }
 
 .comentario-infos {
@@ -71,6 +72,9 @@
     gap: 10px;
 }
 
-.product-star  {
+.product-star {
     display:flex;
+}
+.product-star p {
+    margin-left: 10px;
 }
