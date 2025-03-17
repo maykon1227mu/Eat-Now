@@ -8,37 +8,15 @@
 
 @model IEnumerable<Pedido>
 
-@*@if (!Model.Any())
+@if (!Model.Any())
 {
     <p>Você ainda não fez nenhum pedido!</p>
 }
 else
-{ *@
+{ 
     <div class="container-carrinho">
         <div class="carrinho">
             <div class="carrinho-pedidos">
-                <div class="pedidos">
-                <div class="pedido-img">
-                    <img style="width: 200px;" src="~/img/waffles.png" alt="Imagem do Produto" />
-                </div>
-                <div class="">
-                    <h2>Waffles</h2>
-                </div>
-                <div>
-                    <h5>1 x R$12,90</h5>
-                </div>
-                <div class="botoes-carrinho">
-                    <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
-                        <input name="produtoId" value="1" hidden />
-                        <input name="qtd" value="1" />
-                        <button class="btn-controle" type="submit">Adicionar</button>
-                    </form>
-                    <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="" asp-route-qtd="1" class="button-remove">Remover</a>
-                    <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="" asp-route-qtd="" class="button-remove">Remover Todos</a>
-                </div>
-                </div>
-                
-            </div>
                 @foreach (var item in Model)
                 {
                     if (item.ImagemPed != null)
@@ -69,4 +47,5 @@ else
                 <p>Total: R$@total</p>
             </div>
         </div>
-@*}*@
+    </div>
+}
