@@ -5,7 +5,7 @@
     width: 99vw;
     height: 100px;
     transform: translate(-50%, -50%);
-    background-color: var(--color-secundaria);
+    background-color: var(--color-nav);
     display: none;
     justify-content: center;
     align-items: center;
@@ -64,14 +64,13 @@
 
 nav {
     position: fixed;
-    top: 10%;
     width: 80px;
-    height: 80vh;
+    height: 90vh;
     transition: 0.5s;
     padding-left: 10px;
-    background-color: var(--color-secundaria);
+    background-color: var(--color-nav);
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 16px 40px 16px 16px;
     margin-left: 1rem;
 }
 
@@ -88,6 +87,7 @@ nav ul li {
 
 nav ul li.logo {
     margin-bottom: 50px;
+    margin-top: 10px;
 }
 
 nav ul li.logo .iconeNav{

@@ -16,6 +16,7 @@
     --color-principal: #fff;
     --color-secundaria: #333;
     --preto: #0E0E0E;
+    --color-nav: #000;
     --cinza-escuro: #363636;
 }
 
@@ -29,6 +30,7 @@
     --color-secundaria: #fff;
     --preto: #0E0E0E;
     --cinza-escuro: #363636;
+    --color-nav: #fff;
 }
 
 body {
@@ -102,21 +104,32 @@ header {
     height: 100%;
 }
 
-.intro h1 {
+.intro .title-intro {
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
+
+.intro .title-intro h1 {
     font-size: 15vw;
     font-weight: 700;
     color: transparent;
-    -webkit-text-stroke: 4px var(--color-font);
+    -webkit-text-stroke: 2.5px var(--color-font);
 }
 
 .intro span {
     color: transparent;
-    -webkit-text-stroke: 4px #5CB338;
+    -webkit-text-stroke: 2.5px #5CB338;
 }
 
-.intro p {
-    font-size: 30px;
-    margin-left: 10rem;
+.intro .subtitle-intro {
+    width:100%;
+    padding-left: 50%;
+}
+
+.intro .subtitle-intro p {
+    font-size: 26px;
+
 }
 
 .btn-basico {

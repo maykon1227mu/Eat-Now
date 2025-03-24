@@ -4,6 +4,10 @@
     flex-direction: column;
 }
 
+.container-intro h1 {
+
+}
+
 .categoria {
     display: flex;
     flex-direction: column;

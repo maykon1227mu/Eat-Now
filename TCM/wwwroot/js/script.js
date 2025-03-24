@@ -41,7 +41,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 const btn = document.getElementById('btn-toggle');
 const html = document.getElementById('html');
+let imgLogo = document.getElementById('logoNav');
 
 btn.addEventListener('click', function () {
     html.classList.toggle('dark');
+
+    if (html.classList.contains("dark")) {
+        imgLogo.src = "./img/LogoDark.png";
+    } else {
+        imgLogo.src = "./img/LogoLight.png";
+    }
 });
