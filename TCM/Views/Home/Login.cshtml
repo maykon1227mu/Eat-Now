@@ -12,13 +12,22 @@
                     @* O HTML Raw pode ser usado para: Procurar e baixar páginas HTML, Procurar e baixar cabeçalhos.*@
                     <p class="alert alert-danger">@Html.Raw(ViewData["msg"])</p>
                 }
+                <div class="login-cima">
+                    <div class="cima-esquerda">
+                    <a asp-action="Index" asp-controller="Home"><i style="color: #417741; font-size: 38px;" class="bi bi-arrow-left-circle"></i></a>
+                    </div>
+                    <div class="cima-direita">
+                        <img id="logoNav" src="~/img/LogoLight.png" alt="" />
+                    </div> 
+                </div>
                 <h2>Login</h2>
-                <label for="usuario">Email</label>
                 <div class="login-inputs">
+                    <label for="usuario">Email</label>
                     <input class="input-email" placeholder="Seu Email" type="text" name="usuario" id="usuario">
                 </div>
-                <label for="senha">Senha</label>
+
                 <div class="login-inputs">
+                    <label for="senha">Senha</label>
                     <input class="input-senha" placeholder="Sua Senha" type="password" name="senha" id="senha">
                 </div>
                 <div class="botoes">
@@ -27,5 +36,3 @@
             </form>
     </div>
 </main>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

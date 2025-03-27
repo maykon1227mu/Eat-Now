@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="~/css/pedidos.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/compra.css" asp-append-version="true" />
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
@@ -29,31 +29,31 @@
     </header>
 
     <nav class="navprincipal">
-            <ul>
-                <li class="logo" style="--bg: #333;">
-                    <a href="#">
-                        <div class="iconeNav">
-                            <img id="logoNav" style="width: 50px;" src="./img/LogoLight.png"/>
-                        </div>
-                        <div class="textoNav">EatNow</div>
-                    </a>
-                </li>
-                <div class="listaMenu">
+        <ul>
+            <li class="logo" style="--bg: #333;">
+                <a href="#">
+                    <div class="iconeNav">
+                        <img id="logoNav" style="width: 50px;" src="~/img/LogoLight.png"/>
+                    </div>
+                    <div class="textoNav">EatNow</div>
+                </a>
+            </li>
+            <div class="listaMenu">
                 <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "ativo" : "")">
                     <a asp-controller="Home" asp-action="Index">
                         <div class="iconeNav">
-                            <ion-icon name="home-outline"></ion-icon>
+                            <i class="bi bi-house"></i>
                         </div>
                         <div class="textoNav">Home</div>
                     </a>
                 </li>
 
-                    @if (User.Identity.Name == null)
-                    {
+                @if (User.Identity.Name == null)
+                {
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Login" ? "ativo" : "")">
                         <a asp-controller="Home" asp-action="Login">
                             <div class="iconeNav">
-                                <ion-icon name="person-outline"></ion-icon>
+                                <i class="bi bi-person"></i>
                             </div>
                             <div class="textoNav">Login</div>
                         </a>
@@ -61,72 +61,72 @@
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "CadastrarUsuario" ? "ativo" : "")">
                         <a asp-controller="Home" asp-action="CadastrarUsuario">
                             <div class="iconeNav">
-                                <ion-icon name="person-add-outline"></ion-icon>
+                                <i class="bi bi-person-plus"></i>
                             </div>
                             <div class="textoNav">Cadastro</div>
                         </a>
                     </li>
-                    }
+                }
 
                 <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Carrinho" ? "ativo" : "")">
                     <a asp-controller="Carrinho" asp-action="Index">
                         <div class="iconeNav">
-                            <ion-icon name="cart-outline"></ion-icon>
+                            <i class="bi bi-cart"></i>
                         </div>
                         <div class="textoNav">Carrinho</div>
                     </a>
                 </li>
 
-                    @if (User.Identity.Name != null)
-                    {
+                @if (User.Identity.Name != null)
+                {
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MeusPedidos" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MeusPedidos">
                             <div class="iconeNav">
-                                <ion-icon name="receipt-outline"></ion-icon>
+                                <i class="bi bi-receipt"></i>
                             </div>
                             <div class="textoNav">Histórico</div>
                         </a>
                     </li>
-                    }
+                }
 
-                    @if (User.IsInRole("Administrador"))
-                    {
+                @if (User.IsInRole("Administrador"))
+                {
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="Index">
                             <div class="iconeNav">
-                                <ion-icon name="create-outline"></ion-icon>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                             <div class="textoNav">Admin</div>
                         </a>
                     </li>
-                    }
+                }
 
-                    @if (User.IsInRole("Cliente"))
-                    {
+                @if (User.IsInRole("Cliente"))
+                {
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MinhaConta">
                             <div class="iconeNav">
-                                <ion-icon name="person-outline"></ion-icon>
+                                <i class="bi bi-person"></i>
                             </div>
                             <div class="textoNav">Minha Conta</div>
                         </a>
                     </li>
-                    }
+                }
 
-                    @if (User.IsInRole("Fornecedor"))
-                    {
+                @if (User.IsInRole("Fornecedor"))
+                {
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="PainelFornecedor">
                             <div class="iconeNav">
-                                <ion-icon name="create-outline"></ion-icon>
+                                <i class="bi bi-plus-circle"></i>
                             </div>
                             <div class="textoNav">Fornecedor</div>
                         </a>
                     </li>
-                    }
+                }
 
-                    @if (User.Identity.Name != null)
-                    {
+                @if (User.Identity.Name != null)
+                {
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MinhaConta">
                             <div class="iconeNav">
@@ -137,16 +137,19 @@
                             <div class="textoNav">@User.Identity.Name</div>
                         </a>
                     </li>
-                    }
-
+                }
+                @if(User.Identity.Name != null)
+                {
                 <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "ativo" : "")">
                     <a asp-controller="Home" asp-action="Logout">
                         <div class="iconeNav">
-                            <ion-icon name="settings-outline"></ion-icon>
+                            <i class="bi bi-gear"></i>
                         </div>
                         <div class="textoNav">Logout</div>
                     </a>
                 </li>
+                }
+                
                 <li class="litoggle">
                     <div class="iconeNav">
                         <button class="menuToggle">

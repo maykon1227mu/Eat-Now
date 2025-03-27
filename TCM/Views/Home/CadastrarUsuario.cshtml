@@ -5,21 +5,30 @@
 }
 
 <main class="container-login">
-    <div class="login">
+    <div class="login cadastro">
             <form asp-controller="Home" asp-action="CadastrarUsuario">
+            <div class="login-cima">
+                <div class="cima-esquerda">
+                    <a asp-action="Index" asp-controller="Home"><i style="color: #417741; font-size: 38px;" class="bi bi-arrow-left-circle"></i></a>
+                </div>
+                <div class="cima-direita">
+                    <img id="logoNav" src="~/img/LogoLight.png" alt="" />
+                </div>
+            </div>
                 
                 <h1>Cadastro</h1>
-                <label for="email">Email</label>
-                <div class="login-inputs">
-                    <input type="email" name="email" asp-for="email"/>
-                </div>
-                
+
                 <label for="nome">Nome</label>
                 <div class="login-inputs">
                     <input type="text" name="Nome" asp-for="Nome" />
                 </div>
-                
-                <label for="usuario">Email</label>
+
+                <label for="email">Email</label>
+                <div class="login-inputs">
+                    <input type="email" name="email" asp-for="email"/>
+                </div>
+
+                <label for="usuario">Usuário</label>
                 <div class="login-inputs">
                     <input asp-for="usuario" type="text" name="usuario" id="usuario">
                 </div>
@@ -36,5 +45,4 @@
         </div>
         <div class="box-right-profile">
         </div>
-    </div>
 </main>
