@@ -51,8 +51,8 @@ btn.addEventListener('click', function () {
 
 
     if (html.classList.contains("dark")) {
-        imgLogo.src = "~/img/LogoDark.png";
+        imgLogo.src = "/img/LogoDark.png";
     } else {
-        imgLogo.src = "~/img/LogoLight.png";
+        imgLogo.src = "/img/LogoLight.png";
     }
 });

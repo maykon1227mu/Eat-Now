@@ -114,7 +114,7 @@ header {
     font-size: 15vw;
     font-weight: 700;
     color: transparent;
-    -webkit-text-stroke: 2.5px var(--color-font);
+    -webkit-text-stroke: 2px var(--color-font);
 }
 
 .intro span {
@@ -127,9 +127,9 @@ header {
     padding-left: 50%;
 }
 
+
 .intro .subtitle-intro p {
     font-size: 26px;
-
 }
 
 .btn-basico {

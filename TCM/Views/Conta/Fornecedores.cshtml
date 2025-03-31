@@ -4,8 +4,9 @@
 
 @model IEnumerable<Fornecedor>
 
-<h1>Painel Fornecedores</h1>
 
+<main class="products-index">
+<h1>Painel Fornecedores</h1>
 <table class="content-table">
     <thead>
         <tr>
@@ -13,13 +14,12 @@
             <th>Nome</th>
             <th>Email</th>
             <th>CNPJ</th>
-            <th> </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var fornecedor in Model)
         {
-            <tr>
+            <tr class="tr-products">
                 <td>@fornecedor.CodFor</td>
                 <td>@fornecedor.usuario</td>
                 <td>@fornecedor.email</td>
@@ -31,3 +31,4 @@
         }
     </tbody>
 </table>
+</main>

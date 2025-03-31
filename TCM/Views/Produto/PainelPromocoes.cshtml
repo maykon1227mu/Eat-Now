@@ -3,43 +3,39 @@
 }
 
 @model IEnumerable<Promocao>
+<main class="products-index">
+            <h1>Painel de Promoções</h1>
+            <div>
+                <a asp-controller="Produto" asp-action="NovaPromocao" class="btn btn-primary">Nova Promoção</a>
+                <a asp-controller="Produto" asp-action="DeletarPromocao" class="btn btn-primary">Excluir Promoção</a>
+            </div>
 
-<div class="container-promo">
-    <div>
-        <h1>Painel de Promoções</h1>
         <div>
-            <a asp-controller="Produto" asp-action="NovaPromocao" class="btn btn-primary">Nova Promoção</a>
-            <a asp-controller="Produto" asp-action="DeletarPromocao" class="btn btn-primary">Excluir Promoção</a>
-        </div>
-    </div>
-
-    <div>
-        <table class="content-table">
-            <thead>
-                <tr>
-                    <th>Código</th>
-                    <th>Nome</th>
-                    <th>Porcentagem</th>
-                    <th>Data de Exclusão</th>
-                    <th>Categoria</th>
-                    <th> </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var promocao in Model)
-                {
+            <table class="content-table">
+                <thead>
                     <tr>
-                        <td>@promocao.PromoId</td>
-                        <td>@promocao.NomePromo</td>
-                        <td>@promocao.Porcentagem</td>
-                        <td>@promocao.Data_Exclusao</td>
-                        <td>@promocao.Categoria</td>
-                        <td>
-                            <a class="btn btn-danger" asp-controller="Produto" asp-action="DeletarPromocao" asp-route-promoId="@promocao.PromoId">Excluir</a>
-                        </td>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Porcentagem</th>
+                        <th>Data de Exclusão</th>
+                        <th>Categoria</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+                </thead>
+                <tbody>
+                    @foreach (var promocao in Model)
+                    {
+                        <tr>
+                            <td>@promocao.PromoId</td>
+                            <td>@promocao.NomePromo</td>
+                            <td>@promocao.Porcentagem</td>
+                            <td>@promocao.Data_Exclusao</td>
+                            <td>@promocao.Categoria</td>
+                            <td>
+                                <a class="btn btn-danger" asp-controller="Produto" asp-action="DeletarPromocao" asp-route-promoId="@promocao.PromoId">Excluir</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+</main>

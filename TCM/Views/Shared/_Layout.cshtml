@@ -118,7 +118,7 @@
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MinhaConta">
                             <div class="iconeNav">
-                                <i class="bi bi-person"></i>
+                                <i class="bi bi-tags"></i>
                             </div>
                             <div class="textoNav">Minha Conta</div>
                         </a>
@@ -143,7 +143,7 @@
                         <a asp-controller="Conta" asp-action="MinhaConta">
                             <div class="iconeNav">
                                 <div class="imgBx">
-                                    <ion-icon name="person-outline"></ion-icon>
+                                    <i class="bi bi-person"></i>
                                 </div>
                             </div>
                             <div class="textoNav">@User.Identity.Name</div>
@@ -177,6 +177,15 @@
             </ul>
         </nav>
 
+
+
+
+
+
+
+
+
+        @*MOBILE NAV*@
     <div class="mobileNav">
         <ul>
 
@@ -246,8 +255,8 @@
             {
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "active" : "")">
                     <a asp-controller="Conta" asp-action="MinhaConta">
-                        <div class="icon">
-                            <ion-icon name="person-outline"></ion-icon>
+                        <div class="iconeNav">
+                            <i class="bi bi-tags"></i>
                         </div>
                         <div class="text">Minha Conta</div>
                     </a>

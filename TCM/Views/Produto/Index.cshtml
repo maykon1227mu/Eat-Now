@@ -4,41 +4,41 @@
 
 @model IEnumerable<Produto>
 
-<h1>Painel Produtos</h1>
+
         
 
-
-<table class="content-table">
-    <thead>
-        <tr>
-            <th>Código</th>
-            <th>Nome</th>
-            <th>Descrição</th>
-            <th>Preço</th>
-            <th>Quantidade</th>
-            <th> </th>
-            <th> </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var produto in Model)
-        {
-            <tr>
-                <td>@produto.CodProd</td>
-                <td>@produto.NomeProd</td>
-                <td>@produto.Descricao</td>
-                <td>R$@produto.Preco</td>
-                <td>@produto.Qtd</td>
-                <td>
-                    <a class="btn btn-primary" asp-controller="Produto" asp-action="EditarProduto" asp-route-id="@produto.CodProd">Editar</a>
-                </td>
-                <td>
-                    <a class="btn btn-danger" asp-controller="Produto" asp-action="DeletarProduto" asp-route-id="@produto.CodProd" onclick="return confirm('Deseja excluir @produto.NomeProd ?')">Deletar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<div>
-    <a class="btn-comprar" asp-controller="Produto" asp-action="CadastrarProduto">Novo Produto</a>
-</div>
+<main class="products-index">
+    <h1>Painel Produtos</h1>
+        <table class="content-table">
+            <thead>
+                <tr>
+                    <th>Código <i class="bi bi-lock"></i></th>
+                    <th>Nome <i class="bi bi-tags"></i></th>
+                    <th>Descrição <i class="bi bi-pencil"></i></th>
+                    <th>Preço <i class="bi bi-currency-dollar"></i></th>
+                    <th>Quantidade <i class="bi bi-box-seam"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var produto in Model)
+                {
+                    <tr class="tr-products">
+                        <td>@produto.CodProd</td>
+                        <td>@produto.NomeProd</td>
+                        <td>@produto.Descricao</td>
+                        <td>R$@produto.Preco</td>
+                        <td>@produto.Qtd</td>
+                        <td>
+                            <a class="btn btn-primary" asp-controller="Produto" asp-action="EditarProduto" asp-route-id="@produto.CodProd">Editar</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" asp-controller="Produto" asp-action="DeletarProduto" asp-route-id="@produto.CodProd" onclick="return confirm('Deseja excluir @produto.NomeProd ?')">Deletar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div>
+            <a class="btn-comprar-f" asp-controller="Produto" asp-action="CadastrarProduto">Novo Produto</a>
+        </div>
+</main>
