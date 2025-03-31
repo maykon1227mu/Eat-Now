@@ -12,11 +12,13 @@ namespace TCM.Controllers
     {
         private readonly IProdutoRepositorio _produtoRepositorio;
         private readonly ICarrinhoRepositorio _carrinhoRepositorio;
+        private readonly IEnderecoRepositorio _enderecoRepositorio;
 
-        public ProdutoController(IProdutoRepositorio produtoRepositorio, ICarrinhoRepositorio carrinhoRepositorio)
+        public ProdutoController(IProdutoRepositorio produtoRepositorio, ICarrinhoRepositorio carrinhoRepositorio, IEnderecoRepositorio enderecoRepositorio)
         {
             _produtoRepositorio = produtoRepositorio;
             _carrinhoRepositorio = carrinhoRepositorio;
+            _enderecoRepositorio = enderecoRepositorio;
         }
 
 
@@ -134,11 +136,19 @@ namespace TCM.Controllers
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var carrinho = _carrinhoRepositorio.ObterCarrinhoPorUsuario(id);
-            foreach (var item in carrinho)
+            if(_enderecoRepositorio.ExisteEndereco(id))
             {
-                _produtoRepositorio.FinalizarCompra(id, item.ProdutoId, item.Quantidade);
-                _carrinhoRepositorio.RemoverItemCarrinho(id, item.ProdutoId, item.Quantidade);
+                foreach (var item in carrinho)
+                {
+                    _produtoRepositorio.FinalizarCompra(id, item.ProdutoId, item.Quantidade);
+                    _carrinhoRepositorio.RemoverItemCarrinho(id, item.ProdutoId, item.Quantidade);
+                }
+            } 
+            else
+            {
+                return RedirectToAction("NovoEndereco", "Conta");
             }
+            
             return RedirectToAction("Index", "Home");
         }
 

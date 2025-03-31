@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Meus Dados";
+}
+@model TCM.Models.Usuario
+
+<div class="container-dados">
+    <div class="dados">
+        <div class="imgUser">
+            @if(Model.FotoPerfil != null)
+            {
+                <img src="data:image/png;base64,@Model.FotoPerfilBase64" alt="Foto de Perfil" />
+                <a asp-controller="Conta" asp-action="EditarConta"><i class="bi bi-pencil-fill"></i></a>
+            } else
+            {
+                <img src="~/img/perfil.png" alt="Foto de Perfil"/>
+                <a asp-controller="Conta" asp-action="EditarConta"><i class="bi bi-pencil-fill"></i></a>
+            }
+
+        </div>
+        <div class="dados-informacoes">
+            <h2>@Model.Nome</h2>
+            <p>@Model.email</p>
+            <p>Nivel da conta: @Model.tipo</p>
+        </div>
+    </div>
+    <div>
+        <a asp-controller ="Conta" asp-action="EditarConta">Editar</a>
+    </div>
+</div>

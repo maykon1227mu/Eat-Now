@@ -79,9 +79,17 @@ namespace TCM.Controllers
         }
 
         [HttpPost]
-        public IActionResult CadastrarUsuario(Usuario user)
+        public IActionResult CadastrarUsuario(Usuario user, IFormFile imagem)
         {
-            _loginRepositorio.Cadastrar(user.Nome, user.email, user.usuario, user.senha);
+            if (imagem != null && imagem.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    imagem.CopyTo(ms);
+                    user.FotoPerfil = ms.ToArray();
+                }
+            }
+            _loginRepositorio.Cadastrar(user.Nome, user.email, user.usuario, user.senha, user.FotoPerfil);
             if (user.email != null && user.usuario != null && user.senha != null)
             {
                 return new RedirectResult(Url.Action(nameof(Index)));
