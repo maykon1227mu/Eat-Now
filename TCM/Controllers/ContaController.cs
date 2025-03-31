@@ -10,10 +10,12 @@ namespace TCM.Controllers
     {
         private ILoginRepositorio _loginRepositorio;
         private IProdutoRepositorio _produtoRepositorio;
-        public ContaController(ILoginRepositorio loginRepositorio, IProdutoRepositorio produtoRepositorio)
+        private IEnderecoRepositorio _enderecoRepositorio;
+        public ContaController(ILoginRepositorio loginRepositorio, IProdutoRepositorio produtoRepositorio, IEnderecoRepositorio enderecoRepositorio)
         {
             _loginRepositorio = loginRepositorio;
             _produtoRepositorio = produtoRepositorio;
+            _enderecoRepositorio = enderecoRepositorio;
         }
         [Authorize(Roles = "Administrador")]
         public IActionResult Index()
@@ -29,6 +31,12 @@ namespace TCM.Controllers
         }
         [Authorize]
         public IActionResult EditarConta()
+        {
+            int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            var user = _loginRepositorio.AcharUsuario(id);
+            return View(user);
+        }
+        public IActionResult MeusDados()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var user = _loginRepositorio.AcharUsuario(id);
@@ -60,7 +68,8 @@ namespace TCM.Controllers
         [HttpPost]
         public IActionResult CadastrarFuncionario(Funcionario funcionario)
         {
-            _loginRepositorio.CadastrarFuncionario(funcionario.Nome, funcionario.email, funcionario.usuario, funcionario.senha, funcionario.Salario);
+            funcionario.UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            _loginRepositorio.CadastrarFuncionario(funcionario.Nome, funcionario.email, funcionario.usuario, funcionario.senha, funcionario.Salario, funcionario.UserId);
             return RedirectToAction("Index", "Conta");
         }
 
@@ -89,6 +98,24 @@ namespace TCM.Controllers
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var fornecedor = _loginRepositorio.AcharFornecedor(id);
             return View(fornecedor);
+        }
+
+        [Authorize]
+        public IActionResult NovoEndereco()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult NovoEndereco(Endereco endereco)
+        {
+            return RedirectToAction("MeusEnderecos", "Conta");
+        }
+
+        public IActionResult MeusEnderecos()
+        {
+            int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            return View(_enderecoRepositorio.TodosEnderecos(id));
         }
     }
 }

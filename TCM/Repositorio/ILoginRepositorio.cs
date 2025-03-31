@@ -12,8 +12,8 @@ namespace TCM.Repositorio
         IEnumerable<Fornecedor> TodosFornecedores();
         void DeletarUsuario(int id);
         void EditarUsuario(Usuario user);
-        void Cadastrar(string nome, string email, string usuario, string senha);
-        void CadastrarFuncionario(string nome, string email, string usuario, string senha, decimal salario);
+        void Cadastrar(string nome, string email, string usuario, string senha, byte[] fotoPerfil);
+        void CadastrarFuncionario(string nome, string email, string usuario, string senha, decimal salario, int userid);
         void CadastrarFornecedor(string nome, string email, string usuario, string senha, string cnpj);
 
     }

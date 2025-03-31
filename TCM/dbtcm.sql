@@ -6,7 +6,7 @@ create table tbusuario(
 CodUsu int primary key auto_increment,
 Nome varchar(80) not null,
 Email varchar(40) not null unique,
-Usuario varchar(40) not null,
+Usuario varchar(40) not null unique,
 Senha varchar(16) not null,
 FotoPerfil mediumblob,
 Tipo varchar(28) default "Cliente"
@@ -69,7 +69,6 @@ ProdutoId INT NOT NULL,
 PromoId INT NOT NULL,
 Porcentagem tinyint not null,
 PrecoPromo DECIMAL(9,2) NOT NULL,
-data_exclusao DATETIME NOT NULL,
 FOREIGN KEY (ProdutoId) REFERENCES tbproduto(CodProd),
 FOREIGN KEY (PromoId) REFERENCES tbPromocao(PromoId)
 );
@@ -80,7 +79,8 @@ UserId int not null,
 ProdutoId int not null,
 Quantidade int unsigned not null,
 PrecoCar decimal(9,2) not null,
-foreign key (ProdutoId) references tbproduto(CodProd)
+foreign key (ProdutoId) references tbproduto(CodProd),
+foreign key (UserId) references tbusuario(CodUsu)
 );
 
 select * from tbcarrinho;
@@ -93,6 +93,56 @@ Comentario varchar(255),
 DataComent datetime default	current_timestamp,
 Avaliacao int not null
 );
+
+CREATE TABLE tbEndereco (
+    IdEndereco INT AUTO_INCREMENT PRIMARY KEY,
+    Logradouro VARCHAR(150) NOT NULL,
+    Numero VARCHAR(10),                   
+    Complemento VARCHAR(50),              
+    Bairro varchar(50) NOT NULL,
+    Cidade varchar(50) NOT NULL,
+    IdEstado int NOT NULL,    
+    UserId int not null,
+    CEP VARCHAR(9) NOT NULL         
+);
+
+create table tbEstado(
+IdEstado int primary key auto_increment,
+NomeEstado varchar(35),
+SiglaEstado char(2)
+);
+
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Acre', 'AC');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Alagoas', 'AL');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Amapá', 'AP');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Amazonas', 'AM');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Bahia', 'BA');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Ceará', 'CE');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Distrito Federal', 'DF');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Espírito Santo', 'ES');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Goiás', 'GO');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Maranhão', 'MA');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Mato Grosso', 'MT');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Mato Grosso do Sul', 'MS');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Minas Gerais', 'MG');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Pará', 'PA');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Paraíba', 'PB');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Paraná', 'PR');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Pernambuco', 'PE');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Piauí', 'PI');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Rio de Janeiro', 'RJ');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Rio Grande do Norte', 'RN');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Rio Grande do Sul', 'RS');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Rondônia', 'RO');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Roraima', 'RR');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Santa Catarina', 'SC');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('São Paulo', 'SP');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Sergipe', 'SE');
+INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Tocantins', 'TO');
+
+
+alter table tbEndereco add constraint FK_IdEstadoEndereco foreign key (IdEstado) references tbEstado(IdEstado);
+alter table tbEndereco add constraint FK_UserIdEndereco foreign key (UserId) references tbusuario(CodUsu);
 
 alter table tbcomentario add constraint FK_UserIdComentario foreign key (UserId) references tbusuario(CodUsu);
 alter table tbcomentario add constraint FK_ProdutoIdComentario foreign key (ProdutoId) references tbproduto(CodProd);
@@ -229,9 +279,9 @@ delimiter ;
 
 delimiter $$
 
-create procedure spCadastrarUsuario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16))
+create procedure spCadastrarUsuario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vFoto blob)
 begin
-	insert into tbusuario(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Cliente");
+	insert into tbusuario(Nome, Email, Usuario, Senha, FotoPerfil,Tipo) values (vNome, vEmail, vUsuario, vSenha, "Cliente");
 end
 $$
 
@@ -241,8 +291,8 @@ delimiter $$
 
 create procedure spCadastrarFuncionario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vSalario decimal(9,2), vUserId int)
 begin
-	insert into tbusuario(Nome, Email, Usuario, Senha, UserId, Tipo) values (vNome, vEmail, vUsuario, vSenha, vUserId, "Funcionario");
-    insert into tbfuncionario(CodFunc, Salario) values (last_insert_id(), vSalario);
+	insert into tbusuario(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Funcionario");
+    insert into tbfuncionario(CodFunc, Salario, UserId) values (last_insert_id(), vSalario, vUserId);
 end
 $$
 
@@ -354,7 +404,7 @@ insert into tbcategoria (Categoria) values ("Bebidas");
 call spCadastrarUsuario("Admin", "admin@gmail.com", "Admin1", "12345");
 update tbusuario set tipo = "Administrador" where codusu = 1;
 call spCadastrarFornecedor("nome da empresa real","fornecedorteste@gmail.com", "Fornecedor teste", "12345", "00.623.904/0001-73");
-call spCadastrarFuncionario("funcionarioteste", "funcionarioteste@gmail.com", "functeste", "12345", 1, 1);
+call spCadastrarFuncionario("Funcionario Teste", "funcionario@gmail.com", "Funcionario", "12345", 1500.00, 1);
 call spCadastrarUsuario("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345");
 
 select * from tbusuario join tbfornecedor where tipo = "Fornecedor";
@@ -366,4 +416,3 @@ select * from tbcategoria;
 select * from tbcomentario;
 
 SELECT SUM(Avaliacao) FROM tbcomentario WHERE ProdutoId = 1;
-
