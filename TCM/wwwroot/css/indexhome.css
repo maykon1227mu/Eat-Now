@@ -21,3 +21,29 @@
     flex-wrap: wrap;
     margin-top: 5rem;
 }
+
+.title-intro {
+    position:relative;
+}
+
+#title-home {
+    z-index: 2;
+}
+
+#can-green {
+    min-width:100px;
+    width:25vw;
+    top:10%;
+    left:0;
+    position: absolute;
+    z-index: 1;
+}
+
+#can-yellow {
+    min-width: 100px;
+    width:35vw;
+    top: -70%;
+    right: -15%;
+    position: absolute;
+    z-index: 3;
+}
