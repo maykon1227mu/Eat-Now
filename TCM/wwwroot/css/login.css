@@ -10,23 +10,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 550px;
-    height: 700px;
-    padding: 1rem;
+    width: 500px;
+    height: 600px;
     background-color: var(--bg-color-sec);
-    border-radius: 35px;
+    border-radius: 26px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     color: var(--color-font-sec);
 }
 
 .cadastro {
-    height: fit-content;
+    width:500px;
+    height: 700px;
 }
 
 .login form {
     display: flex;
     flex-direction: column;
-    row-gap: 40px;
+    justify-content: space-around;
+    height:100%;    
 }
 
 .login-inputs {
@@ -37,7 +38,7 @@
 }
 
 #logoNav {
-    width: 50px;
+    width: 40px;
 }
 
 .login-inputs input {
@@ -59,6 +60,20 @@
     background-position: right;
 }
 
+.input-usuario::placeholder {
+    background: url("../img/icons8-nome.png") no-repeat;
+    background-size: 24px;
+    background-position: right;
+}
+
+.input-nome::placeholder {
+    background: url("../img/icons8-person-48.png") no-repeat;
+    background-size: 24px;
+    background-position: right;
+}
+
+
+
 .login form button {
     background-color: #5EA963;
     border-radius: 12px;
@@ -74,6 +89,10 @@
 
 .login-cima {
     display: flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height: fit-content;
 }
 
 .cima-esquerda {

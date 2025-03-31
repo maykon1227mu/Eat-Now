@@ -137,6 +137,26 @@ nav ul li:hover a .iconeNav,
 nav ul li:hover a .textoNav{
     color: #5CB338;
 }
+.container-toggle {
+    background: var(--bg-color-sec);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 70px;
+    left: 120px;
+    z-index: 200;
+    -moz-border-radius: 50%;
+    -webkit-border-radius:  50%;
+    border-radius:  50%;
+    transition:0.5s
+}
+
+.container-toggle.ativo {
+    left:250px;
+}
 
 .menuToggle {
     border: none;
@@ -145,17 +165,17 @@ nav ul li:hover a .textoNav{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    row-gap: 14px;
-    margin-right: 0.5rem;
+    row-gap: 5px;
     transition: 0.5s
 }
 
 .menuToggle.ativo .linha:nth-child(1) {
-    transform: translateY(16px) rotate(45deg);
+    transform: translateY(7px) rotate(48deg);
 }
 
 .menuToggle.ativo .linha:nth-child(3) {
-    transform: translateY(-16px) rotate(-45deg);
+    transform: translateY(-6px) rotate(-48deg);
+    transform: translateY(-6px) rotate(-48deg);
 }
 
 .menuToggle.ativo .linha:nth-child(2) {
@@ -169,7 +189,7 @@ nav ul li:hover a .textoNav{
 }
 
 .linha {
-    width: 50px;
+    width: 20px;
     height: 2px;
     background-color: var(--color-principal);
     transition: 0.4s;
@@ -209,8 +229,10 @@ nav ul li.ativo::after {
     background-color: transparent;
 }
 
-nav ul li.ativo a .iconeNav {
+nav ul li.ativo a i  {
     color: var(--color-principal);
+    font-size: 20px;
+    z-index:1;
 }
 
 nav ul li.ativo a .textoNav {

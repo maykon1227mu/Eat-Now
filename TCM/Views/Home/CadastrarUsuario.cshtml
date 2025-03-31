@@ -20,22 +20,22 @@
 
                 <label for="nome">Nome</label>
                 <div class="login-inputs">
-                    <input type="text" name="Nome" asp-for="Nome" />
+                <input class="input-nome" type="text" placeholder="Seu Nome" name="Nome" asp-for="Nome" />
                 </div>
 
                 <label for="email">Email</label>
                 <div class="login-inputs">
-                    <input type="email" name="email" asp-for="email"/>
+                    <input  class="input-email" type="email" placeholder="Seu Email" name="email" asp-for="email"/>
                 </div>
 
-                <label for="usuario">Usuário</label>
+                <label for="usuario">Nome de Usuário</label>
                 <div class="login-inputs">
-                    <input asp-for="usuario" type="text" name="usuario" id="usuario">
+                    <input class="input-usuario" asp-for="usuario" placeholder="Seu Username" type="text" name="usuario" id="usuario">
                 </div>
                 
                 <label for="senha">Senha</label>
                 <div class="login-inputs">
-                    <input asp-for="senha" type="password" name="senha" id="senha">
+                    <input class="input-senha" asp-for="senha" placeholder="Sua Senha" type="password" name="senha" id="senha">
                 </div>
                 
                 <div class="botoes">

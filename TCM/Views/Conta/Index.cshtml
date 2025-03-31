@@ -5,11 +5,26 @@
 
 <div class="container-admin">
     <div class="admin">
-        <h1>Funções Administrador</h1>
-        <div class="link-admin"><a asp-controller="Produto" asp-action="Index">Produtos</a></div>
-        <div class="link-admin"><a asp-controller="Produto" asp-action="PainelPromocoes">Promoções</a></div>
-        <div class="link-admin"><a asp-controller="Produto" asp-action="Vendas">Vendas</a></div>
-        <div class="link-admin"><a asp-controller="Conta" asp-action="Funcionarios">Funcionários</a></div>
-        <div class="link-admin"><a asp-controller="Conta" asp-action="Fornecedores">Fornecedores</a></div>
+        <h1>Funções <span id="textAdmin">Administrador</span></h1>
+            <div class="link-admin">
+                <a asp-controller="Produto" asp-action="Index">Produtos</a>
+                <i class="bi bi-basket3"></i>
+            </div>
+            <div class="link-admin">
+                <a asp-controller="Produto" asp-action="PainelPromocoes">Promoções</a>
+                <i class="bi bi-newspaper"></i>
+            </div>
+            <div class="link-admin">
+                <a asp-controller="Produto" asp-action="Vendas">Vendas</a>
+                <i class="bi bi-currency-dollar"></i>   
+            </div>
+            <div class="link-admin">
+                <a asp-controller="Conta" asp-action="Funcionarios">Funcionários</a>
+                <i class="bi bi-person-badge"></i>
+            </div>
+            <div class="link-admin">
+                <a asp-controller="Conta" asp-action="Fornecedores">Fornecedores</a>
+                <i class="bi bi-truck"></i>
+            </div>
     </div>
 </div>

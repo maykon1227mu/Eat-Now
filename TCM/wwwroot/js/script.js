@@ -1,9 +1,10 @@
 let menuToggle = document.querySelector('.menuToggle');
 let sidebar = document.querySelector('.navprincipal');
-
+let openNav = document.querySelector('.container-toggle');
 menuToggle.onclick = function () {
     menuToggle.classList.toggle('ativo');
     sidebar.classList.toggle('ativo');
+    openNav.classList.toggle('ativo');
 }
 
 
@@ -25,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Atualiza quando a página carrega
+    // Atualiza quando a pï¿½gina carrega
     updateBolinha();
 
     // Atualiza ao clicar em um item do menu
@@ -43,8 +44,11 @@ const btn = document.getElementById('btn-toggle');
 const html = document.getElementById('html');
 let imgLogo = document.getElementById('logoNav');
 
+
 btn.addEventListener('click', function () {
     html.classList.toggle('dark');
+    btn.classList.toggle('dark');
+
 
     if (html.classList.contains("dark")) {
         imgLogo.src = "./img/LogoDark.png";

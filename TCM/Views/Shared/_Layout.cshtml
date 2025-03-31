@@ -27,8 +27,19 @@
             <input class="barra-pesquisa" type="text" name="txtpesq" id="txtpesq" placeholder="Pesquisar">
         </form>
     </header>
-
+        
     <nav class="navprincipal">
+       <div class="container-toggle">
+            <li class="litoggle">
+                <div class="iconeNav">
+                    <button class="menuToggle">
+                        <span class="linha"></span>
+                        <span class="linha"></span>
+                        <span class="linha"></span>
+                    </button>
+                </div>
+            </li>
+       </div>
         <ul>
             <li class="logo" style="--bg: #333;">
                 <a href="#">
@@ -150,20 +161,14 @@
                 </li>
                 }
                 
-                <li class="litoggle">
-                    <div class="iconeNav">
-                        <button class="menuToggle">
-                            <span class="linha"></span>
-                            <span class="linha"></span>
-                            <span class="linha"></span>
-                        </button>
-                    </div>
-                </li>
+
                 </div>
                 <li style="margin: 3rem 0 0 0.3rem;" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "ativo" : "")">
                     <div>
                         <div class="iconeNav">
-                            <button id="btn-toggle" class="btn-tema"></button>
+                            <div id="btn-toggle" class="btn-tema">
+                                <div class="indicador"></div>
+                            </div>
                         </div>
                         <div class="textoNav"></div>
                     </div>
@@ -315,8 +320,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/script.js" asp-append-version="true"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
