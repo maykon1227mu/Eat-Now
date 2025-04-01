@@ -281,7 +281,7 @@ delimiter $$
 
 create procedure spCadastrarUsuario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vFoto blob)
 begin
-	insert into tbusuario(Nome, Email, Usuario, Senha, FotoPerfil,Tipo) values (vNome, vEmail, vUsuario, vSenha, "Cliente");
+	insert into tbusuario(Nome, Email, Usuario, Senha, FotoPerfil,Tipo) values (vNome, vEmail, vUsuario, vSenha, vFoto, "Cliente");
 end
 $$
 
