@@ -1,4 +1,4 @@
-﻿@using System.Security.Claims
+@using System.Security.Claims
 @model TCM.Models.Produto
 
 @{
@@ -14,16 +14,16 @@
         }
         <input asp-for="UserId" value="@serialNumber" hidden />
         <div class="formulario-inputs">
-            <label>Nome:</label>
-            <input asp-for="NomeProd" />
+            <label>Nome</label>
+            <input class="input-form" asp-for="NomeProd" />
         </div>
         <div class="formulario-inputs">
-            <label>Descrição:</label>
-            <input asp-for="Descricao" />
+            <label>Descrição</label>
+            <input class="input-form" asp-for="Descricao" />
         </div>
         <div class="formulario-inputs">
-            <label>Categoria:</label>
-            <select name="CategoriaId" required>
+            <label>Categoria</label>
+            <select class="select-cat" name="CategoriaId" required>
                 <option value="">Selecione</option>
                 @foreach (var categoria in ViewBag.Categorias)
                 {
@@ -32,18 +32,18 @@
             </select>
         </div>
         <div class="formulario-inputs">
-            <label>Preço:</label>
-            <input asp-for="Preco" />
+            <label>Preço</label>
+            <input class="input-form" asp-for="Preco" />
         </div>
         <div class="formulario-inputs">
             <label>Quantidade</label>
-            <input asp-for="Qtd" />
+            <input class="input-form" asp-for="Qtd" />
         </div>
         <div class="formulario-inputs">
-            <label>Imagem:</label>
+            <label>Imagem</label>
             <input class="form-control" type="file" name="imagem" />
         </div>
-        <button type="submit" class="btn-comprar">Cadastrar Produto</button>
+        <button type="submit" class="btn-comprar-f">Cadastrar Produto</button>
     </form>
 </div>
 
