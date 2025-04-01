@@ -1,4 +1,4 @@
-﻿@using System.Security.Claims;
+@using System.Security.Claims;
 <!DOCTYPE html>
 <html id="html" lang="pt-br">
 <head>
@@ -154,8 +154,8 @@
                 {
                 <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "ativo" : "")">
                     <a asp-controller="Home" asp-action="Logout">
-                        <div class="iconeNav">
-                            <i class="bi bi-gear"></i>
+                        <div class="iconeNav door-logout">
+                            <i class="bi bi-door-open"></i>
                         </div>
                         <div class="textoNav">Logout</div>
                     </a>
