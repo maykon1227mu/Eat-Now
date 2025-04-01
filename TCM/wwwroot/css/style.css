@@ -184,3 +184,7 @@ header {
     transition: .5s;
     z-index: 100;
 }
+
+.door-logout i {
+    color:#d11f1f;
+}
