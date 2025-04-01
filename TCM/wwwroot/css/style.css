@@ -18,6 +18,7 @@
     --preto: #0E0E0E;
     --color-nav: #000;
     --cinza-escuro: #363636;
+    --card-product: #0E0E0E;
 }
 
 .dark:root {
@@ -30,6 +31,7 @@
     --color-secundaria: #fff;
     --preto: #0E0E0E;
     --cinza-escuro: #363636;
+    --card-product: #363636;
     --color-nav: #fff;
 }
 

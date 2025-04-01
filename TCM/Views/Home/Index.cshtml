@@ -47,68 +47,69 @@
                             <div class="card-meio">
                                 <div class="card-nome">
                                     <h2>@produto.NomeProd</h2>
+                                    <div class="card-descricao">
+                                        <div class="card-estrelas">
+                                            @if (produto.Nota < 1)
+                                            {
+                                                <div class="product-star">
+                                                    <i class="bi bi-star"></i>
+                                                    <i class="bi bi-star"></i>
+                                                    <i class="bi bi-star"></i>
+                                                    <i class="bi bi-star"></i>
+                                                    <i class="bi bi-star"></i>
+                                                    <p>@produto.Nota</p>
+                                                </div>
+                                            }
+                                            else if (produto.Nota == 1)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star"></i>
+                                                <i class="bi bi-star"></i>
+                                                <i class="bi bi-star"></i>
+                                                <i class="bi bi-star"></i>
+                                                <p>@produto.Nota</p>
+                                            }
+                                            else if (produto.Nota <= 2 && produto.Nota >= 1.5)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star"></i>
+                                                <i class="bi bi-star"></i>
+                                                <i class="bi bi-star"></i>
+                                                <p>@produto.Nota</p>
+                                            }
+                                            else if (produto.Nota <= 3 && produto.Nota >= 3.5)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star"></i>
+                                                <i class="bi bi-star"></i>
+                                                <p>@produto.Nota</p>
+                                            }
+                                            else if (produto.Nota <= 4 && produto.Nota >= 3.5)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star"></i>
+                                                <p>@produto.Nota</p>
+                                            }
+                                            else if (produto.Nota <= 5 && produto.Nota >= 4.5)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <p>@produto.Nota</p>
+                                            }
+                                        </div>
                                 </div>
                                 
                             </div>
-                            <div class="card-descricao">
-                                <div class="card-estrelas">
-                                    @if (produto.Nota < 1)
-                                    {
-                                        <div class="product-star">
-                                            <i class="bi bi-star"></i>
-                                            <i class="bi bi-star"></i>
-                                            <i class="bi bi-star"></i>
-                                            <i class="bi bi-star"></i>
-                                            <i class="bi bi-star"></i>
-                                            <p>@produto.Nota</p>
-                                        </div>
-                                    }
-                                    else if (produto.Nota == 1)
-                                    {
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <p>@produto.Nota</p>
-                                    }
-                                    else if (produto.Nota <= 2 && produto.Nota >= 1.5)
-                                    {
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <p>@produto.Nota</p>
-                                    }
-                                    else if (produto.Nota <= 3 && produto.Nota >= 3.5)
-                                    {
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                        <i class="bi bi-star"></i>
-                                        <p>@produto.Nota</p>
-                                    }
-                                    else if (produto.Nota <= 4 && produto.Nota >= 3.5)
-                                    {
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star"></i>
-                                        <p>@produto.Nota</p>
-                                    }
-                                    else if (produto.Nota <= 5 && produto.Nota >= 4.5)
-                                    {
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <i class="bi bi-star-fill"></i>
-                                        <p>@produto.Nota</p>
-                                    }
-                                </div>
+                           
                                 
                                 
                             </div>
@@ -126,7 +127,7 @@
                                 {
                                     <p><span style="color: #CDA978">R$@produto.Preco</span></p>
                                 }
-                                <a class="btn-comprar" asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd">Comprar</a>
+                                <a class="btn-comprar" asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd">Comprar <i class="bi bi-currency-dollar"></i></a>
                                 
                             </div>
                         </div>
