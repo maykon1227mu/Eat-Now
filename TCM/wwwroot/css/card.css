@@ -7,6 +7,9 @@
     padding: 1.5rem;
     background-color: var(--card-product);
     color: var(--color-font-alt);
+    width:400px;
+    height:4    00px;
+    gap:40px;
 }
 
 .card-container h2 {
@@ -48,18 +51,19 @@
     justify-content: center;
     align-items: center;
     width: 100px;
-    border: 1px solid #CDA978;
-    color: #CDA978;
+    border: 1px solid var(--color-font-sec);
+    color: var(--color-font-sec);
     padding: 5px 60px;
-    gap:5px;
-    font-size:14px;
-
+    gap: 5px;
+    font-size: 14px;
 }
 .btn-comprar:hover {
-    color:#CDA978;
+    color:#fff;
 }
 
 .card-botoes p {
     font-size:17px;
     margin:0;
+    color:#fff;
 }
+

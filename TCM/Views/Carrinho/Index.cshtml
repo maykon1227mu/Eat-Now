@@ -2,62 +2,69 @@
     ViewData["Title"] = "Carrinho";
 }
 @model IEnumerable<Carrinho>
+<main class="container-all-cart">
+    <h2 class="title-main">Seu <span style=color:rgb(38,155,110)>Carrinho</span></h2>
 
-<h2 class="title-main">Seu <span style=color:rgb(38,155,110)>Carrinho</span></h2>
-
-@if (!Model.Any())
-{
-    <p>Seu carrinho está vazio.</p>
-}
-else
-{
-    <div class="container-carrinho">
-        <div class="carrinho">
-            <div class="carrinho-pedidos">
-                @foreach (var item in Model)
-                {
-                    if (item.ImagemProd != null)
+    @if (!Model.Any())
+    {
+        <p>Seu carrinho está vazio.</p>
+    }
+    else
+    {
+        <div class="container-carrinho">
+            <div class="carrinho">
+                <div class="carrinho-pedidos">
+                    @foreach (var item in Model)
                     {
-                        //Transforma o blob para um jeito que dê para a imagem ser interpretada
-                        item.ImagemBase64 = Convert.ToBase64String(item.ImagemProd);
+                        if (item.ImagemProd != null)
+                        {
+                            //Transforma o blob para um jeito que dê para a imagem ser interpretada
+                            item.ImagemBase64 = Convert.ToBase64String(item.ImagemProd);
+                        }
+                        <div class="pedidos">
+                            <div class="content-junt">
+                                <div class="pedido-img">
+                                    <img style="width: 300px;" src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
+                                </div>
+                                <div>
+                                    <h2>@item.NomeProduto</h2>
+                                    <h5>@item.Quantidade x R$<span>@item.PrecoProduto</span></h5>
+                                </div>
+                            </div>
+                                <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
+                                    <input name="produtoId" asp-for="@item.ProdutoId" hidden/>
+                                    <input name="qtd" value="1" hidden/>
+                                    <div class="button-add">
+                                    <button style="background:none;" class="btn-controle" type="submit"><i class="bi bi-plus-lg"></i></button>
+                                    </div>
+                                </form>
+                                <div class="button-remove">
+                                </div>
+                                <div class="button-remove-all">
+                                <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="@item.Quantidade" class="button-remove"><i class="bi bi-x"></i></a>
+                                </div>
+                        </div>
                     }
-                    <div class="pedidos">
-                        <div class="pedido-img">
-                            <img style="width: 200px;" src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
-                        </div>
-                        <div>
-                            <h2>@item.NomeProduto</h2>
-                            <h5>@item.Quantidade x R$<span style="color: #CDA978;">@item.PrecoProduto</span></h5>
-                        </div>
-                        <div class="botoes-carrinho">
-                            <form asp-controller="Carrinho" asp-action="Adicionar" method="post">
-                                <input name="produtoId" asp-for="@item.ProdutoId" hidden/>
-                                <input name="qtd" value="1" hidden/>
-                                <button class="btn-controle" type="submit">Adicionar</button>
-                            </form>
-                            <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="1" class="button-remove">Remover</a>
-                            <a asp-controller="Carrinho" asp-action="Remover" asp-route-id="@item.ProdutoId" asp-route-qtd="@item.Quantidade" class="button-remove">Remover Todos</a>
-                        </div>
-                    </div>
-                }
-            </div>
-            <div class="carrinho-total">
-                <div class="total">
-                    <h1>Total a se Pagar</h1>
-                    <div>
-                        <h2>Sub-Total: R$@Model.Sum(i => i.Total)</h2>
-                        <h2>Total: R$@Model.Sum(i => i.Total)</h2>
-                    </div>
-                    <div class="button-box-cart-price">
-                        <a asp-controller="Produto" asp-action="Finalizar" class="button-cash">Finalizar Compra</a>
-                        <a asp-controller="Carrinho" asp-action="LimparCarrinho" class="button-remove-all">Limpar Carrinho</a>
-                    </div>
                 </div>
+                <div class="carrinho-total">
+                    <div class="total">
+                        <h1>RESUMO</h1>
+                        <hr id="line-price"/>
+                        <div class="content-price">
+                            <h2>Sub-Total: R$@Model.Sum(i => i.Total)</h2>
+                            <h2 style="color:#72AC6C;">Total: R$@Model.Sum(i => i.Total)</h2>
+                        </div>
+                        <div class="button-box-cart-price">
+                            <a asp-controller="Produto" asp-action="Finalizar" class="button-price-all">Finalizar</a>
+                            <a asp-controller="Carrinho" asp-action="LimparCarrinho" class="button-price-all">Limpar</a>
+                        </div>
+                    </div>
                 
                 
 
+                </div>
             </div>
-        </div>
         
-    </div>
-}
+        </div>
+    }
+</main>

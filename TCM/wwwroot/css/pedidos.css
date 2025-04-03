@@ -1,4 +1,14 @@
-﻿.container-carrinho {
+﻿.container-all-cart {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 15vh;
+}
+
+.container-carrinho {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,25 +34,123 @@
 }
 
 .pedidos {
+    position:relative;
+    min-width:fit-content;
+    width: 60vw;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     color: var(--color-font-alt);
     gap: 20px;
-    background-color: var(--cinza-escuro);
-    padding: 25px;
+    background-color: var(--bg-color-sec);
+    padding: 50px 20px;
+    height:30vh;
+    
+
+}
+.pedidos h2 {
+    font-weight: 900;
+    font-size:42px;
+}
+.pedidos h5 {
+    font-size:16px;
 }
 
-.botoes-carrinho {
+
+
+.content-junt {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .total {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    margin-left: 30vw;
+    padding: 50px 20px;
+    width: 30vw;
     color: var(--color-font-alt);
-    background-color: var(--cinza-escuro);
+    background-color: var(--card-price);
+
 }
+
+
+.total h2 {
+    color: #90A689;
+    margin:10px;
+    font-size:20px;
+}
+
+#line-price {
+    height:2px;
+    width: 100%;
+    background: var(--bg-color);
+}
+
+.content-price {
+    display:flex;
+    flex-direction:column;
+    justify-content:start;
+    gap:20px;
+    width:100%;
+    margin-left:20px;
+    margin-bottom:40px;
+}
+
 
 .carrinho-total {
     display: flex;
     justify-content: end;
+}
+
+/* Botões remover produto */
+
+.button-remove-all {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: red;
+    font-size: 24px;
+}
+
+.button-remove-all i {
+    color:white;
+}
+
+.button-add {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #90c77f;
+    font-size: 20px;
+}
+
+.button-add i {
+    color: white;
+}
+
+.button-price-all {
+    background: #90c77f;
+    padding: 5px 20px;
+    color:white;
+    text-decoration:none;
+}
+.button-price-all:hover {
+    color:white;
 }

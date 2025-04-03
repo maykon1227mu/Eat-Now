@@ -57,7 +57,6 @@
                                                     <i class="bi bi-star"></i>
                                                     <i class="bi bi-star"></i>
                                                     <i class="bi bi-star"></i>
-                                                    <p>@produto.Nota</p>
                                                 </div>
                                             }
                                             else if (produto.Nota == 1)
@@ -67,7 +66,7 @@
                                                 <i class="bi bi-star"></i>
                                                 <i class="bi bi-star"></i>
                                                 <i class="bi bi-star"></i>
-                                                <p>@produto.Nota</p>
+
                                             }
                                             else if (produto.Nota <= 2 && produto.Nota >= 1.5)
                                             {
@@ -76,7 +75,7 @@
                                                 <i class="bi bi-star"></i>
                                                 <i class="bi bi-star"></i>
                                                 <i class="bi bi-star"></i>
-                                                <p>@produto.Nota</p>
+                                                
                                             }
                                             else if (produto.Nota <= 3 && produto.Nota >= 3.5)
                                             {
@@ -85,7 +84,7 @@
                                                 <i class="bi bi-star-fill"></i>
                                                 <i class="bi bi-star"></i>
                                                 <i class="bi bi-star"></i>
-                                                <p>@produto.Nota</p>
+                                                
                                             }
                                             else if (produto.Nota <= 4 && produto.Nota >= 3.5)
                                             {
@@ -94,7 +93,7 @@
                                                 <i class="bi bi-star-fill"></i>
                                                 <i class="bi bi-star-fill"></i>
                                                 <i class="bi bi-star"></i>
-                                                <p>@produto.Nota</p>
+                                                
                                             }
                                             else if (produto.Nota <= 5 && produto.Nota >= 4.5)
                                             {
@@ -103,7 +102,7 @@
                                                 <i class="bi bi-star-fill"></i>
                                                 <i class="bi bi-star-fill"></i>
                                                 <i class="bi bi-star-fill"></i>
-                                                <p>@produto.Nota</p>
+                                                
                                             }
                                         </div>
                                 </div>
@@ -119,13 +118,13 @@
                                     var itemPromo = todosProdutosPromo.FirstOrDefault(p => p.ProdutoId == produto.CodProd);
                                     if (itemPromo != null)
                                     {
-                                        <p>De: R$@produto.Preco</p>
-                                        <p>Por: R$@itemPromo.PrecoPromo <sub>@itemPromo.Promocao</sub></p>
+                                        <p style="color:var(--color-font-sec)">De: <span style="text-decoration:line-through">R$@produto.Preco</span></p>
+                                        <p style="color:var(--color-font-sec)">Por: R$@itemPromo.PrecoPromo <sub>@itemPromo.Promocao</sub></p>
                                     }
                                 }
                                 else
                                 {
-                                    <p><span style="color: #CDA978">R$@produto.Preco</span></p>
+                                    <p><span>R$@produto.Preco</span></p>
                                 }
                                 <a class="btn-comprar" asp-controller="Produto" asp-action="Comprar" asp-route-id="@produto.CodProd">Comprar <i class="bi bi-currency-dollar"></i></a>
                                 

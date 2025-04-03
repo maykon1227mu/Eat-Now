@@ -19,19 +19,21 @@
     --color-nav: #000;
     --cinza-escuro: #363636;
     --card-product: #0E0E0E;
+    --card-price: #0E0E0E;
 }
 
 .dark:root {
     --color-font: #fff;
     --color-font-sec: #000;
-    --color-font-alt: #fff;
+    --color-font-alt: #000;
     --bg-color: #1D1D1D;
     --bg-color-sec: #fff;
     --color-principal: #000;
     --color-secundaria: #fff;
     --preto: #0E0E0E;
     --cinza-escuro: #363636;
-    --card-product: #363636;
+    --card-product: #fff;
+    --card-price: #fff;
     --color-nav: #fff;
 }
 
