@@ -40,12 +40,21 @@ namespace TCM.Controllers
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var user = _loginRepositorio.AcharUsuario(id);
+            if (user.FotoPerfil != null) user.FotoPerfilBase64 = Convert.ToBase64String(user.FotoPerfil);
             return View(user);
         }
 
         [HttpPost]
-        public IActionResult EditarConta(Usuario user)
+        public IActionResult EditarConta(Usuario user, IFormFile imagem)
         {
+            if (imagem != null && imagem.Length > 0)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    imagem.CopyTo(ms);
+                    user.FotoPerfil = ms.ToArray();
+                }
+            }
             _loginRepositorio.EditarUsuario(user);
             return RedirectToAction("MinhaConta", "Conta");
         }

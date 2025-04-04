@@ -12,16 +12,25 @@ FotoPerfil mediumblob,
 Tipo varchar(28) default "Cliente"
 );
 
+create table tbCliente(
+IdCliente int primary key,
+CPF varchar(14) not null unique,
+DataNasc date not null,
+constraint FK_IdUserCliente foreign key (IdCliente) references tbusuario(CodUsu) on delete cascade
+);
+
 create table tbfuncionario(
-CodFunc int primary key auto_increment,
+CodFunc int primary key,
 Salario decimal(9,2) not null,
 UserId int not null,
+DataNasc date not null,
+CPF varchar(14) not null unique,
 foreign key (CodFunc) references tbusuario(CodUsu) on delete cascade,
 foreign key (UserId) references tbusuario(CodUsu) on delete cascade
 );
 
 create table tbfornecedor(
-CodFor int primary key auto_increment,
+CodFor int primary key,
 CNPJ varchar(20) not null,
 foreign key (CodFor) references tbusuario(CodUsu) on delete cascade
 );
@@ -146,6 +155,10 @@ alter table tbEndereco add constraint FK_UserIdEndereco foreign key (UserId) ref
 
 alter table tbcomentario add constraint FK_UserIdComentario foreign key (UserId) references tbusuario(CodUsu);
 alter table tbcomentario add constraint FK_ProdutoIdComentario foreign key (ProdutoId) references tbproduto(CodProd);
+
+
+alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbusuario(CodUsu) on delete cascade;
+alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);
 
 select * from tbusuario;
 
@@ -279,9 +292,10 @@ delimiter ;
 
 delimiter $$
 
-create procedure spCadastrarUsuario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vFoto blob)
+create procedure spCadastrarUsuario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vFoto blob, vData date, vCPF varchar(14))
 begin
-	insert into tbusuario(Nome, Email, Usuario, Senha, FotoPerfil,Tipo) values (vNome, vEmail, vUsuario, vSenha, vFoto, "Cliente");
+	insert into tbusuario(Nome, Email, Usuario, Senha, FotoPerfil, Tipo) values (vNome, vEmail, vUsuario, vSenha, vFoto, "Cliente");
+	insert into tbcliente(IdCliente, DataNasc, CPF) values (last_insert_id(), vData, vCPF);
 end
 $$
 
@@ -289,10 +303,20 @@ delimiter ;
 
 delimiter $$
 
-create procedure spCadastrarFuncionario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vSalario decimal(9,2), vUserId int)
+create procedure spCadastrarAdministrador(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vFoto blob)
+begin
+	insert into tbusuario(Nome, Email, Usuario, Senha, FotoPerfil, Tipo) values (vNome, vEmail, vUsuario, vSenha, vFoto, "Administrador");
+end
+$$
+
+delimiter ;
+
+delimiter $$
+
+create procedure spCadastrarFuncionario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vSalario decimal(9,2), vUserId int, vData date, vCPF varchar(14))
 begin
 	insert into tbusuario(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Funcionario");
-    insert into tbfuncionario(CodFunc, Salario, UserId) values (last_insert_id(), vSalario, vUserId);
+    insert into tbfuncionario(CodFunc, Salario, UserId, DataNasc, CPF) values (last_insert_id(), vSalario, vUserId, vData, vCPF);
 end
 $$
 
@@ -359,8 +383,8 @@ BEGIN
 		VALUES (vNomePromo, vPorcentagem, vdata_exclusao);
         SET vPromoId = LAST_INSERT_ID();
         -- Inserir todos os itens de todos os produtos
-        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagemCerta)), vdata_exclusao 
+        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo)
+        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagemCerta)) 
         FROM tbProduto p;
     ELSE
 		set vCategoriaId := (select CodCat from tbcategoria where Categoria = vCategoria);
@@ -368,8 +392,8 @@ BEGIN
 		VALUES (vNomePromo, vPorcentagem, vdata_exclusao, vCategoriaId);
         SET vPromoId = LAST_INSERT_ID();
         -- Inserir itens de uma categoria específica
-        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo, data_exclusao)
-        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagemCerta)), vdata_exclusao
+        INSERT INTO tbPromocaoItem (ProdutoId, PromoId, Porcentagem, PrecoPromo)
+        SELECT p.CodProd, vPromoId, vPorcentagem, (p.Preco - (p.Preco * vPorcentagemCerta))
         FROM tbProduto p
         JOIN tbCategoria c ON p.CategoriaId = c.CodCat
         WHERE c.Categoria = vCategoria;
@@ -387,8 +411,6 @@ select * from tbpromocao;
 select * from tbpromocaoitem;
 
 
-alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tbusuario(CodUsu);
-alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);
 
 insert into tbcategoria (Categoria) values ("Comida Japonesa");
 insert into tbcategoria (Categoria) values ("Comida Italiana");
@@ -401,15 +423,14 @@ insert into tbcategoria (Categoria) values ("Milkshake");
 insert into tbcategoria (Categoria) values ("Açai");
 insert into tbcategoria (Categoria) values ("Bebidas");
 
-call spCadastrarUsuario("Admin", "admin@gmail.com", "Admin1", "12345");
-update tbusuario set tipo = "Administrador" where codusu = 1;
+call spCadastrarAdministrador("Admin", "admin@gmail.com", "Admin1", "12345", null);
 call spCadastrarFornecedor("nome da empresa real","fornecedorteste@gmail.com", "Fornecedor teste", "12345", "00.623.904/0001-73");
-call spCadastrarFuncionario("Funcionario Teste", "funcionario@gmail.com", "Funcionario", "12345", 1500.00, 1);
-call spCadastrarUsuario("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345");
+call spCadastrarFuncionario("Funcionario Teste", "funcionario@gmail.com", "Funcionario", "12345", 1500.00, 1, "2002-05-09", "222.222.222-22");
+call spCadastrarUsuario("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345", null, "2005-08-15", "333.333.333.33");
 
 select * from tbusuario join tbfornecedor where tipo = "Fornecedor";
 select * from tbusuario join tbfuncionario where tipo = "Funcionario";
-select * from tbusuario;
+select * from tbusuario join tbcliente on tbusuario.CodUsu = tbCliente.IdCliente;
 select * from tbcarrinho;
 select * from tbproduto;
 select * from tbcategoria;

@@ -9,7 +9,7 @@
         public string? senha { get; set; }
         public decimal Salario { get; set; }
         public int UserId { get; set; }
-        public string? Fornecedor { get; set; }
+        public string? Contratante { get; set; }
         public string? tipo { get; set; }
     }
 }

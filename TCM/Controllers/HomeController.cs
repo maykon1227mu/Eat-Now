@@ -79,8 +79,9 @@ namespace TCM.Controllers
         }
 
         [HttpPost]
-        public IActionResult CadastrarUsuario(Usuario user, IFormFile imagem)
+        public IActionResult CadastrarUsuario(Usuario user, IFormFile imagem, DateOnly data)
         {
+            user.DataNascimento = data;
             if (imagem != null && imagem.Length > 0)
             {
                 using (var ms = new MemoryStream())
@@ -89,10 +90,10 @@ namespace TCM.Controllers
                     user.FotoPerfil = ms.ToArray();
                 }
             }
-            _loginRepositorio.Cadastrar(user.Nome, user.email, user.usuario, user.senha, user.FotoPerfil);
+            _loginRepositorio.Cadastrar(user.Nome, user.email, user.usuario, user.senha, user.FotoPerfil, user.DataNascimento, user.CPF);
             if (user.email != null && user.usuario != null && user.senha != null)
             {
-                return new RedirectResult(Url.Action(nameof(Index)));
+                return RedirectToAction("Login", "Home");
             }
             else
             {

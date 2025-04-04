@@ -20,29 +20,37 @@
 
                 <label for="nome">Nome</label>
                 <div class="login-inputs">
-                <input class="input-nome" type="text" placeholder="Seu Nome" name="Nome" asp-for="Nome" />
+                    <input class="input-nome" type="text" placeholder="Seu Nome" name="Nome" asp-for="Nome" required/>
                 </div>
 
                 <label for="email">Email</label>
                 <div class="login-inputs">
-                    <input  class="input-email" type="email" placeholder="Seu Email" name="email" asp-for="email"/>
+                    <input  class="input-email" type="email" placeholder="Seu Email" name="email" asp-for="email" required/>
                 </div>
 
                 <label for="usuario">Nome de Usuário</label>
                 <div class="login-inputs">
-                    <input class="input-usuario" asp-for="usuario" placeholder="Seu Username" type="text" name="usuario" id="usuario">
+                    <input class="input-usuario" asp-for="usuario" placeholder="Seu Username" type="text" name="usuario" id="usuario" required>
+                </div>
+                
+                <label for="data">Data de nascimento</label>
+                <div class="login-inputs">
+                    <input onchange="verificaIdade()" class="input-usuario" type="date" name="data" id="data" required>
+                    <div class="msgData" id="idadeX"></div>
+                </div>
+                <label for="cpf">CPF</label>
+                <div class="login-inputs">
+                    <input oninput="mascara(this)" class="input-usuario" placeholder="000.000.000-00" asp-for="CPF" type="text" name="cpf" id="cpf" maxlength="14" required>
                 </div>
                 
                 <label for="senha">Senha</label>
                 <div class="login-inputs">
-                    <input class="input-senha" asp-for="senha" placeholder="Sua Senha" type="password" name="senha" id="senha">
+                    <input class="input-senha" asp-for="senha" placeholder="Sua Senha" type="password" name="senha" id="senha" required>
                 </div>
                 
                 <div class="botoes">
-                    <button type="submit">Cadatrar</button>
+                    <button type="submit" id="btnCad">Cadastrar</button>
                 </div>
             </form>
-        </div>
-        <div class="box-right-profile">
         </div>
 </main>

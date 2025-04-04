@@ -147,7 +147,7 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
                 //Lembrar de fazer o select na tbfuncionario para depois fazer os joins
-                MySqlCommand cmd = new MySqlCommand("select CodUsu, tbFuncionario.CodFunc, email, usuario, senha, tbFuncionario.Salario, tbFuncionario.UserId, tbUsuario.Usuario from tbusuario join tbfuncionario", conexao);
+                MySqlCommand cmd = new MySqlCommand("SELECT tbfuncionario.CodFunc, tbfuncionario.Salario, tbusuario.Nome AS Funcionario, tbusuario.Email AS EmailFuncionario, tbusuario2.Usuario AS Contratante, tbusuario2.Email AS EmailContratante FROM tbfuncionario JOIN tbusuario ON tbfuncionario.CodFunc = tbusuario.CodUsu JOIN tbusuario AS tbusuario2 ON tbfuncionario.UserId = tbusuario2.CodUsu", conexao);
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
 
@@ -165,12 +165,10 @@ namespace TCM.Repositorio
                         new Funcionario
                         {
                             CodFunc = Convert.ToInt32(dr["codfunc"]),
-                            email = Convert.ToString(dr["email"]),
-                            usuario = Convert.ToString(dr["usuario"]),
-                            senha = Convert.ToString(dr["senha"]),
+                            email = Convert.ToString(dr["EmailFuncionario"]),
+                            Nome = Convert.ToString(dr["Funcionario"]),
                             Salario = Convert.ToDecimal(dr["salario"]),
-                            UserId = Convert.ToInt32(dr["UserId"]),
-                            Fornecedor = Convert.ToString(dr["Fornecedor"])
+                            Contratante = Convert.ToString(dr["Contratante"])
                         });
                 }
             }
@@ -213,14 +211,15 @@ namespace TCM.Repositorio
 
         public void EditarUsuario(Usuario user)
         {
-            using(var conexao = new MySqlConnection(_conexaoMySQL))
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("update tbusuario set usuario = @usuario, email = @email where CodUsu = @codusu", conexao);
+                MySqlCommand cmd = new MySqlCommand("update tbusuario set usuario = @usuario, email = @email, FotoPerfil = @foto where CodUsu = @codusu", conexao);
 
                 cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = user.usuario;
                 cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = user.email;
+                cmd.Parameters.Add("@foto", MySqlDbType.MediumBlob).Value = user.FotoPerfil;
                 cmd.Parameters.Add("@codusu", MySqlDbType.Int32).Value = user.CodUsu;
 
                 cmd.ExecuteReader();
@@ -250,7 +249,7 @@ namespace TCM.Repositorio
                 Usuario user = new Usuario();
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("select * from tbusuario where CodUsu = @codusu", conexao);
+                MySqlCommand cmd = new MySqlCommand("select * from tbusuario join tbcliente where CodUsu = @codusu", conexao);
 
                 cmd.Parameters.Add("@codusu", MySqlDbType.Int32).Value = id;
 
@@ -271,6 +270,9 @@ namespace TCM.Repositorio
                         usuario = ((string)dr["usuario"]),
                         email = ((string)dr["email"]),
                         senha = (string)dr["senha"],
+                        FotoPerfil = dr["FotoPerfil"] != DBNull.Value ? (byte[])dr["FotoPerfil"] : null,
+                        CPF = (string)dr["CPF"],
+                        DataNascimento = DateOnly.FromDateTime((DateTime)dr["DataNasc"]),
                         tipo = (string)dr["tipo"],
                     };
                 }
@@ -319,7 +321,7 @@ namespace TCM.Repositorio
 
 
         //Metodo de cadastro
-        public void Cadastrar(string nome, string email, string usuario, string senha, byte[] fotoPerfil)
+        public void Cadastrar(string nome, string email, string usuario, string senha, byte[] fotoPerfil, DateOnly data, string cpf)
         {
             //Instanciando a variavel de conexão
             using (var conexao = new MySqlConnection(_conexaoMySQL))
@@ -328,7 +330,7 @@ namespace TCM.Repositorio
                 conexao.Open();
 
                 //Variavel cmd que recebe o comando insert do banco de dados inserindo o usuario e senha
-                MySqlCommand cmd = new MySqlCommand("call spCadastrarUsuario(@nome, @email, @usuario, @senha, @foto)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spCadastrarUsuario(@nome, @email, @usuario, @senha, @foto, @data, @cpf)", conexao);
 
                 //Adicionando os parametros email, usuario e senha
                 cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
@@ -336,6 +338,8 @@ namespace TCM.Repositorio
                 cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
                 cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = senha;
                 cmd.Parameters.Add("@foto", MySqlDbType.Blob).Value = fotoPerfil;
+                cmd.Parameters.Add("@data", MySqlDbType.Date).Value = data;
+                cmd.Parameters.Add("@cpf", MySqlDbType.VarChar).Value = cpf;
 
                 cmd.ExecuteNonQuery();
                 conexao.Close();
@@ -380,5 +384,28 @@ namespace TCM.Repositorio
                 conexao.Close();
             }
         }
+        public void CadastrarAdministrador(string nome, string email, string usuario, string senha, byte[] fotoPerfil)
+        {
+            //Instanciando a variavel de conexão
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                //Abrindo a conexão com o banco de dados
+                conexao.Open();
+
+                //Variavel cmd que recebe o comando insert do banco de dados inserindo o usuario e senha
+                MySqlCommand cmd = new MySqlCommand("call spCadastrarUsuario(@nome, @email, @usuario, @senha, @foto)", conexao);
+
+                //Adicionando os parametros email, usuario e senha
+                cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
+                cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = email;
+                cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
+                cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = senha;
+                cmd.Parameters.Add("@foto", MySqlDbType.Blob).Value = fotoPerfil;
+
+                cmd.ExecuteNonQuery();
+                conexao.Close();
+            }
+        }
+
     }
 }

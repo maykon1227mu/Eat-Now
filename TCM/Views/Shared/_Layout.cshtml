@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/compra.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/cadastrarproduto.css" asp-append-version="true" />  
+    <link rel="stylesheet" href="~/css/minhaconta.css" asp-append-version="true" />  
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -113,17 +114,7 @@
                     </li>
                 }
 
-                @if (User.IsInRole("Cliente"))
-                {
-                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "ativo" : "")">
-                        <a asp-controller="Conta" asp-action="MinhaConta">
-                            <div class="iconeNav">
-                                <i class="bi bi-tags"></i>
-                            </div>
-                            <div class="textoNav">Minha Conta</div>
-                        </a>
-                    </li>
-                }
+                
 
                 @if (User.IsInRole("Fornecedor"))
                 {

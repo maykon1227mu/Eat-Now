@@ -1,0 +1,26 @@
+﻿.container-dados {
+    width: 100%;
+    height: 100vh;
+}
+
+.dados {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: start;
+    width: 100%;
+    height: 100%;
+    padding: 10vh;
+    color: var(--color-font)
+}
+
+.dados img {
+    width: 275px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.imgUser{
+    display: flex;
+    width: 100%;
+}

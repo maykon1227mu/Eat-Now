@@ -10,7 +10,8 @@
             {
                 <img src="data:image/png;base64,@Model.FotoPerfilBase64" alt="Foto de Perfil" />
                 <a asp-controller="Conta" asp-action="EditarConta"><i class="bi bi-pencil-fill"></i></a>
-            } else
+            } 
+            else
             {
                 <img src="~/img/perfil.png" alt="Foto de Perfil"/>
                 <a asp-controller="Conta" asp-action="EditarConta"><i class="bi bi-pencil-fill"></i></a>
@@ -19,11 +20,22 @@
         </div>
         <div class="dados-informacoes">
             <h2>@Model.Nome</h2>
-            <p>@Model.email</p>
+            @if (User.IsInRole("Fornecedor") || User.IsInRole("Administrador"))
+            {
+                
+            } 
+            else
+            {
+                <p>CPF: @Model.CPF</p>
+                <p>Data de nascimento: @Model.DataNascimento</p>
+            }
+            
+            <p>Email: @Model.email</p>
             <p>Nivel da conta: @Model.tipo</p>
         </div>
+        <div>
+            <a class="btn-comprar-f" asp-controller="Conta" asp-action="EditarConta">Editar</a>
+        </div>
     </div>
-    <div>
-        <a asp-controller ="Conta" asp-action="EditarConta">Editar</a>
-    </div>
+    
 </div>
