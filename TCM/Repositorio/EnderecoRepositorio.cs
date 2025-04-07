@@ -14,7 +14,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("INSET INTO tbEndereco(Logradouro, Numero, Complemento, Bairro, Cidade, IdEstado, UserId, CEP) values (@log, @numero, @comp, @bairro, @cidade, @idest, @usrid, @cep)");
+                MySqlCommand cmd = new MySqlCommand("INSERT INTO tbEndereco(Logradouro, Numero, Complemento, Bairro, Cidade, IdEstado, UserId, CEP) values (@log, @numero, @comp, @bairro, @cidade, @idest, @usrid, @cep)", conexao);
                 cmd.Parameters.Add("@log", MySqlDbType.VarChar).Value = endereco.Logradouro;
                 cmd.Parameters.Add("@numero", MySqlDbType.VarChar).Value = endereco.Numero;
                 cmd.Parameters.Add("@comp", MySqlDbType.VarChar).Value = endereco.Complemento;
@@ -35,7 +35,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT IdEndereco, Logradouro, Numero, Complemento, Bairro, Cidade, IdEstado, tbEstado.Estado, UserId, CEP FROM tbEndereco join tbEstado on tbEndereco.IdEstado = tbEstado.IdEstado WHERE IdEndereco = @idend");
+                MySqlCommand cmd = new MySqlCommand("SELECT IdEndereco, Logradouro, Numero, Complemento, Bairro, Cidade, IdEstado, tbEstado.Estado, UserId, CEP FROM tbEndereco join tbEstado on tbEndereco.IdEstado = tbEstado.IdEstado WHERE IdEndereco = @idend", conexao);
                 cmd.Parameters.Add("@idend", MySqlDbType.Int32).Value = id;
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -72,7 +72,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT IdEndereco, Logradouro, Numero, Complemento, Bairro, Cidade, IdEstado, tbEstado.Estado, UserId, CEP FROM tbEndereco join tbEstado on tbEndereco.IdEstado = tbEstado.IdEstado WHERE UserId = @userid");
+                MySqlCommand cmd = new MySqlCommand("SELECT IdEndereco, Logradouro, Numero, Complemento, Bairro, Cidade, tbEndereco.IdEstado, tbEstado.SiglaEstado, UserId, CEP FROM tbEndereco join tbEstado on tbEndereco.IdEstado = tbEstado.IdEstado WHERE UserId = @userid", conexao);
                 cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = id;
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -94,7 +94,7 @@ namespace TCM.Repositorio
                         Bairro = Convert.ToString(dr["Bairro"]),
                         Cidade = Convert.ToString(dr["Cidade"]),
                         IdEstado = Convert.ToInt32(dr["IdEstado"]),
-                        Estado = Convert.ToString(dr["Estado"]),
+                        Estado = Convert.ToString(dr["SiglaEstado"]),
                         UserId = Convert.ToInt32(dr["UserId"]),
                         CEP = Convert.ToString(dr["CEP"])
                     });
@@ -107,7 +107,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("UPDATE tbEndereco SET Logradouro = @log, Numero = @numero, Complemento = @comp, Bairro = @bairro, Cidade = @cidade, IdEstado = @idest, CEP = @cep WHERE IdEndereco = @idend");
+                MySqlCommand cmd = new MySqlCommand("UPDATE tbEndereco SET Logradouro = @log, Numero = @numero, Complemento = @comp, Bairro = @bairro, Cidade = @cidade, IdEstado = @idest, CEP = @cep WHERE IdEndereco = @idend", conexao);
                 cmd.Parameters.Add("@log", MySqlDbType.VarChar).Value = endereco.Logradouro;
                 cmd.Parameters.Add("@numero", MySqlDbType.VarChar).Value = endereco.Numero;
                 cmd.Parameters.Add("@comp", MySqlDbType.VarChar).Value = endereco.Complemento;
@@ -126,7 +126,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("DELETE FROM tbEndereco WHERE IdEndereco = @idend");
+                MySqlCommand cmd = new MySqlCommand("DELETE FROM tbEndereco WHERE IdEndereco = @idend", conexao);
                 cmd.Parameters.Add("@idend", MySqlDbType.Int32 ).Value = id;
                 cmd.ExecuteReader();
                 
@@ -149,6 +149,33 @@ namespace TCM.Repositorio
                 if (enderecos > 0) return true;
                 
                 return false;
+            }
+        }
+
+        public IEnumerable<Estado> TodosEstados()
+        {
+            List<Estado> estados = new List<Estado>();
+            using(var conexao =  new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM tbEstado", conexao);
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                conexao.Close();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    estados.Add(new Estado()
+                    {
+                        IdEstado = Convert.ToInt32(dr["IdEstado"]),
+                        SiglaEstado = Convert.ToString(dr["SiglaEstado"])
+                    });
+                }
+                return estados;
             }
         }
 

@@ -1,0 +1,24 @@
+﻿@{
+	ViewData["Title"] = "Meus Endereços";
+}
+@model IEnumerable<TCM.Models.Endereco>
+
+<div class="container-enderecos">
+	<div class="enderecos">
+		@foreach (var endereco in Model)
+		{
+			<div class="card-endereco">
+				<div class="endereco-info">
+					<h2>@endereco.Logradouro, @endereco.Numero</h2>
+					<p>@endereco.Complemento</p>
+					<p>@endereco.CEP</p>
+				</div>
+			</div>
+		}
+		<a asp-controller="Conta" asp-action="NovoEndereco" class="card-endereco">
+			<div class="endereco-info">
+				<i class="bi bi-plus"></i>
+			</div>
+		</a>
+	</div>
+</div>

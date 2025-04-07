@@ -10,5 +10,6 @@ namespace TCM.Repositorio
         public void AlterarEndereco(Endereco endereco);
         public void ApagarEndereco(int id);
         public bool ExisteEndereco(int userId);
+        public IEnumerable<Estado> TodosEstados();
     }
 }

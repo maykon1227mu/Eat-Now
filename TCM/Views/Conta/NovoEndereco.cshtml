@@ -1,0 +1,49 @@
+﻿@using System.Security.Claims
+@{
+	ViewData["Title"] = "Novo Endereço";
+	List<Estado> estados = ViewBag.Estado;
+}
+@model TCM.Models.Endereco;
+
+<div class="container-formulario">
+    <form asp-controller="Conta" asp-action="NovoEndereco" enctype="multipart/form-data" method="post" class="formulario">
+        <h2>Novo Endereço</h2>
+        
+        <div class="formulario-inputs">
+            <label>CEP</label>
+            <input onchange="verificaCEP()" id="cep" class="input-form" asp-for="CEP" required/>
+        </div>
+        <div class="formulario-inputs">
+            <label>Logradouro</label>
+            <input id="logradouro" class="input-form" asp-for="Logradouro" required/>
+        </div>
+        <div class="formulario-inputs">
+            <label>Numero</label>
+            <input class="input-form" asp-for="Numero" required/>
+        </div>
+        <div class="formulario-inputs">
+            <label>Complemento</label>
+            <input class="input-form" asp-for="Complemento" required/>
+        </div>
+        
+        <div class="formulario-inputs">
+            <label>Estado</label>
+            <select asp-for="IdEstado" class="select-cat" name="IdEstado" required>
+                <option value="">Selecione</option>
+                @foreach (var estado in estados)
+                {
+                    <option value="@estado.IdEstado">@estado.SiglaEstado</option>
+                }
+            </select>
+        </div>
+        <div class="formulario-inputs">
+            <label>Bairro</label>
+            <input id="bairro" class="input-form" asp-for="Bairro" required/>
+        </div>
+        <div class="formulario-inputs">
+            <label>Cidade</label>
+            <input id="cidade" class="input-form" asp-for="Cidade" required/>
+        </div>
+        <button type="submit" class="btn-comprar-f">Cadastrar Endereço</button>
+    </form>
+</div>

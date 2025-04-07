@@ -112,12 +112,16 @@ namespace TCM.Controllers
         [Authorize]
         public IActionResult NovoEndereco()
         {
+            ViewBag.Estado = _enderecoRepositorio.TodosEstados();
             return View();
         }
 
         [HttpPost]
         public IActionResult NovoEndereco(Endereco endereco)
         {
+            int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            endereco.UserId = id;
+            _enderecoRepositorio.AdicionarEndereco(endereco);
             return RedirectToAction("MeusEnderecos", "Conta");
         }
 
