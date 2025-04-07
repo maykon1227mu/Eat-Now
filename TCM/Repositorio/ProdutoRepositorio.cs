@@ -584,8 +584,10 @@ namespace TCM.Repositorio
                 MySqlCommand cmd = new MySqlCommand("select sum(vendas) from tbproduto where UserId = @userid", conexao);
 
                 cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = userId;
+                var resultado = cmd.ExecuteScalar();
+                if (resultado == DBNull.Value) return 0;
 
-                int total = Convert.ToInt32(cmd.ExecuteScalar());
+                int total = Convert.ToInt32(resultado);
 
                 conexao.Close();
 

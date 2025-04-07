@@ -40,9 +40,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const index = Array.from(items).indexOf(activeItem);
 
             const position = index * 86; // Multiplica pelo tamanho do item (86px)
-            
+
             bolinha.style.setProperty("--translateX", `${position}px`);
-            
+
         }
     }
 
@@ -67,16 +67,14 @@ document.addEventListener("DOMContentLoaded", function () {
 btn.addEventListener('click', function () {
     html.classList.toggle('dark');
     btn.classList.toggle('dark');
-    const temaAtual = document.body.classList.contains('dark') ? 'dark' : "";
-    const novoTema = temaAtual === 'dark' ? 'light' : 'dark';
-    if (html.classList.contains("dark")) {
-        localStorage.setItem('tema', novoTema);
-    }
-    else
-    {
-        localStorage.setItem("tema", novoTema);
-    }
     
+    if (html.classList.contains("dark")) {
+        localStorage.setItem('tema', "dark");
+    }
+    else {
+        localStorage.setItem("tema", "light");
+    }
+
 
 
     if (html.classList.contains("dark")) {
@@ -90,17 +88,16 @@ btn.addEventListener('click', function () {
 
 function verificaIdade() {
     console.log("foi");
-    
+
     const dataNascimento = new Date(document.getElementById("data").value);
     const dataAtual = new Date();
 
-        
+
     let idade = dataAtual.getFullYear() - dataNascimento.getFullYear();
     const mesAtual = dataAtual.getMonth();
     const diaAtual = dataAtual.getDate();
 
-    if (mesAtual < dataNascimento.getMonth() || (mesAtual === dataNascimento.getMonth() && diaAtual < dataNascimento.getDate()))
-    {
+    if (mesAtual < dataNascimento.getMonth() || (mesAtual === dataNascimento.getMonth() && diaAtual < dataNascimento.getDate())) {
         idade--;
     }
 
@@ -111,7 +108,7 @@ function verificaIdade() {
         document.getElementById("idadeX").innerHTML = "";
         document.getElementById("btnCad").style.display = "block";
     }
-    
+
 }
 
 function mascara(input) {
@@ -128,26 +125,26 @@ function mascara(input) {
 }
 
 async function verificaCEP() {
-        let cep = document.getElementById("cep").value.replace(/\D/g, '');
+    let cep = document.getElementById("cep").value.replace(/\D/g, '');
 
-        if (cep.length == 8) {
-            try {
-                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-                const data = await response.json();
+    if (cep.length == 8) {
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            const data = await response.json();
 
-                if (data.erro) {
-                    alert("CEP não encontrado.");
-                    limparCampos();
-                } else {
-                    document.getElementById("logradouro").value = data.logradouro || '';
-                    document.getElementById("bairro").value = data.bairro || '';
-                    document.getElementById("cidade").value = data.localidade || '';
-                }
-            } catch {
-                console.log("Erro");
+            if (data.erro) {
+                alert("CEP não encontrado.");
+                limparCampos();
+            } else {
+                document.getElementById("logradouro").value = data.logradouro || '';
+                document.getElementById("bairro").value = data.bairro || '';
+                document.getElementById("cidade").value = data.localidade || '';
             }
+        } catch {
+            console.log("Erro");
         }
+    }
 
-        
-    
+
+
 }
