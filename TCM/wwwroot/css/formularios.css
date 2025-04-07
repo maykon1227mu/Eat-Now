@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: initial;
     flex-direction: column;
-    background-color: #000000;
+    background-color: var(--bg-color-sec);
     border-radius: 8px;
     padding: 2.5rem;
     border-bottom: 3px solid #31363F;
@@ -33,7 +33,7 @@
 .formulario-inputs input {
     background: transparent;
     color: var(--color-font-sec);
-    border-bottom: 1px solid var(--color-principal);
+    border-bottom: 1px solid var(--color-font-sec);
     outline:none;
     width: 100%;
 }
@@ -45,9 +45,9 @@
 }
 
 .select-cat {
-    background-color:#000;
-    color:white;
-    border-bottom:1px solid white;
+    background-color:var(--bg-color-sec);
+    color:var(--font-color);
+    border-bottom:1px solid var(--bg-color);
     outline:none;
 }
 

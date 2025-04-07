@@ -2,14 +2,14 @@
     position: fixed;
     top: 90%;
     left: 50%;
-    width: 99vw;
+    width: 90vw;
     height: 100px;
     transform: translate(-50%, -50%);
     background-color: var(--color-nav);
     display: none;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 30px;
     padding: 2rem;
 }
 
@@ -43,7 +43,7 @@
 
 .mobileNav ul li a {
     text-decoration: none;
-    color: var(--bg-color);
+    color: var(--bg-color-sec);
 }
 
 .bolinha {
@@ -52,7 +52,7 @@
     left: -2%;
     width: 90px;
     height: 90px;
-    background-color: #29fd53;
+    background-color: black;
     border-radius: 50%;
     transition: transform 0.5s ease-in-out;
     border: 6px solid var(--bg-color);

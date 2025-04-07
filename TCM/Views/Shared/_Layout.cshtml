@@ -183,7 +183,7 @@
             <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                 <a asp-controller="Home" asp-action="Index">
                     <div class="icon">
-                        <ion-icon name="home-outline"></ion-icon>
+                        <i class="bi bi-house"></i>
                     </div>
                     <div class="text">Home</div>
                 </a>
@@ -194,7 +194,7 @@
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Login" ? "active" : "")">
                     <a asp-controller="Home" asp-action="Login">
                         <div class="icon">
-                            <ion-icon name="person-outline"></ion-icon>
+                            <i class="bi bi-person"></i>
                         </div>
                         <div class="text">Login</div>
                     </a>
@@ -202,7 +202,7 @@
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "CadastrarUsuario" ? "active" : "")">
                     <a asp-controller="Home" asp-action="CadastrarUsuario">
                         <div class="icon">
-                            <ion-icon name="person-add-outline"></ion-icon>
+                            <i class="bi bi-person-add"></i>
                         </div>
                         <div class="text">Cadastro</div>
                     </a>
@@ -212,7 +212,7 @@
             <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Carrinho" ? "active" : "")">
                 <a asp-controller="Carrinho" asp-action="Index">
                     <div class="icon">
-                        <ion-icon name="cart-outline"></ion-icon>
+                        <i class="bi bi-cart"></i>
                     </div>
                     <div class="text">Carrinho</div>
                 </a>
@@ -223,7 +223,7 @@
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MeusPedidos" ? "active" : "")">
                     <a asp-controller="Conta" asp-action="MeusPedidos">
                         <div class="icon">
-                            <ion-icon name="receipt-outline"></ion-icon>
+                            <i class="bi bi-receipt"></i>
                         </div>
                         <div class="text">Histórico</div>
                     </a>
@@ -235,7 +235,7 @@
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
                     <a asp-controller="Conta" asp-action="Index">
                         <div class="icon">
-                            <ion-icon name="create-outline"></ion-icon>
+                            <i class="bi bi-plus-lg"></i>
                         </div>
                         <div class="text">Admin</div>
                     </a>
@@ -259,7 +259,7 @@
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "active" : "")">
                     <a asp-controller="Conta" asp-action="PainelFornecedor">
                         <div class="icon">
-                            <ion-icon name="create-outline"></ion-icon>
+                            <i class="bi bi-plus-lg"></i>
                         </div>
                         <div class="text">Fornecedor</div>
                     </a>
@@ -272,7 +272,7 @@
                     <a asp-controller="Conta" asp-action="MinhaConta">
                         <div class="icon">
                             <span class="imgBx">
-                                <ion-icon name="person-outline"></ion-icon>
+                                <i class="bi bi-person"></i>
                             </span>
                         </div>
                         <div class="text">@User.Identity.Name</div>
@@ -283,7 +283,7 @@
             <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "active" : "")">
                 <a asp-controller="Home" asp-action="Logout">
                     <div class="icon">
-                        <ion-icon name="settings-outline"></ion-icon>
+                        <i style="color:red;" class="bi bi-door-closed"></i>
                     </div>
                     <div class="text">Logout</div>
                 </a>
