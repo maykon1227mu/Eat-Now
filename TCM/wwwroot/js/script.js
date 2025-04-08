@@ -5,21 +5,6 @@ let openNav = document.querySelector('.container-toggle');
 const html = document.getElementById('html');
 let imgLogo = document.getElementById('logoNav');
 const btn = document.getElementById('btn-toggle');
-document.addEventListener("DOMContentLoaded", function () {
-    if (localStorage.getItem("tema") == "dark") {
-        html.classList.toggle('dark');
-        btn.classList.toggle('dark');
-    } else {
-        html.classList.remove('dark');
-        btn.classList.remove('dark');
-    }
-
-    if (html.classList.contains("dark")) {
-        imgLogo.src = "/img/LogoDark.png";
-    } else {
-        imgLogo.src = "/img/LogoLight.png";
-    }
-});
 
 menuToggle.onclick = function () {
     menuToggle.classList.toggle('ativo');
@@ -78,8 +63,10 @@ btn.addEventListener('click', function () {
 
 
     if (html.classList.contains("dark")) {
+        btn.classList.add('dark');
         imgLogo.src = "/img/LogoDark.png";
     } else {
+        btn.classList.remove('dark');
         imgLogo.src = "/img/LogoLight.png";
     }
 });

@@ -9,9 +9,15 @@
 		{
 			<div class="card-endereco">
 				<div class="endereco-info">
-					<h2>@endereco.Logradouro, @endereco.Numero</h2>
-					<p>@endereco.Complemento</p>
-					<p>@endereco.CEP</p>
+					<div class="info-esquerda">
+						<h2>@endereco.Logradouro, @endereco.Numero</h2>
+						<p>@endereco.Complemento</p>
+						<p>@endereco.CEP</p>
+					</div>
+					<div class="info-direita">
+						<p>@endereco.Bairro</p>
+						<p>@endereco.Cidade - @endereco.Estado</p>
+					</div>
 				</div>
 			</div>
 		}

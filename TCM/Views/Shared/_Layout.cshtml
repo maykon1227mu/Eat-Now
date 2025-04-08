@@ -298,23 +298,39 @@
         </main>
     </div>
     <script>
-        // document.addEventListener("DOMContentLoaded", function () {
-        //      Seleciona todos os links dentro do menu
-        //      const links = document.querySelectorAll("li a");
+          (function () {
+          try {
+            const tema = localStorage.getItem("tema");
+            if (tema === "dark") {
+              document.documentElement.classList.add("dark");
+              document.getElementById("btn-toggle").classList.add("dark");
+              document.getElementById('logoNav').src = "/img/LogoDark.png";
+            } else {
+              document.documentElement.classList.remove("dark");
+              document.getElementById("btn-toggle").classList.remove("dark");
+              document.getElementById('logoNav').src = "/img/LogoLight.png";
+            }
+          } catch (e) {
+            // Se der erro, não faz nada (padrão continua claro)
+          }
+        })();
+        document.addEventListener("DOMContentLoaded", function () {
+             //Seleciona todos os links dentro do menu
+             const links = document.querySelectorAll(".mobileNav li a");
 
-        //      links.forEach(link => {
-        //          link.addEventListener("click", function (event) {
-        //              event.preventDefault(); Impede a navegação imediata
+             links.forEach(link => {
+                 link.addEventListener("click", function (event) {
+                     event.preventDefault(); //Impede a navegação imediata
 
-        //              const destino = this.href; Captura o destino do link
+                     const destino = this.href; //Captura o destino do link
 
-        //              Aguarda 2 segundos antes de redirecionar
-        //              setTimeout(() => {
-        //                  window.location.href = destino;
-        //              }, 500);
-        //          });
-        //      });
-        //  });
+                     //Aguarda 2 segundos antes de redirecionar
+                     setTimeout(() => {
+                         window.location.href = destino;
+                     }, 250);
+                 });
+             });
+         });
     </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

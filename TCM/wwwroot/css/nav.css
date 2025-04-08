@@ -35,15 +35,18 @@
 .mobileNav ul li .icon {
     font-size: 20px;
     color: var(--bg-color);
+    transition: all ease .2s;
 }
 .mobileNav ul li .text {
     font-size: 14px;
     text-transform: uppercase;
+    transition: all ease .2s;
 }
 
 .mobileNav ul li a {
     text-decoration: none;
     color: var(--bg-color-sec);
+    transition: all ease .2s;
 }
 
 .bolinha {

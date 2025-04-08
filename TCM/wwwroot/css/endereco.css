@@ -8,26 +8,35 @@
 
 .enderecos {
     display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: var(--bg-color-sec);
     border-radius: 8px;
     padding: 1rem;
     gap: 20px;
     flex-wrap: wrap;
+    width: fit-content;
 }
 
 .card-endereco {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 250px;
-    height: 150px;
+    width: 300px;
+    height: 200px;
     background-color: var(--bg-color);
     border-radius: 8px;
     cursor: pointer;
 }
 
 .endereco-info {
+    display: flex;
     padding: 1rem;
+    gap: 20px;
+}
+
+.info-esquerda, .info-direita {
+    width: 100%;
 }
 
 .endereco-info i {
