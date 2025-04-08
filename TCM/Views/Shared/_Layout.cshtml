@@ -134,9 +134,7 @@
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MinhaConta">
                             <div class="iconeNav">
-                                <div class="imgBx">
                                     <i class="bi bi-person"></i>
-                                </div>
                             </div>
                             <div class="textoNav">@User.Identity.Name</div>
                         </a>

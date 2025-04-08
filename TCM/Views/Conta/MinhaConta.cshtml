@@ -3,13 +3,13 @@
 @model TCM.Models.Usuario
 <link rel="stylesheet" href="~/css/cliente.css" asp-append-version="true" />
 
-<div class="container-cliente">
+<main class="container-cliente">
     <h1>Seja Bem-Vindo,<span style=color:rgb(38,155,110)>@Model.usuario</span></h1>
     <div class="cliente">
-        <h1>Menu <span>Cliente</span></h1>
+        <h1>Menu <span style="color:#629b5e; text-decoration:underline;">Cliente</span></h1>
         <div class="link-cliente"><a asp-controller="Conta" asp-action="MeusDados">Meus Dados <i class="bi bi-person-badge"></i></a></div>
         <div class="link-cliente"><a asp-controller="Conta" asp-action="MeusPedidos">Meus Pedidos <i class="bi bi-basket"></i></a></div>
-        <div class="link-cliente"><a asp-controller="Conta" asp-action="MeusEnderecos">Meus Enderecos <i class="bi bi-basket"></i></a></div>
+        <div class="link-cliente"><a asp-controller="Conta" asp-action="MeusEnderecos">Meus Enderecos <i class="bi bi-geo-alt"></i></a></div>
         <div class="link-cliente"><a asp-controller="Carrinho" asp-action="Index">Meu Carrinho <i class="bi bi-cart3"></i></a></div>
     </div>
-</div>
+</main>
