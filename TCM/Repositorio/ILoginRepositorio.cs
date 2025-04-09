@@ -9,6 +9,7 @@ namespace TCM.Repositorio
         Usuario AcharUsuario(int id);
         Fornecedor AcharFornecedor(int id);
         IEnumerable<Funcionario> TodosFuncionarios();
+        Funcionario AcharFuncionario(int id);
         IEnumerable<Fornecedor> TodosFornecedores();
         void DeletarUsuario(int id);
         void EditarUsuario(Usuario user);

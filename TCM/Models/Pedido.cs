@@ -7,6 +7,7 @@
         public string? NomeProd { get; set; }
         public decimal PrecoPed { get; set; }
         public int UserId { get; set; }
+        public int IdEndereco { get; set; }
         public byte[]? ImagemPed { get; set; }
         public string? ImagemBase64 { get; set; }
         public int QtdPed { get; set; }

@@ -17,6 +17,8 @@ namespace TCM.Repositorio
         IEnumerable<Produto> Pesquisa(string nome);
         void FinalizarCompra(int userId, int produtoId, int qtd);
         IEnumerable<Pedido> TodosPedidos(int userId);
+        IEnumerable<Pedido> TodosPedidosFuncionario(int userId);
+        Pedido AcharPedido(int id);
         IEnumerable<Categoria> TodasCategorias();
         IEnumerable<Produto> ProdutosPorCategoria(int categoriaId);
         void NovaPromocao(string nomepromo, int porcentagem, string categoria, DateTime data);

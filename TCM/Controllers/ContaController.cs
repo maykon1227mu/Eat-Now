@@ -130,5 +130,42 @@ namespace TCM.Controllers
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             return View(_enderecoRepositorio.TodosEnderecos(id));
         }
+
+        [Authorize(Roles = "Funcionario")]
+        public IActionResult PainelFuncionario()
+        {
+            return View();
+        }
+
+        public IActionResult FuncionarioPedidos()
+        {
+            var funcionario = _loginRepositorio.AcharFuncionario(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
+            return View(_produtoRepositorio.TodosPedidosFuncionario(funcionario.UserId));
+        }
+
+        public IActionResult DetalhesPedido(int id)
+        {
+            var pedido = _produtoRepositorio.AcharPedido(id);
+            ViewBag.Endereco = _enderecoRepositorio.AcharEndereco(pedido.IdEndereco);
+            var produto = _produtoRepositorio.AcharProduto(pedido.ProdutoId);
+            if(produto.Imagem != null)
+            {
+                pedido.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
+            }
+            ViewBag.Produto = produto;
+            ViewBag.Usuario = _loginRepositorio.AcharUsuario(pedido.UserId);
+
+            if (pedido.UserId != Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value)) return NotFound();
+
+            return View(pedido);
+        }
+        
+        public IActionResult DetalhesPedidoFuncionario(int id)
+        {
+            var pedido = _produtoRepositorio.AcharPedido(id);
+            ViewBag.Endereco = _enderecoRepositorio.AcharEndereco(pedido.IdEndereco);
+            ViewBag.Produto = _produtoRepositorio.AcharProduto(pedido.ProdutoId);
+            return View(pedido);
+        }
     }
 }

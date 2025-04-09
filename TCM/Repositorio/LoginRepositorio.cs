@@ -174,6 +174,41 @@ namespace TCM.Repositorio
             }
             return funcionarioLista;
         }
+        public Funcionario AcharFuncionario(int id)
+        {
+            Funcionario funcionario = new Funcionario();
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT CodUsu, Nome, Email, Usuario, Senha, Tipo, tbfuncionario.CodFunc,tbFuncionario.Salario, tbFuncionario.UserId, tbfuncionario.DataNasc, tbfuncionario.CPF FROM tbusuario join tbfuncionario on tbfuncionario.CodFunc = tbusuario.CodUsu WHERE CodUsu = @userid");
+                cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = id;
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    funcionario = new Funcionario
+                    {
+                        CodFunc = Convert.ToInt32(dr["codfunc"]),
+                        Nome = Convert.ToString(dr["Nome"]),
+                        email = Convert.ToString(dr["Email"]),
+                        usuario = Convert.ToString(dr["Usuario"]),
+                        senha = Convert.ToString(dr["Senha"]),
+                        Salario = Convert.ToDecimal(dr["Salario"]),
+                        UserId = Convert.ToInt32(dr["UserId"]),
+                        DataNasc = DateOnly.FromDateTime((DateTime)dr["DataNasc"]),
+                        CPF = (string)dr["CPF"],
+                    };
+                }
+                return funcionario;
+            }
+        }
+
 
         public IEnumerable<Fornecedor> TodosFornecedores()
         {

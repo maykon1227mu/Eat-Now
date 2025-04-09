@@ -1,0 +1,27 @@
+﻿@{
+	ViewData["Title"] = "Detalhes do Pedido";
+	Endereco endereco = ViewBag.Endereco;
+	Produto produto = ViewBag.Produto;
+	Usuario usuario = ViewBag.Usuario;
+}
+@model TCM.Models.Pedido;
+
+<div class="container-detalhes">
+	<div class="detalhes">
+		<div class="detalhes-info">
+			<h2>Detalhes do Pedido</h2>
+			<h2>Pedido #@Model.CodPed</h2>
+			<h2>@Model.NomeProd</h2>
+			<img src="data:image/png;base64,@produto.ImagemBase64" alt="Produto" class="img-produto">
+			<p>Nome do cliente: @usuario.Nome</p>
+			<p>Rua: @endereco.Logradouro, @endereco.Numero</p>
+			<p>Complemento: @endereco.Complemento</p>
+			<p>Bairro: @endereco.Bairro</p>
+			<p>Cidade: @endereco.Cidade</p>
+			<p>Estado: @endereco.Estado</p>
+			<p>@Model.QtdPed x R$@Model.PrecoPed</p>
+			<p>Data e hora: @Model.DataPed</p>
+			<a href="@Url.Action("FuncionarioPedidos", "Conta")" class="btn-voltar">Voltar</a>
+		</div>
+	</div>
+</div>

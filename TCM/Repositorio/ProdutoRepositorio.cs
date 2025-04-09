@@ -315,6 +315,81 @@ namespace TCM.Repositorio
             return pedidoLista;
         }
 
+        public IEnumerable<Pedido> TodosPedidosFuncionario(int userId)
+        {
+            List<Pedido> pedidoLista = new List<Pedido>();
+
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbpedido.IdEndereco, tbproduto.Imagem, FROM tbpedido JOIN tbproduto ON tbpedido.ProdutoId = tbproduto.CodProd JOIN tbusuario ON tbproduto.UserId = tbusuario.CodUsu WHERE tbusuario.CodUsu = @userId;", conexao);
+
+                cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                conexao.Close();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    pedidoLista.Add(
+                        new Pedido()
+                        {
+                            CodPed = Convert.ToInt32(dr["codped"]),
+                            ProdutoId = Convert.ToInt32(dr["produtoid"]),
+                            UserId = Convert.ToInt32(dr["userid"]),
+                            ImagemPed = (byte[])(dr["imagem"]),
+                            DataPed = Convert.ToDateTime(dr["dataped"]),
+                            NomeProd = Convert.ToString(dr["nomeprod"]),
+                            IdEndereco = Convert.ToInt32(dr["idendereco"]),
+                            PrecoPed = Convert.ToDecimal(dr["precoped"]),
+                            QtdPed = Convert.ToInt32(dr["qtdped"]),
+                        });
+                }
+            }
+            return pedidoLista;
+        }
+        public Pedido AcharPedido(int id)
+        {
+            List<Pedido> pedidoLista = new List<Pedido>();
+
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbpedido.IdEndereco, tbproduto.Imagem, FROM tbpedido JOIN tbproduto ON tbpedido.ProdutoId = tbproduto.CodProd JOIN tbusuario ON tbproduto.UserId = tbusuario.CodUsu WHERE CodPed = @id;", conexao);
+
+                cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                conexao.Close();
+                foreach (DataRow dr in dt.Rows)
+                {
+                    pedidoLista.Add(
+                        new Pedido()
+                        {
+                            CodPed = Convert.ToInt32(dr["codped"]),
+                            ProdutoId = Convert.ToInt32(dr["produtoid"]),
+                            UserId = Convert.ToInt32(dr["userid"]),
+                            ImagemPed = (byte[])(dr["imagem"]),
+                            DataPed = Convert.ToDateTime(dr["dataped"]),
+                            NomeProd = Convert.ToString(dr["nomeprod"]),
+                            IdEndereco = Convert.ToInt32(dr["idendereco"]),
+                            PrecoPed = Convert.ToDecimal(dr["precoped"]),
+                            QtdPed = Convert.ToInt32(dr["qtdped"]),
+                        });
+                }
+            }
+            return pedidoLista;
+        }
+
         public IEnumerable<Categoria> TodasCategorias()
         {
             List<Categoria> categoriaLista = new List<Categoria>();
