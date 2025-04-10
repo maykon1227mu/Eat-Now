@@ -9,6 +9,14 @@
     margin-top: 10vh
 }
 
+.btn-primary {
+    background: #379b36;
+}
+.btn-primary:hover {
+    background: #39b138;
+
+}
+
 
 .content-table {
     margin: 25px 0;
@@ -35,8 +43,8 @@
         border: 1px solid black;
     }
 
-..content-table td {
-    padding: 12px 50px;
+.content-table td {
+    padding: 12px 20px;
 }
 
 .content-table i {

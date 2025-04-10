@@ -1,20 +1,25 @@
 ﻿.card-container {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    justify-items:center;
     align-items: center;
-    flex-direction: column;
-    width: auto;
+    grid-template-rows: 1fr 1fr 1fr;
     padding: 1.5rem;
     background-color: var(--card-product);
     color: var(--color-font-alt);
     width:400px;
-    height:4    00px;
+    height:500px;
     gap:40px;
 }
 
 .card-container h2 {
     font-weight:800;
     padding:20px 0px;
+}
+.card-image {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:200px;
 }
 
 .card-imagem img {
@@ -52,18 +57,37 @@
     align-items: center;
     width: 100px;
     border: 1px solid var(--color-font-sec);
-    color: var(--color-font-sec);
+    color: var(--color-font);
     padding: 5px 60px;
     gap: 5px;
     font-size: 14px;
+    transition:0.5s;
 }
 .btn-comprar:hover {
-    color:#fff;
+    color: #29832b;
 }
 
 .card-botoes p {
     font-size:17px;
     margin:0;
     color:#fff;
+}
+
+.btn-comprar-b {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    border: 1px solid var(--color-font-sec);
+    color: var(--color-font-sec);
+    padding: 5px 60px;
+    gap: 5px;
+    font-size: 14px;
+    transition: 0.5s;
+}
+
+.btn-comprar-b:hover {
+    color: #3aa43c;
+    border: 1px solid   #3aa43c;
 }
 

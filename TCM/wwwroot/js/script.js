@@ -60,8 +60,6 @@ btn.addEventListener('click', function () {
         localStorage.setItem("tema", "light");
     }
 
-
-
     if (html.classList.contains("dark")) {
         btn.classList.add('dark');
         imgLogo.src = "/img/LogoDark.png";

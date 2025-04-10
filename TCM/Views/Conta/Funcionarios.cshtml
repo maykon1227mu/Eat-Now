@@ -4,23 +4,22 @@
 
 @model IEnumerable<Funcionario>
 
+<main class="products-index">
 <h1>Painel Funcionarios</h1>
          
 <table class="content-table">
     <thead>
         <tr>
-            <th>Código</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Salario</th>
-            <th> </th>
-            <th> </th>
+            <th>Código <i class="bi bi-lock"></i></th>
+            <th>Nome <i class="bi bi-tags"></i></th>
+            <th>Email <i class="bi bi-envelope"></i></th>
+            <th>Salario <i class="bi bi-currency-dollar"></i></th>    
         </tr>
     </thead>
     <tbody>
         @foreach (var funcionario in Model)
         {
-            <tr>
+            <tr class="tr-products">
                 <td>@funcionario.CodFunc</td>
                 <td>@funcionario.Nome</td>
                 <td>@funcionario.email</td>
@@ -35,3 +34,4 @@
         }
     </tbody>
 </table>
+</main>
