@@ -180,7 +180,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT CodUsu, Nome, Email, Usuario, Senha, Tipo, tbfuncionario.CodFunc,tbFuncionario.Salario, tbFuncionario.UserId, tbfuncionario.DataNasc, tbfuncionario.CPF FROM tbusuario join tbfuncionario on tbfuncionario.CodFunc = tbusuario.CodUsu WHERE CodUsu = @userid");
+                MySqlCommand cmd = new MySqlCommand("SELECT CodUsu, Nome, Email, Usuario, Senha, Tipo, tbfuncionario.CodFunc,tbFuncionario.Salario, tbFuncionario.UserId, tbfuncionario.DataNasc, tbfuncionario.CPF FROM tbusuario join tbfuncionario on tbfuncionario.CodFunc = tbusuario.CodUsu WHERE CodUsu = @userid", conexao);
                 cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = id;
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
 
@@ -322,7 +322,7 @@ namespace TCM.Repositorio
                 Fornecedor user = new Fornecedor();
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("select * from tbusuario where CodUsu = @codfor join tbfornecedor where CodFor = @codfor", conexao);
+                MySqlCommand cmd = new MySqlCommand("select tbusuario.CodUsu, tbusuario.Nome, tbusuario.Usuario, tbusuario.Email, tbfornecedor.CNPJ, tbusuario.tipo from tbusuario join tbfornecedor on tbfornecedor.CodFor = tbusuario.CodUsu where CodUsu = @codfor", conexao);
 
                 cmd.Parameters.Add("@codfor", MySqlDbType.Int32).Value = id;
 

@@ -260,18 +260,19 @@ namespace TCM.Repositorio
             }
         }
 
-        public void FinalizarCompra(int userId, int produtoId, int qtd)
+        public void FinalizarCompra(int userId, int produtoId, int qtd, int idend)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("call spFinalizarCompra(@userId, @produtoId, @qtd, @qtdvenda)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spFinalizarCompra(@userId, @produtoId, @qtd, @qtdvenda, @idend)", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
                 cmd.Parameters.Add("@produtoId", MySqlDbType.Int32).Value = produtoId;
                 cmd.Parameters.Add("@qtd", MySqlDbType.Int32).Value = qtd;
                 cmd.Parameters.Add("@qtdvenda", MySqlDbType.Int32).Value = qtd;
+                cmd.Parameters.Add("@idend", MySqlDbType.Int32).Value = idend;
 
                 cmd.ExecuteReader();
                 conexao.Close();
@@ -322,7 +323,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbpedido.IdEndereco, tbproduto.Imagem, FROM tbpedido JOIN tbproduto ON tbpedido.ProdutoId = tbproduto.CodProd JOIN tbusuario ON tbproduto.UserId = tbusuario.CodUsu WHERE tbusuario.CodUsu = @userId;", conexao);
+                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbpedido.IdEndereco, tbproduto.Imagem FROM tbpedido JOIN tbproduto ON tbpedido.ProdutoId = tbproduto.CodProd JOIN tbusuario ON tbproduto.UserId = tbusuario.CodUsu WHERE tbusuario.CodUsu = @userId;", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
 
@@ -354,12 +355,12 @@ namespace TCM.Repositorio
         }
         public Pedido AcharPedido(int id)
         {
-            List<Pedido> pedidoLista = new List<Pedido>();
+            Pedido pedido= new Pedido();
 
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbpedido.IdEndereco, tbproduto.Imagem, FROM tbpedido JOIN tbproduto ON tbpedido.ProdutoId = tbproduto.CodProd JOIN tbusuario ON tbproduto.UserId = tbusuario.CodUsu WHERE CodPed = @id;", conexao);
+                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbpedido.IdEndereco, tbproduto.Imagem FROM tbpedido JOIN tbproduto ON tbpedido.ProdutoId = tbproduto.CodProd JOIN tbusuario ON tbproduto.UserId = tbusuario.CodUsu WHERE CodPed = @id;", conexao);
 
                 cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
 
@@ -372,7 +373,7 @@ namespace TCM.Repositorio
                 conexao.Close();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    pedidoLista.Add(
+                    pedido =
                         new Pedido()
                         {
                             CodPed = Convert.ToInt32(dr["codped"]),
@@ -384,10 +385,10 @@ namespace TCM.Repositorio
                             IdEndereco = Convert.ToInt32(dr["idendereco"]),
                             PrecoPed = Convert.ToDecimal(dr["precoped"]),
                             QtdPed = Convert.ToInt32(dr["qtdped"]),
-                        });
+                        };
                 }
             }
-            return pedidoLista;
+            return pedido;
         }
 
         public IEnumerable<Categoria> TodasCategorias()

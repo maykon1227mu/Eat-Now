@@ -13,7 +13,7 @@
                     //Transforma o blob para um jeito que dê para a imagem ser interpretada
                     item.ImagemBase64 = Convert.ToBase64String(item.ImagemPed);
                 }
-                <div class="pedidos">
+                <a class="pedidos" asp-action="DetalhesPedidoFuncionario" asp-controller="Conta" asp-route-id="@item.CodPed">
                     <div class="pedido-img">
                         <img src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
                     </div>
@@ -25,7 +25,7 @@
                         <p>@item.QtdPed x R$@item.PrecoPed</p>
                         <h5>Data: @item.DataPed</h5>
                     </div>
-                </div>
+                </a>
             }
         </div>
     </div>

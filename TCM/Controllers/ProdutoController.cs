@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Security.Claims;
 using TCM.Libraries.LoginUsuarios;
 using TCM.Models;
@@ -132,15 +133,15 @@ namespace TCM.Controllers
 
 
         [Authorize]
-        public IActionResult Finalizar()
+        public IActionResult Finalizar(int idend)
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var carrinho = _carrinhoRepositorio.ObterCarrinhoPorUsuario(id);
-            if(_enderecoRepositorio.ExisteEndereco(id))
+            if (_enderecoRepositorio.ExisteEndereco(id))
             {
                 foreach (var item in carrinho)
                 {
-                    _produtoRepositorio.FinalizarCompra(id, item.ProdutoId, item.Quantidade);
+                    _produtoRepositorio.FinalizarCompra(id, item.ProdutoId, item.Quantidade, idend);
                     _carrinhoRepositorio.RemoverItemCarrinho(id, item.ProdutoId, item.Quantidade);
                 }
             } 

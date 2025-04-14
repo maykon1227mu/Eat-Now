@@ -164,7 +164,13 @@ namespace TCM.Controllers
         {
             var pedido = _produtoRepositorio.AcharPedido(id);
             ViewBag.Endereco = _enderecoRepositorio.AcharEndereco(pedido.IdEndereco);
-            ViewBag.Produto = _produtoRepositorio.AcharProduto(pedido.ProdutoId);
+            var produto = _produtoRepositorio.AcharProduto(pedido.ProdutoId);
+            if (produto.Imagem != null)
+            {
+                pedido.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
+            }
+            ViewBag.Produto = produto;
+            ViewBag.Usuario = _loginRepositorio.AcharUsuario(pedido.UserId);
             return View(pedido);
         }
     }

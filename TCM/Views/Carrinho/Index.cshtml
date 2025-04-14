@@ -1,5 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Carrinho";
+	List<Endereco> enderecos = ViewBag.Enderecos;
+	if (enderecos == null)
+	{
+		enderecos = new List<Endereco>();
+	}
 }
 @model IEnumerable<Carrinho>
 <main class="container-all-cart">
@@ -54,17 +59,24 @@
                             <h2>Sub-Total: R$@Model.Sum(i => i.Total)</h2>
                             <h2 style="color:#72AC6C;">Total: R$@Model.Sum(i => i.Total)</h2>
                         </div>
-                        <div class="button-box-cart-price">
-                            <a asp-controller="Produto" asp-action="Finalizar" class="button-price-all">Finalizar</a>
-                            <a asp-controller="Carrinho" asp-action="LimparCarrinho" class="button-price-all">Limpar</a>
+                        <div>
+                            <form method="get" action="@Url.Action("Finalizar", "Produto")">
+                                <select id="idend" name="idend">
+                                    @foreach (var endereco in enderecos)
+                                    {
+                                        <option value="@endereco.IdEndereco">@endereco.Logradouro</option>
+                                    }
+                                </select>
+                                <div class="button-box-cart-price">
+                                    <button type="submit" class="button-price-all">Finalizar</button>
+                                    <a asp-controller="Carrinho" asp-action="LimparCarrinho" class="button-price-all">Limpar</a>
+                                </div>
+                            </form>
                         </div>
+                        
                     </div>
-                
-                
-
                 </div>
             </div>
-        
         </div>
     }
 </main>

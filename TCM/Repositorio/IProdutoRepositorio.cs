@@ -15,7 +15,7 @@ namespace TCM.Repositorio
         IEnumerable<Produto> TodosProdutos();
         IEnumerable<Produto> TodosProdutosFornecedor(int id);
         IEnumerable<Produto> Pesquisa(string nome);
-        void FinalizarCompra(int userId, int produtoId, int qtd);
+        void FinalizarCompra(int userId, int produtoId, int qtd, int idend);
         IEnumerable<Pedido> TodosPedidos(int userId);
         IEnumerable<Pedido> TodosPedidosFuncionario(int userId);
         Pedido AcharPedido(int id);

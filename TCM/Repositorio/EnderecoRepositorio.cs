@@ -35,7 +35,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT IdEndereco, Logradouro, Numero, Complemento, Bairro, Cidade, IdEstado, tbEstado.Estado, UserId, CEP FROM tbEndereco join tbEstado on tbEndereco.IdEstado = tbEstado.IdEstado WHERE IdEndereco = @idend", conexao);
+                MySqlCommand cmd = new MySqlCommand("SELECT tbendereco.IdEndereco, tbendereco.Logradouro, tbendereco.Numero, tbendereco.Complemento, tbendereco.Bairro, tbendereco.Cidade, tbendereco.IdEstado, tbEstado.SiglaEstado, tbendereco.UserId, CEP FROM tbEndereco join tbEstado on tbEndereco.IdEstado = tbEstado.IdEstado WHERE IdEndereco = @idend", conexao);
                 cmd.Parameters.Add("@idend", MySqlDbType.Int32).Value = id;
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -57,7 +57,7 @@ namespace TCM.Repositorio
                         Bairro = Convert.ToString(dr["Bairro"]),
                         Cidade = Convert.ToString(dr["Cidade"]),
                         IdEstado = Convert.ToInt32(dr["IdEstado"]),
-                        Estado = Convert.ToString(dr["Estado"]),
+                        Estado = Convert.ToString(dr["SiglaEstado"]),
                         UserId = Convert.ToInt32(dr["UserId"]),
                         CEP = Convert.ToString(dr["CEP"])
                     };
