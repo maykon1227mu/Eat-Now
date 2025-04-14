@@ -354,7 +354,7 @@ namespace TCM.Repositorio
         }
         public Pedido AcharPedido(int id)
         {
-            List<Pedido> pedidoLista = new List<Pedido>();
+            Pedido pedido = new Pedido();
 
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
@@ -372,7 +372,7 @@ namespace TCM.Repositorio
                 conexao.Close();
                 foreach (DataRow dr in dt.Rows)
                 {
-                    pedidoLista.Add(
+                    pedido =
                         new Pedido()
                         {
                             CodPed = Convert.ToInt32(dr["codped"]),
@@ -384,10 +384,10 @@ namespace TCM.Repositorio
                             IdEndereco = Convert.ToInt32(dr["idendereco"]),
                             PrecoPed = Convert.ToDecimal(dr["precoped"]),
                             QtdPed = Convert.ToInt32(dr["qtdped"]),
-                        });
+                        };
                 }
             }
-            return pedidoLista;
+            return pedido;
         }
 
         public IEnumerable<Categoria> TodasCategorias()

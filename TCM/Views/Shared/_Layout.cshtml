@@ -135,7 +135,7 @@
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="MinhaConta">
                             <div class="iconeNav">
-                                    <i class="bi bi-person"></i>
+                                <i class="bi bi-person"></i>
                             </div>
                             <div class="textoNav">@User.Identity.Name</div>
                         </a>
@@ -271,9 +271,7 @@
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "MinhaConta" ? "active" : "")">
                     <a asp-controller="Conta" asp-action="MinhaConta">
                         <div class="icon">
-                            <span class="imgBx">
-                                <i class="bi bi-person"></i>
-                            </span>
+                            <i class="bi bi-person"></i>
                         </div>
                         <div class="text">@User.Identity.Name</div>
                     </a>
