@@ -59,38 +59,38 @@ namespace TCM.Controllers
             return RedirectToAction("MinhaConta", "Conta");
         }
         [Authorize(Roles = "Administrador")]
-        public IActionResult Funcionarios()
+        public IActionResult Administradores()
         {
-            return View(_loginRepositorio.TodosFuncionarios());
+            return View(_loginRepositorio.TodosAdministradores());
         }
         [Authorize(Roles = "Administrador")]
-        public IActionResult Fornecedores()
+        public IActionResult Colaboradores()
         {
-            return View(_loginRepositorio.TodosFornecedores());
+            return View(_loginRepositorio.TodosColaboradores());
         }
         [Authorize(Roles = "Administrador")]
-        public IActionResult CadastrarFuncionario()
+        public IActionResult CadastrarAdministrador()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CadastrarFuncionario(Funcionario funcionario)
+        public IActionResult CadastrarAdministrador(Administrador administrador)
         {
-            funcionario.UserId = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
-            _loginRepositorio.CadastrarFuncionario(funcionario.Nome, funcionario.email, funcionario.usuario, funcionario.senha, funcionario.Salario, funcionario.UserId);
+            
+            _loginRepositorio.CadastrarAdministrador(administrador.Nome, administrador.email, administrador.usuario, administrador.senha, administrador.Salario, administrador.DataNasc);
             return RedirectToAction("Index", "Conta");
         }
 
-        public IActionResult CadastrarFornecedor()
+        public IActionResult CadastrarColaborador()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CadastrarFornecedor(Fornecedor fornecedor)
+        public IActionResult CadastrarColaborador(Colaborador colaborador)
         {
-            _loginRepositorio.CadastrarFornecedor(fornecedor.nome, fornecedor.email, fornecedor.usuario, fornecedor.senha, fornecedor.CNPJ);
+            _loginRepositorio.CadastrarColaborador(colaborador.nome, colaborador.email, colaborador.usuario, colaborador.senha, colaborador.CNPJ);
             return RedirectToAction("Index", "Conta");
         }
         [Authorize]

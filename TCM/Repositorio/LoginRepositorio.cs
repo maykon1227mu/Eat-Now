@@ -38,7 +38,7 @@ namespace TCM.Repositorio
                 if (dr.Read())
                 {
                     string tipo = Convert.ToString(dr["tipo"]);
-                    if (tipo == "Cliente" || tipo == "Administrador")
+                    if (tipo == "Cliente")
                     {
                         Usuario user = new Usuario();
 
@@ -71,24 +71,24 @@ namespace TCM.Repositorio
                         
                         return user;
                     }
-                    else if (tipo == "Fornecedor")
+                    else if (tipo == "Colaborador")
                     {
-                        Fornecedor fornecedor = new Fornecedor();
+                        Colaborador colaborador = new Colaborador();
                         // Atribuindo dados ao usuário, se encontrados no banco
-                        fornecedor.usuario = Convert.ToString(dr["usuario"]);
-                        fornecedor.senha = Convert.ToString(dr["senha"]);
-                        fornecedor.CodFor = Convert.ToInt32(dr["codfor"]);
-                        fornecedor.CNPJ = Convert.ToString(dr["cnpj"]);
-                        fornecedor.tipo = Convert.ToString(dr["tipo"]);
+                        colaborador.usuario = Convert.ToString(dr["usuario"]);
+                        colaborador.senha = Convert.ToString(dr["senha"]);
+                        colaborador.IdColaborador = Convert.ToInt32(dr["codfor"]);
+                        colaborador.CNPJ = Convert.ToString(dr["cnpj"]);
+                        colaborador.tipo = Convert.ToString(dr["tipo"]);
 
 
 
                         // Criando a lista de claims
                         var claims = new List<Claim>
                         {
-                            new Claim(ClaimTypes.Name, fornecedor.usuario),
-                            new Claim(ClaimTypes.SerialNumber, Convert.ToString(fornecedor.CodFor)),
-                            new Claim(ClaimTypes.Role, fornecedor.tipo == null ? "Fornecedor" : fornecedor.tipo)
+                            new Claim(ClaimTypes.Name, colaborador.usuario),
+                            new Claim(ClaimTypes.SerialNumber, Convert.ToString(colaborador.IdColaborador)),
+                            new Claim(ClaimTypes.Role, colaborador.tipo == null ? "Colaborador" : colaborador.tipo)
                         };
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -98,28 +98,28 @@ namespace TCM.Repositorio
                         };
 
                         await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-                        return fornecedor;
+                        return colaborador;
                     }
-                    else if (tipo == "Funcionario")
+                    else if (tipo == "Administrador")
                     {
-                        Funcionario funcionario = new Funcionario();
+                        Administrador administrador = new Administrador();
 
                         
                             // Atribuindo dados ao usuário, se encontrados no banco
-                            funcionario.usuario = Convert.ToString(dr["usuario"]);
-                            funcionario.senha = Convert.ToString(dr["senha"]);
-                            funcionario.CodFunc = Convert.ToInt32(dr["codfunc"]);
-                            funcionario.Salario = Convert.ToInt32(dr["salario"]);
-                            funcionario.tipo = Convert.ToString(dr["tipo"]);
+                            administrador.usuario = Convert.ToString(dr["usuario"]);
+                            administrador.senha = Convert.ToString(dr["senha"]);
+                            administrador.IdAdmin = Convert.ToInt32(dr["codfunc"]);
+                            administrador.Salario = Convert.ToInt32(dr["salario"]);
+                            administrador.tipo = Convert.ToString(dr["tipo"]);
 
 
 
                             // Criando a lista de claims
                             var claims = new List<Claim>
                             {
-                                new Claim(ClaimTypes.Name, funcionario.usuario),
-                                new Claim(ClaimTypes.SerialNumber, Convert.ToString(funcionario.CodFunc)),
-                                new Claim(ClaimTypes.Role, funcionario.tipo == null ? "Fornecedor" : funcionario.tipo)
+                                new Claim(ClaimTypes.Name, administrador.usuario),
+                                new Claim(ClaimTypes.SerialNumber, Convert.ToString(administrador.IdAdmin)),
+                                new Claim(ClaimTypes.Role, administrador.tipo == null ? "Administrador" : administrador.tipo)
                             };
 
                             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -130,7 +130,7 @@ namespace TCM.Repositorio
 
                             await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
                         
-                        return funcionario;
+                        return administrador;
                     }
                 } else
                 {
@@ -140,9 +140,9 @@ namespace TCM.Repositorio
             return usuarioNaN;
         }
 
-        public IEnumerable<Funcionario> TodosFuncionarios()
+        public IEnumerable<Administrador> TodosAdministradores()
         {
-            List<Funcionario> funcionarioLista = new List<Funcionario>();
+            List<Administrador> adminLista = new List<Administrador>();
             using(var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
@@ -161,22 +161,21 @@ namespace TCM.Repositorio
                 {
 
 
-                    funcionarioLista.Add(
-                        new Funcionario
+                    adminLista.Add(
+                        new Administrador
                         {
-                            CodFunc = Convert.ToInt32(dr["codfunc"]),
+                            IdAdmin = Convert.ToInt32(dr["codfunc"]),
                             email = Convert.ToString(dr["EmailFuncionario"]),
                             Nome = Convert.ToString(dr["Funcionario"]),
                             Salario = Convert.ToDecimal(dr["salario"]),
-                            Contratante = Convert.ToString(dr["Contratante"])
                         });
                 }
             }
-            return funcionarioLista;
+            return adminLista;
         }
-        public Funcionario AcharFuncionario(int id)
+        public Administrador AcharAdministrador(int id)
         {
-            Funcionario funcionario = new Funcionario();
+            Administrador administrador = new Administrador();
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
@@ -192,27 +191,26 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    funcionario = new Funcionario
+                    administrador = new Administrador
                     {
-                        CodFunc = Convert.ToInt32(dr["codfunc"]),
+                        IdAdmin = Convert.ToInt32(dr["codfunc"]),
                         Nome = Convert.ToString(dr["Nome"]),
                         email = Convert.ToString(dr["Email"]),
                         usuario = Convert.ToString(dr["Usuario"]),
                         senha = Convert.ToString(dr["Senha"]),
                         Salario = Convert.ToDecimal(dr["Salario"]),
-                        UserId = Convert.ToInt32(dr["UserId"]),
                         DataNasc = DateOnly.FromDateTime((DateTime)dr["DataNasc"]),
-                        CPF = (string)dr["CPF"],
+
                     };
                 }
-                return funcionario;
+                return administrador;
             }
         }
 
 
-        public IEnumerable<Fornecedor> TodosFornecedores()
+        public IEnumerable<Colaborador> TodosColaboradores()
         {
-            List<Fornecedor> fornecedorLista = new List<Fornecedor>();
+            List<Colaborador> colaboradorLista = new List<Colaborador>();
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
@@ -230,10 +228,10 @@ namespace TCM.Repositorio
                 {
 
 
-                    fornecedorLista.Add(
-                        new Fornecedor
+                    colaboradorLista.Add(
+                        new Colaborador
                         {
-                            CodFor = Convert.ToInt32(dr["codfor"]),
+                            IdColaborador = Convert.ToInt32(dr["codfor"]),
                             email = Convert.ToString(dr["email"]),
                             usuario = Convert.ToString(dr["usuario"]),
                             senha = Convert.ToString(dr["senha"]),
@@ -241,7 +239,7 @@ namespace TCM.Repositorio
                         });
                 }
             }
-            return fornecedorLista;
+            return colaboradorLista;
         }
 
         public void EditarUsuario(Usuario user)
@@ -315,11 +313,11 @@ namespace TCM.Repositorio
             }
         }
 
-        public Fornecedor AcharFornecedor(int id)
+        public Colaborador AcharColaborador(int id)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
-                Fornecedor user = new Fornecedor();
+                Colaborador user = new Colaborador();
                 conexao.Open();
 
                 MySqlCommand cmd = new MySqlCommand("select tbusuario.CodUsu, tbusuario.Nome, tbusuario.Usuario, tbusuario.Email, tbfornecedor.CNPJ, tbusuario.tipo from tbusuario join tbfornecedor on tbfornecedor.CodFor = tbusuario.CodUsu where CodUsu = @codfor", conexao);
@@ -336,9 +334,9 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    user = new Fornecedor()
+                    user = new Colaborador()
                     {
-                        CodFor = Convert.ToInt32(dr["codusu"]),
+                        IdColaborador = Convert.ToInt32(dr["codusu"]),
                         usuario = ((string)dr["usuario"]),
                         email = ((string)dr["email"]),
                         CNPJ = (string)dr["cnpj"],
@@ -381,33 +379,33 @@ namespace TCM.Repositorio
             }
         }
 
-        public void CadastrarFuncionario(string nome, string email, string usuario, string senha, decimal salario, int userid)
+        public void CadastrarAdministrador(string nome, string email, string usuario, string senha, decimal salario, DateOnly data)
         {
             using(var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("call spCadastrarFuncionario(@nome, @email, @usuario, @senha, @salario, @userid)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spCadastrarAdministrador(@nome, @email, @usuario, @senha, null, @salario, @data)", conexao);
                 
                 cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
                 cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = email;
                 cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
                 cmd.Parameters.Add("@senha", MySqlDbType.VarString).Value = senha;
                 cmd.Parameters.Add("@salario", MySqlDbType.Decimal).Value = salario;
-                cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = userid;
+                cmd.Parameters.Add("@data", MySqlDbType.Int32).Value = data;
 
                 cmd.ExecuteNonQuery();
                 conexao.Close();
             }
         }
 
-        public void CadastrarFornecedor(string nome, string email, string usuario, string senha, string cnpj)
+        public void CadastrarColaborador(string nome, string email, string usuario, string senha, string cnpj)
         {
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("call spCadastrarFornecedor(@email, @nome, @usuario, @senha, @cnpj)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spCadastrarColaborador(@email, @nome, @usuario, @senha, @cnpj)", conexao);
 
                 cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
                 cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = email;
@@ -419,28 +417,5 @@ namespace TCM.Repositorio
                 conexao.Close();
             }
         }
-        public void CadastrarAdministrador(string nome, string email, string usuario, string senha, byte[] fotoPerfil)
-        {
-            //Instanciando a variavel de conexão
-            using (var conexao = new MySqlConnection(_conexaoMySQL))
-            {
-                //Abrindo a conexão com o banco de dados
-                conexao.Open();
-
-                //Variavel cmd que recebe o comando insert do banco de dados inserindo o usuario e senha
-                MySqlCommand cmd = new MySqlCommand("call spCadastrarUsuario(@nome, @email, @usuario, @senha, @foto)", conexao);
-
-                //Adicionando os parametros email, usuario e senha
-                cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = nome;
-                cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = email;
-                cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = usuario;
-                cmd.Parameters.Add("@senha", MySqlDbType.VarChar).Value = senha;
-                cmd.Parameters.Add("@foto", MySqlDbType.Blob).Value = fotoPerfil;
-
-                cmd.ExecuteNonQuery();
-                conexao.Close();
-            }
-        }
-
     }
 }

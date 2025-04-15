@@ -1,13 +1,14 @@
 ﻿namespace TCM.Models
 {
-    public class Fornecedor
+    public class Administrador
     {
-        public int CodFor { get; set; }
-        public string? nome { get; set; }
+        public int IdAdmin { get; set; }
+        public string? Nome { get; set; }
         public string? email { get; set; }
         public string? usuario { get; set; }
         public string? senha { get; set; }
-        public string? CNPJ { get; set; }
+        public DateOnly DataAdmissao { get; set; }
+        public string? Estado { get; set; }
         public string? tipo { get; set; }
     }
 }

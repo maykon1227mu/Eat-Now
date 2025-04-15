@@ -7,16 +7,14 @@ namespace TCM.Repositorio
         Task<dynamic> Login(string usuario, string senha);
         Task Logout();
         Usuario AcharUsuario(int id);
-        Fornecedor AcharFornecedor(int id);
-        IEnumerable<Funcionario> TodosFuncionarios();
-        Funcionario AcharFuncionario(int id);
-        IEnumerable<Fornecedor> TodosFornecedores();
+        Colaborador AcharColaborador(int id);
+        IEnumerable<Administrador> TodosAdministradores();
+        Administrador AcharAdministrador(int id);
+        IEnumerable<Colaborador> TodosColaboradores();
         void DeletarUsuario(int id);
         void EditarUsuario(Usuario user);
         void Cadastrar(string nome, string email, string usuario, string senha, byte[] fotoPerfil, DateOnly data, string cpf);
-        void CadastrarFuncionario(string nome, string email, string usuario, string senha, decimal salario, int userid);
-        void CadastrarFornecedor(string nome, string email, string usuario, string senha, string cnpj);
-        void CadastrarAdministrador(string nome, string email, string usuario, string senha, byte[] fotoPerfil);
-
+        void CadastrarAdministrador(string nome, string email, string usuario, string senha, decimal salario, DateOnly data);
+        void CadastrarColaborador(string nome, string email, string usuario, string senha, string cnpj);
     }
 }
