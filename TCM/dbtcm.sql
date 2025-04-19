@@ -1,4 +1,4 @@
-drop database dbtcm;
+-- drop database dbtcm;
 create database dbtcm;
 use dbtcm;
 
@@ -35,6 +35,22 @@ CNPJ varchar(20) not null,
 foreign key (CodFor) references tbusuario(CodUsu) on delete cascade
 );
 
+create table tbcategoria(
+CodCat int primary key auto_increment,
+Categoria varchar(40) not null
+);
+
+
+create table tbcarrinho (
+Id int primary key auto_increment,
+UserId int not null,
+ProdutoId int not null,
+Quantidade int unsigned not null,
+PrecoCar decimal(9,2) not null,
+foreign key (ProdutoId) references tbproduto(CodProd),
+foreign key (UserId) references tbusuario(CodUsu)
+);
+
 create table tbproduto(
 CodProd int primary key auto_increment,
 NomeProd varchar(40) not null,
@@ -49,10 +65,7 @@ Avaliacoes int not null default 0,
 Nota decimal(3,2) not null default 0
 );
 
-create table tbcategoria(
-CodCat int primary key auto_increment,
-Categoria varchar(40) not null
-);
+
 
 create table tbpedido(
 CodPed int primary key auto_increment,
@@ -63,6 +76,8 @@ PrecoPed decimal(9,2) not null,
 DataPed datetime default current_timestamp,
 StatusPed varchar(150) default "Pagamento Aprovado"
 );
+
+
 
 create table tbPromocao(
 PromoId int primary key auto_increment,
@@ -82,15 +97,7 @@ FOREIGN KEY (ProdutoId) REFERENCES tbproduto(CodProd),
 FOREIGN KEY (PromoId) REFERENCES tbPromocao(PromoId)
 );
 
-create table tbcarrinho (
-Id int primary key auto_increment,
-UserId int not null,
-ProdutoId int not null,
-Quantidade int unsigned not null,
-PrecoCar decimal(9,2) not null,
-foreign key (ProdutoId) references tbproduto(CodProd),
-foreign key (UserId) references tbusuario(CodUsu)
-);
+
 
 select * from tbcarrinho;
 
@@ -403,7 +410,7 @@ END$$
 
 DELIMITER ;
 
-select sum(tbcomentario.avaliacao / tbproduto.avaliacoes) from tbcomentario join tbproduto where ProdutoId = 1;
+select sum(tbcomentario.avaliacao / tbproduto.avaliacoes) from tbcomentario join tbproduto where ProdutoId = 2;
 
 select sum(vendas * preco) from tbproduto;
 
@@ -437,3 +444,4 @@ select * from tbcategoria;
 select * from tbcomentario;
 
 SELECT SUM(Avaliacao) FROM tbcomentario WHERE ProdutoId = 1;
+select sum(Vendas) from tbproduto where UserId = 1;

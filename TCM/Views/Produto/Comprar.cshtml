@@ -16,7 +16,7 @@
             <img src="data:image/png;base64,@Model.ImagemBase64" alt="Imagem do Produto" />
         </div>
         <div class="compra-infos">
-            <h3>@Model.NomeProd</h3>
+            <h3 class="title-product-comprar"><span id="product-sublinhed"> @Model.NomeProd</span>@Model.NomeProd</h3>
             <p>@Model.Descricao</p>
             @if (Model.Nota < 1)
             {
@@ -38,6 +38,7 @@
                 <i class="bi bi-star"></i>
                 <p>@Model.Nota</p>
             }
+            else if (Model.Nota <= 2 && Model.Nota >= 1.1)
             else if (Model.Nota > 1.1 && Model.Nota <= 1.9)
             {
                 <i class="bi bi-star-fill"></i>
@@ -55,6 +56,8 @@
                 <i class="bi bi-star"></i>
                 <i class="bi bi-star"></i>
                 <p>@Model.Nota</p>
+            } 
+            else if (Model.Nota >= 2 && Model.Nota <= 3.1)
             }
             else if (Model.Nota > 2 && Model.Nota >= 2.9)
             {
@@ -83,6 +86,7 @@
                 <i class="bi bi-star"></i>
                 <p>@Model.Nota</p>
             }
+            else if (Model.Nota <= 4 && Model.Nota >= 3.1)
             else if (Model.Nota == 4)
             {
                 <i class="bi bi-star-fill"></i>
@@ -92,6 +96,7 @@
                 <i class="bi bi-star"></i>
                 <p>@Model.Nota</p>
             }
+            else if (Model.Nota <= 5 && Model.Nota >= 4.1)
             else if (Model.Nota > 4 && Model.Nota <= 4.9)
             {
                 <i class="bi bi-star-fill"></i>
@@ -110,6 +115,7 @@
                 <i class="bi bi-star-fill"></i>
                 <p>@Model.Nota</p>
             }
+            
             @if (produtosEmPromocao.Contains(Convert.ToInt32(Model.CodProd)))
             {
                 <h3>De: R$@Model.Preco</h3>

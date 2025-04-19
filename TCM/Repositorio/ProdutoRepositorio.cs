@@ -355,7 +355,7 @@ namespace TCM.Repositorio
         }
         public Pedido AcharPedido(int id)
         {
-            Pedido pedido= new Pedido();
+            Pedido pedido = new Pedido();
 
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
