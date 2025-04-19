@@ -9,12 +9,13 @@ Email varchar(40) not null unique,
 Usuario varchar(40) not null unique,
 Senha varchar(16) not null,
 FotoPerfil mediumblob,
-Tipo varchar(28) default "Cliente"
+Tipo ENUM("Cliente", "Administrador", "Colaborador") default "Cliente"
 );
 
 create table tbCliente(
 IdCliente int primary key,
 CPF varchar(14) not null unique,
+Genero ENUM("M", "F"),
 DataNasc date not null,
 constraint FK_IdUserCliente foreign key (IdCliente) references tblogin(IdLogin) on delete cascade
 );
@@ -65,11 +66,18 @@ Avaliacoes int not null default 0,
 Nota decimal(3,2) not null default 0
 );
 
-
+create table tbcarrinho (
+Id int primary key auto_increment,
+UserId int not null,
+ProdutoId int not null,
+Quantidade int unsigned not null,
+PrecoCar decimal(9,2) not null,
+foreign key (ProdutoId) references tbproduto(CodProd),
+foreign key (UserId) references tblogin(IdLogin)
+);
 
 create table tbpedido(
 CodPed int primary key auto_increment,
-ProdutoId int not null,
 UserId int not null,
 QtdPed int unsigned not null,
 PrecoPed decimal(9,2) not null,
@@ -77,7 +85,13 @@ DataPed datetime default current_timestamp,
 StatusPed varchar(150) default "Pagamento Aprovado"
 );
 
-
+create table tbitempedido(
+IdItemPedido int primary key auto_increment,
+IdPedido int not null,
+IdProduto int not null,
+foreign key (IdPedido) references tbpedido(CodPed),
+foreign key (IdProduto) references tbproduto(CodProd)
+);
 
 create table tbPromocao(
 PromoId int primary key auto_increment,
@@ -96,8 +110,6 @@ PrecoPromo DECIMAL(9,2) NOT NULL,
 FOREIGN KEY (ProdutoId) REFERENCES tbproduto(CodProd),
 FOREIGN KEY (PromoId) REFERENCES tbPromocao(PromoId)
 );
-
-
 
 select * from tbcarrinho;
 
@@ -155,7 +167,6 @@ INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Santa Catarina', 'SC');
 INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('São Paulo', 'SP');
 INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Sergipe', 'SE');
 INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Tocantins', 'TO');
-
 
 alter table tbEndereco add constraint FK_IdEstadoEndereco foreign key (IdEstado) references tbEstado(IdEstado);
 alter table tbEndereco add constraint FK_UserIdEndereco foreign key (UserId) references tblogin(IdLogin);
@@ -267,9 +278,11 @@ BEGIN
         SELECT NULL AS IdLogin, NULL AS Nome, NULL AS Email, NULL AS Usuario, 
                NULL AS Senha, NULL AS Tipo;
     END IF;
-END $$
+END
+$$
 
 DELIMITER ;
+
 
 delimiter ;
 
@@ -331,7 +344,7 @@ delimiter ;
 
 delimiter $$
 
-create procedure spCadastrarFornecedor(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vCNPJ varchar(20))
+create procedure spCadastrarColaborador(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vCNPJ varchar(20))
 begin
 	insert into tblogin(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Fornecedor");
     insert into tbcolaborador(IdColaborador, CNPJ) values (last_insert_id(), vCNPJ);
@@ -417,8 +430,6 @@ select sum(vendas * preco) from tbproduto;
 select * from tbpromocao;
 select * from tbpromocaoitem;
 
-
-
 insert into tbcategoria (Categoria) values ("Comida Japonesa");
 insert into tbcategoria (Categoria) values ("Comida Italiana");
 insert into tbcategoria (Categoria) values ("Pizza");
@@ -430,9 +441,8 @@ insert into tbcategoria (Categoria) values ("Milkshake");
 insert into tbcategoria (Categoria) values ("Açai");
 insert into tbcategoria (Categoria) values ("Bebidas");
 
-call spCadastrarAdministrador("Admin", "admin@gmail.com", "Admin1", "12345", null);
-call spCadastrarFornecedor("nome da empresa real","fornecedorteste@gmail.com", "Fornecedor teste", "12345", "00.623.904/0001-73");
-call spCadastrarFuncionario("Funcionario Teste", "funcionario@gmail.com", "Funcionario", "12345", 1500.00, 1, "2002-05-09", "222.222.222-22");
+call spCadastrarAdministrador("Admin", "admin@gmail.com", "Admin1", "12345", null, "Ativo", current_date());
+call spCadastrarColaborador("nome da empresa real", "fornecedorteste@gmail.com", "Fornecedor teste", "12345", "00.623.904/0001-73");
 call spCadastrarUsuario("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345", null, "2005-08-15", "333.333.333.33");
 
 select * from tblogin join tbcolaborador where tipo = "Fornecedor";
