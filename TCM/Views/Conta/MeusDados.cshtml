@@ -20,7 +20,7 @@
         </div>
         <div class="dados-informacoes">
             <h2>@Model.Nome</h2>
-            @if (User.IsInRole("Fornecedor") || User.IsInRole("Administrador"))
+            @if (User.IsInRole("Colaborador") || User.IsInRole("Administrador"))
             {
                 
             } 

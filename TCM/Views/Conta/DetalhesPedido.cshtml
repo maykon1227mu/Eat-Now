@@ -1,7 +1,7 @@
 ﻿@{
 	ViewData["Title"] = "Detalhes do Pedido";
 	Endereco endereco = ViewBag.Endereco;
-	Produto produto = ViewBag.Produto;
+	List<Produto> produtos = ViewBag.Produtos;
 	Usuario usuario = ViewBag.Usuario;
 }
 @model TCM.Models.Pedido;
@@ -11,8 +11,19 @@
 		<div class="detalhes-info">
 			<h2>Detalhes do Pedido</h2>
 			<h2>Pedido #@Model.CodPed</h2>
-			<h2>@Model.NomeProd</h2>
-			<img src="data:image/png;base64,@produto.ImagemBase64" alt="Produto" class="img-produto">
+			@foreach (var produto in produtos)
+			{
+
+				if (produto.Imagem != null)
+				{
+					produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
+				}
+				
+				<h2>@produto.QuantidadeDoPedido x @produto.NomeProd</h2>
+				<img src="data:image/png;base64,@produto.ImagemBase64" alt="Produto" class="img-produto">
+			}
+			
+			
 			<p>Nome do cliente: @usuario.Nome</p>
 			<p>Rua: @endereco.Logradouro, @endereco.Numero</p>
 			<p>Complemento: @endereco.Complemento</p>

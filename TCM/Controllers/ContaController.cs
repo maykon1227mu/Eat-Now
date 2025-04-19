@@ -77,8 +77,7 @@ namespace TCM.Controllers
         [HttpPost]
         public IActionResult CadastrarAdministrador(Administrador administrador)
         {
-            
-            _loginRepositorio.CadastrarAdministrador(administrador.Nome, administrador.email, administrador.usuario, administrador.senha, administrador.Salario, administrador.DataNasc);
+            _loginRepositorio.CadastrarAdministrador(administrador.Nome, administrador.email, administrador.usuario, administrador.senha);
             return RedirectToAction("Index", "Conta");
         }
 
@@ -102,10 +101,10 @@ namespace TCM.Controllers
         }
 
         [Authorize(Roles = "Fornecedor")]
-        public IActionResult PainelFornecedor()
+        public IActionResult PainelColaborador()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
-            var fornecedor = _loginRepositorio.AcharFornecedor(id);
+            var fornecedor = _loginRepositorio.AcharColaborador(id);
             return View(fornecedor);
         }
 
@@ -131,18 +130,6 @@ namespace TCM.Controllers
             return View(_enderecoRepositorio.TodosEnderecos(id));
         }
 
-        [Authorize(Roles = "Funcionario")]
-        public IActionResult PainelFuncionario()
-        {
-            return View();
-        }
-
-        public IActionResult FuncionarioPedidos()
-        {
-            var funcionario = _loginRepositorio.AcharFuncionario(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
-            return View(_produtoRepositorio.TodosPedidosFuncionario(funcionario.UserId));
-        }
-
         public IActionResult DetalhesPedido(int id)
         {
             var pedido = _produtoRepositorio.AcharPedido(id);
@@ -150,7 +137,7 @@ namespace TCM.Controllers
             var produto = _produtoRepositorio.AcharProduto(pedido.ProdutoId);
             if(produto.Imagem != null)
             {
-                pedido.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
+                produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
             }
             ViewBag.Produto = produto;
             ViewBag.Usuario = _loginRepositorio.AcharUsuario(pedido.UserId);

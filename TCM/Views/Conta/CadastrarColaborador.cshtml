@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Cadastrar Colaborador";
+}
+
+@model TCM.Models.Colaborador
+
+<main class="container-login">
+    <div class="login">
+        <form asp-controller="Conta" asp-action="CadastrarAdministrador">
+            <div asp-validation-summary="ModelOnly"></div>
+            @if (ViewData["msg"] != null)
+            {
+                @* O HTML Raw pode ser usado para: Procurar e baixar páginas HTML, Procurar e baixar cabeçalhos.*@
+                <p class="alert alert-danger">@Html.Raw(ViewData["msg"])</p>
+            }
+            <div class="login-cima">
+                <div class="cima-esquerda">
+                    <a asp-action="Index" asp-controller="Home"><i style="color: #417741; font-size: 38px;" class="bi bi-arrow-left-circle"></i></a>
+                </div>
+                <div class="cima-direita">
+                    <img id="logoNav" src="~/img/LogoLight.png" alt="" />
+                </div>
+            </div>
+            <h2>Cadastrar Colaborador</h2>
+            <div class="login-inputs">
+                <label for="nome">Nome</label>
+                <input asp-for="nome" class="input-email" placeholder="Nome" type="text" name="nome" id="nome">
+            </div>
+            <div class="login-inputs">
+                <label for="email">Email</label>
+                <input asp-for="email" class="input-email" placeholder="Email" type="text" name="email" id="email">
+            </div>
+            <div class="login-inputs">
+                <label for="usuario">Usuario</label>
+                <input asp-for="usuario" class="input-email" placeholder="Usuario" type="text" name="usuario" id="usuario">
+            </div>
+            <div class="login-inputs">
+                <label for="cnpj">CNPJ</label>
+                <input asp-for="CNPJ" class="input-email" placeholder="CNPJ" type="text" name="cnpj" id="cnpj">
+            </div>
+
+            <div class="login-inputs">
+                <label for="senha">Senha</label>
+                <input asp-for="senha" class="input-senha" placeholder="Sua Senha" type="password" name="senha" id="senha">
+            </div>
+            <div class="botoes">
+                <button type="submit">Cadastrar</button>
+            </div>
+        </form>
+    </div>
+</main>

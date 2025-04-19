@@ -2,7 +2,7 @@
 {
     public class Usuario
     {
-        public int CodUsu { get; set; }
+        public int IdLogin { get; set; }
         public string? Nome { get; set; }
         public string? email { get; set; }
         public string? usuario { get; set; }

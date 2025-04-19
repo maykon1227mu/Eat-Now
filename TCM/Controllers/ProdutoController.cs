@@ -30,7 +30,7 @@ namespace TCM.Controllers
         }
 
 
-        [Authorize(Roles = "Administrador, Fornecedor")]
+        [Authorize(Roles = "Administrador, Colaborador")]
         public IActionResult CadastrarProduto()
         {
             ViewBag.Categorias = _produtoRepositorio.TodasCategorias();
@@ -55,7 +55,7 @@ namespace TCM.Controllers
         }
 
 
-        [Authorize(Roles = "Administrador, Fornecedor")]
+        [Authorize(Roles = "Administrador, Colaborador")]
         public IActionResult EditarProduto(int id)
         {
             var produto = _produtoRepositorio.AcharProduto(id);
@@ -80,7 +80,7 @@ namespace TCM.Controllers
         }
 
 
-        [Authorize(Roles = "Administrador, Fornecedor")]
+        [Authorize(Roles = "Administrador, Colaborador")]
         public IActionResult DeletarProduto(int id)
         {
             _produtoRepositorio.DeletarProduto(id);
@@ -154,8 +154,8 @@ namespace TCM.Controllers
         }
 
 
-        [Authorize(Roles = "Fornecedor")]
-        public IActionResult ProdutosFornecedor()
+        [Authorize(Roles = "Colaborador")]
+        public IActionResult ProdutosColaborador()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var produtos = _produtoRepositorio.TodosProdutosFornecedor(id);
@@ -198,7 +198,7 @@ namespace TCM.Controllers
             return View();
         }
 
-        public IActionResult VendasFornecedor()
+        public IActionResult VendasColaborador()
         {
             ViewBag.TotalVendas = _produtoRepositorio.TotalVendas(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));
             ViewBag.Lucro = _produtoRepositorio.ValorTotalVendas(Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value));

@@ -16,5 +16,6 @@
         public string? ImagemBase64 { get; set; }
         public int CategoriaId { get; set; }
         public string? NomeCategoria { get; set; }
+        public int QuantidadeDoPedido { get; set; }
     }
 }

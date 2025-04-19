@@ -3,7 +3,6 @@
     public class Pedido
     {
         public int CodPed { get; set; }
-        public int ProdutoId { get; set; }
         public decimal PrecoPed { get; set; }
         public int UserId { get; set; }
         public int IdEndereco { get; set; }

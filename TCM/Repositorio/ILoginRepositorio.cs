@@ -14,7 +14,7 @@ namespace TCM.Repositorio
         void DeletarUsuario(int id);
         void EditarUsuario(Usuario user);
         void Cadastrar(string nome, string email, string usuario, string senha, byte[] fotoPerfil, DateOnly data, string cpf);
-        void CadastrarAdministrador(string nome, string email, string usuario, string senha, decimal salario, DateOnly data);
+        void CadastrarAdministrador(string nome, string email, string usuario, string senha);
         void CadastrarColaborador(string nome, string email, string usuario, string senha, string cnpj);
     }
 }

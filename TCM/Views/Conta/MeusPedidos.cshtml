@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Meus Pedidos";
+    Produto produto = ViewBag.Produto;
 }
 
 @{
@@ -21,18 +22,18 @@ else
             <div class="carrinho-pedidos">
                 @foreach (var item in Model)
                 {
-                    if (item.ImagemPed != null)
+                    if (produto.Imagem != null)
                     {
                         //Transforma o blob para um jeito que dê para a imagem ser interpretada
-                        item.ImagemBase64 = Convert.ToBase64String(item.ImagemPed);
+                        produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
                     }
                     total += item.Total;
                     <div class="pedidos">
                         <div class="pedido-img">
-                            <img src="data:image/png;base64,@item.ImagemBase64" alt="Imagem do Produto" />
+                            <img src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
                         </div>
                         <div>
-                            <h2>@item.NomeProd</h2>
+                            <h2>@produto.NomeProd</h2>
                             <h2></h2>
                         </div>
                         <div>

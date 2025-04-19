@@ -1,12 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "Fornecedores";
+    ViewData["Title"] = "Colaboradores";
 }
 
 @model IEnumerable<Colaborador>
 
 
 <main class="products-index">
-<h1>Painel Fornecedores</h1>
+<h1>Painel de Colaboradores</h1>
 <table class="content-table">
     <thead>
         <tr>
@@ -20,12 +20,12 @@
         @foreach (var fornecedor in Model)
         {
             <tr class="tr-products">
-                <td>@fornecedor.CodFor</td>
+                <td>@fornecedor.IdColaborador</td>
                 <td>@fornecedor.usuario</td>
                 <td>@fornecedor.email</td>
                 <td>@fornecedor.CNPJ</td>
                 <td>
-                    <a class="btn btn-danger" asp-controller="Conta" asp-action="DeletarFornecedor" asp-route-id="@fornecedor.CodFor" onclick="return confirm('Deseja excluir @fornecedor.usuario ?')">Deletar</a>
+                    <a class="btn btn-danger" asp-controller="Conta" asp-action="DeletarFornecedor" asp-route-id="@fornecedor.IdColaborador" onclick="return confirm('Deseja excluir @fornecedor.usuario ?')">Deletar</a>
                 </td>
             </tr>
         }
