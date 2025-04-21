@@ -1,17 +1,17 @@
 ﻿@{
 	ViewData["Title"] = "Detalhes do Pedido";
 	Endereco endereco = ViewBag.Endereco;
-	List<Produto> produtos = ViewBag.Produtos;
 	Usuario usuario = ViewBag.Usuario;
+	Pedido pedido = ViewBag.Pedido;
 }
-@model TCM.Models.Pedido;
+@model IEnumerable<Produto>
 
 <div class="container-detalhes">
 	<div class="detalhes">
 		<div class="detalhes-info">
 			<h2>Detalhes do Pedido</h2>
-			<h2>Pedido #@Model.CodPed</h2>
-			@foreach (var produto in produtos)
+			<h2>Pedido #@pedido.CodPed</h2>
+			@foreach (var produto in Model)
 			{
 				if (produto.Imagem != null)
 				{
@@ -21,6 +21,7 @@
 				<h2>@produto.QuantidadeDoPedido x @produto.NomeProd</h2>
 				<p>@produto.QuantidadeDoPedido x R$@produto.Preco</p>
 				<img src="data:image/png;base64,@produto.ImagemBase64" alt="Produto" class="img-produto">
+				<p>Data e hora: @produto.DataPed</p>
 			}
 			
 			
@@ -31,7 +32,7 @@
 			<p>Cidade: @endereco.Cidade</p>
 			<p>Estado: @endereco.Estado</p>
 			
-			<p>Data e hora: @Model.DataPed</p>
+			
 			<a href="@Url.Action("MeusPedidos", "Conta")" class="btn-voltar">Voltar</a>
 		</div>
 	</div>

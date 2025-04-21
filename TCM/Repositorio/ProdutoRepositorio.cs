@@ -266,10 +266,11 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("call spFinalizarCompra(@userId, @produtoId, @qtdvenda, @idend)", conexao);
+                MySqlCommand cmd = new MySqlCommand("call spFinalizarCompra(@userId, @produtoId, @qtd, @qtdvenda, @idend)", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
                 cmd.Parameters.Add("@produtoId", MySqlDbType.Int32).Value = produtoId;
+                cmd.Parameters.Add("@qtd", MySqlDbType.Int32).Value = qtd;
                 cmd.Parameters.Add("@qtdvenda", MySqlDbType.Int32).Value = qtd;
                 cmd.Parameters.Add("@idend", MySqlDbType.Int32).Value = idend;
 
@@ -285,7 +286,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("select tbpedido.CodPed, tbpedido.UserId, tbpedido.DataPed, tbpedido.IdEndereco, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbproduto.Imagem from tbpedido where tbpedido.UserId = @userId", conexao);
+                MySqlCommand cmd = new MySqlCommand("select tbpedido.CodPed, tbpedido.UserId, tbpedido.IdEndereco from tbpedido where tbpedido.UserId = @userId", conexao);
 
                 cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
 
@@ -303,7 +304,6 @@ namespace TCM.Repositorio
                         {
                             CodPed = Convert.ToInt32(dr["codped"]),
                             UserId = Convert.ToInt32(dr["userid"]),
-                            DataPed = Convert.ToDateTime(dr["dataped"]),
                             IdEndereco = Convert.ToInt32(dr["idendereco"]),
                         });
                 }
@@ -311,38 +311,7 @@ namespace TCM.Repositorio
             return pedidoLista;
         }
 
-        public IEnumerable<Pedido> TodosPedidosFuncionario(int userId)
-        {
-            List<Pedido> pedidoLista = new List<Pedido>();
-
-            using (var conexao = new MySqlConnection(_conexaoMySQL))
-            {
-                conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbpedido.PrecoPed, tbpedido.QtdPed, tbpedido.IdEndereco, tbproduto.Imagem FROM tbpedido JOIN tbproduto ON tbpedido.ProdutoId = tbproduto.CodProd JOIN tblogin ON tbproduto.UserId = tblogin.IdLogin WHERE tblogin.IdLogin = @userId;", conexao);
-
-                cmd.Parameters.Add("@userId", MySqlDbType.Int32).Value = userId;
-
-                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
-
-                DataTable dt = new DataTable();
-
-                da.Fill(dt);
-
-                conexao.Close();
-                foreach (DataRow dr in dt.Rows)
-                {
-                    pedidoLista.Add(
-                        new Pedido()
-                        {
-                            CodPed = Convert.ToInt32(dr["codped"]),
-                            UserId = Convert.ToInt32(dr["userid"]),
-                            DataPed = Convert.ToDateTime(dr["dataped"]),
-                            IdEndereco = Convert.ToInt32(dr["idendereco"]),
-                        });
-                }
-            }
-            return pedidoLista;
-        }
+        
         public Pedido AcharPedido(int id)
         {
             Pedido pedido = new Pedido();
@@ -350,7 +319,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed tbpedido.UserId, tbpedido.DataPed tbpedido.IdEndereco FROM tbpedido JOIN tblogin ON tbproduto.UserId = tblogin.IdLogin WHERE CodPed = @id;", conexao);
+                MySqlCommand cmd = new MySqlCommand("SELECT tbpedido.CodPed, tbpedido.UserId, tbpedido.IdEndereco FROM tbpedido JOIN tblogin ON tbpedido.UserId = tblogin.IdLogin WHERE CodPed = @id;", conexao);
 
                 cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
 
@@ -368,7 +337,6 @@ namespace TCM.Repositorio
                         {
                             CodPed = Convert.ToInt32(dr["codped"]),
                             UserId = Convert.ToInt32(dr["userid"]),
-                            DataPed = Convert.ToDateTime(dr["dataped"]),
                             IdEndereco = Convert.ToInt32(dr["idendereco"]),
                         };
                 }
@@ -382,7 +350,7 @@ namespace TCM.Repositorio
             using (var conexao = new MySqlConnection(_conexaoMySQL))
             {
                 conexao.Open();
-                MySqlCommand cmd = new MySqlCommand("SELECT tbitempedido.IdProduto, MAX(tbProduto.CodProd) AS CodProd, MAX(tbProduto.NomeProd) AS NomeProd, MAX(tbitempedido.PrecoItem) AS Preco, MAX(tbProduto.Descricao) AS Descricao, MAX(tbProduto.Qtd) AS Qtd, MAX(tbProduto.UserId) AS UserId, MAX(tblogin.Usuario) AS Usuario, MAX(tbProduto.Avaliacoes) AS Avaliacoes, MAX(tbproduto.nota) AS nota, MAX(tbproduto.Imagem) AS Imagem, MAX(tbproduto.categoriaid) AS categoriaid, MAX(tbcategoria.NomeCategoria) AS NomeCategoria, COUNT(*) AS Quantidade FROM tbItemPedido JOIN tbproduto ON tbitempedido.IdProduto = tbproduto.CodProd JOIN tblogin ON tbproduto.UserId = tblogin.IdLogin JOIN tbcategoria ON tbproduto.categoriaid = tbcategoria.CodCat WHERE IdPedido = @id GROUP BY tbitempedido.IdProduto", conexao);
+                MySqlCommand cmd = new MySqlCommand("SELECT tbitempedido.IdPedido, tbitempedido.DataPed, tbpedido.UserId, tbitempedido.IdItemPedido, tbitempedido.IdProduto, tbproduto.NomeProd, tbproduto.Descricao, tbitempedido.PrecoItem as preco, tbitempedido.qtditem as quantidade, tbproduto.Imagem FROM tbitempedido JOIN tbproduto ON tbitempedido.IdProduto = tbproduto.CodProd JOIN tbpedido ON tbitempedido.IdPedido = tbpedido.CodPed WHERE tbitempedido.IdPedido = @id", conexao);
 
                 cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
 
@@ -396,25 +364,56 @@ namespace TCM.Repositorio
 
                 foreach (DataRow dr in dt.Rows)
                 {
-                    produtos.Add( new Produto()
+                    produtos.Add(new Produto()
                     {
-                        CodProd = Convert.ToInt32(dr["codprod"]),
+                        CodProd = Convert.ToInt32(dr["IdProduto"]),
                         NomeProd = ((string)dr["nomeprod"]),
                         Descricao = ((string)dr["descricao"]),
                         Preco = Convert.ToDecimal(dr["preco"]),
-                        Qtd = Convert.ToInt32(dr["qtd"]),
-                        Usuario = (string)dr["usuario"],
-                        UserId = Convert.ToInt32(dr["userid"]),
-                        CategoriaId = Convert.ToInt32(dr["categoriaid"]),
-                        NomeCategoria = (string)dr["nomecategoria"],
                         Imagem = (byte[])dr["imagem"],
-                        Avaliacoes = Convert.ToInt32(dr["avaliacoes"]),
-                        Nota = Convert.ToDouble(dr["nota"]),
-                        QuantidadeDoPedido = Convert.ToInt32(dr["quantidade"])
+                        QuantidadeDoPedido = Convert.ToInt32(dr["quantidade"]),
+                        IdPedido = Convert.ToInt32(dr["IdPedido"]),
+                        DataPed = (DateTime)(dr["DataPed"])
                     });
                 }
                 return produtos;
             }
+        }
+        public List<Produto> TodosProdutosPedido(int id)
+        {
+            List<Produto> produtos = new List<Produto>();
+            using (var conexao = new MySqlConnection(_conexaoMySQL))
+            {
+                conexao.Open();
+                MySqlCommand cmd = new MySqlCommand("SELECT tbitempedido.IdPedido, tbitempedido.DataPed, tbpedido.UserId, tbitempedido.IdItemPedido, tbitempedido.IdProduto, tbproduto.NomeProd, tbproduto.Descricao, tbitempedido.PrecoItem as preco, tbitempedido.qtditem as quantidade, tbproduto.Imagem FROM tbitempedido JOIN tbproduto ON tbitempedido.IdProduto = tbproduto.CodProd JOIN tbpedido ON tbitempedido.IdPedido = tbpedido.CodPed WHERE tbpedido.UserId = @id", conexao);
+
+                cmd.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                conexao.Close();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    produtos.Add(new Produto()
+                    {
+                        CodProd = Convert.ToInt32(dr["IdProduto"]),
+                        NomeProd = ((string)dr["nomeprod"]),
+                        Descricao = ((string)dr["descricao"]),
+                        Preco = Convert.ToDecimal(dr["preco"]),
+                        Imagem = (byte[])dr["imagem"],
+                        QuantidadeDoPedido = Convert.ToInt32(dr["quantidade"]),
+                        IdPedido = Convert.ToInt32(dr["IdPedido"]),
+                        DataPed = (DateTime)(dr["DataPed"])
+                    });
+                }
+                return produtos;
+            }
+            
         }
 
         public IEnumerable<Categoria> TodasCategorias()

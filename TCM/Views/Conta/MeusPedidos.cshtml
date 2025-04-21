@@ -1,13 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Meus Pedidos";
-    List<Produto> produtos = ViewBag.Produtos;
 }
 
 @{
     decimal total = 0;
 }
 
-@model IEnumerable<Pedido>
+@model IEnumerable<Produto>
 
 @if (!Model.Any())
 {
@@ -20,32 +19,32 @@ else
     <div class="container-carrinho">
         <div class="carrinho">
             <div class="carrinho-pedidos">
-                @foreach (var item in Model)
+
+                @foreach (var produto in Model)
                 {
-                    <div class="pedidos">
-					@foreach (var produto in produtos)
-					{
+                    decimal totalPedido = produto.QuantidadeDoPedido * produto.Preco;
+                        
                         if (produto.Imagem != null)
                         {
                             //Transforma o blob para um jeito que dê para a imagem ser interpretada
                             produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
                         }
-                        total += produto.Preco;
+                        <a class="pedidos" asp-action="DetalhesPedido" asp-controller="Conta" asp-route-id="@produto.IdPedido">
                             <div class="pedido-img">
                                 <img src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
                             </div>
                             <div>
                                 <h2>@produto.NomeProd</h2>
-
                             </div>
                             <div>
                                 <p>@produto.QuantidadeDoPedido x R$@produto.Preco</p>
-                                <p>R$@total</p>
+                                <p>R$@totalPedido</p>
+                                <h5>Data: @produto.DataPed</h5>
                             </div>
+                            </a>
 					}
-                        <h5>Data: @item.DataPed</h5>
-                    </div>
-                }
+                        
+                
             </div>
         </div>
     </div>

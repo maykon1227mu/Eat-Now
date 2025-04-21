@@ -97,7 +97,9 @@ namespace TCM.Controllers
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
             var pedidos = _produtoRepositorio.TodosPedidos(id);
-            return View(pedidos);
+            var produtos = _produtoRepositorio.TodosProdutosPedido(id);
+            ViewBag.Pedidos = pedidos;
+            return View(produtos);
         }
 
         [Authorize(Roles = "Colaborador")]
@@ -133,14 +135,14 @@ namespace TCM.Controllers
         public IActionResult DetalhesPedido(int id)
         {
             var pedido = _produtoRepositorio.AcharPedido(id);
+            ViewBag.Pedido = pedido;
             ViewBag.Endereco = _enderecoRepositorio.AcharEndereco(pedido.IdEndereco);
             var produtos = _produtoRepositorio.AcharProdutosPedido(pedido.CodPed);
-            ViewBag.Produtos = produtos;
             ViewBag.Usuario = _loginRepositorio.AcharUsuario(pedido.UserId);
 
             if (pedido.UserId != Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value)) return NotFound();
 
-            return View(pedido);
+            return View(produtos);
         }
     }
 }

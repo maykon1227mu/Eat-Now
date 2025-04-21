@@ -309,7 +309,7 @@ namespace TCM.Repositorio
                         senha = (string)dr["senha"],
                         FotoPerfil = dr["FotoPerfil"] != DBNull.Value ? (byte[])dr["FotoPerfil"] : null,
                         CPF = (string)dr["CPF"],
-                        DataNascimento = (DateOnly)dr["DataNasc"],
+                        DataNascimento = DateOnly.FromDateTime((DateTime)dr["DataNasc"]),
                         tipo = (string)dr["tipo"],
                     };
                 }

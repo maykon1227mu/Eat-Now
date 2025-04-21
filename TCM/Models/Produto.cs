@@ -17,5 +17,7 @@
         public int CategoriaId { get; set; }
         public string NomeCategoria { get; set; }
         public int QuantidadeDoPedido { get; set; }
+        public int IdPedido { get; set; }
+        public DateTime DataPed { get; set; }
     }
 }
