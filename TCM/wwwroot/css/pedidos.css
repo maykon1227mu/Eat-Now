@@ -45,9 +45,13 @@
     background-color: var(--bg-color-sec);
     padding: 50px 20px;
     height:30vh;
-    
-
+    text-decoration: none;
 }
+
+.pedidos:hover {
+    color: var(--color-font-alt);
+}
+
 .pedidos h2 {
     font-weight: 900;
     font-size:42px;
