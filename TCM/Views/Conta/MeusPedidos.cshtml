@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Meus Pedidos";
-    Produto produto = ViewBag.Produto;
+    List<Produto> produtos = ViewBag.Produtos;
 }
 
 @{
@@ -22,25 +22,28 @@ else
             <div class="carrinho-pedidos">
                 @foreach (var item in Model)
                 {
-                    if (produto.Imagem != null)
-                    {
-                        //Transforma o blob para um jeito que dê para a imagem ser interpretada
-                        produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
-                    }
-                    total += item.Total;
                     <div class="pedidos">
-                        <div class="pedido-img">
-                            <img src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
-                        </div>
-                        <div>
-                            <h2>@produto.NomeProd</h2>
-                            <h2></h2>
-                        </div>
-                        <div>
-                            <p>@item.QtdPed x R$@item.PrecoPed</p>
-                            <p>R$@item.Total</p>
-                            <h5>Data: @item.DataPed</h5>
-                        </div>
+					@foreach (var produto in produtos)
+					{
+                        if (produto.Imagem != null)
+                        {
+                            //Transforma o blob para um jeito que dê para a imagem ser interpretada
+                            produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
+                        }
+                        total += produto.Preco;
+                            <div class="pedido-img">
+                                <img src="data:image/png;base64,@produto.ImagemBase64" alt="Imagem do Produto" />
+                            </div>
+                            <div>
+                                <h2>@produto.NomeProd</h2>
+
+                            </div>
+                            <div>
+                                <p>@produto.QuantidadeDoPedido x R$@produto.Preco</p>
+                                <p>R$@total</p>
+                            </div>
+					}
+                        <h5>Data: @item.DataPed</h5>
                     </div>
                 }
             </div>

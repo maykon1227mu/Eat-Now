@@ -158,7 +158,7 @@ namespace TCM.Controllers
         public IActionResult ProdutosColaborador()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
-            var produtos = _produtoRepositorio.TodosProdutosFornecedor(id);
+            var produtos = _produtoRepositorio.TodosProdutosColaborador(id);
             return View(produtos);
         }
 

@@ -13,13 +13,13 @@
 			<h2>Pedido #@Model.CodPed</h2>
 			@foreach (var produto in produtos)
 			{
-
 				if (produto.Imagem != null)
 				{
 					produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
 				}
 				
 				<h2>@produto.QuantidadeDoPedido x @produto.NomeProd</h2>
+				<p>@produto.QuantidadeDoPedido x R$@produto.Preco</p>
 				<img src="data:image/png;base64,@produto.ImagemBase64" alt="Produto" class="img-produto">
 			}
 			
@@ -30,7 +30,7 @@
 			<p>Bairro: @endereco.Bairro</p>
 			<p>Cidade: @endereco.Cidade</p>
 			<p>Estado: @endereco.Estado</p>
-			<p>@Model.QtdPed x R$@Model.PrecoPed</p>
+			
 			<p>Data e hora: @Model.DataPed</p>
 			<a href="@Url.Action("MeusPedidos", "Conta")" class="btn-voltar">Voltar</a>
 		</div>

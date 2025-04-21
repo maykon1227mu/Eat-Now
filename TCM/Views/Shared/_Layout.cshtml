@@ -121,7 +121,7 @@
                 @if (User.IsInRole("Fornecedor"))
                 {
                     <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "ativo" : "")">
-                        <a asp-controller="Conta" asp-action="PainelFornecedor">
+                        <a asp-controller="Conta" asp-action="PainelColaborador">
                             <div class="iconeNav">
                                 <i class="bi bi-plus-circle"></i>
                             </div>
@@ -257,7 +257,7 @@
             @if (User.IsInRole("Fornecedor"))
             {
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "active" : "")">
-                    <a asp-controller="Conta" asp-action="PainelFornecedor">
+                    <a asp-controller="Conta" asp-action="PainelColaborador">
                         <div class="icon">
                             <i class="bi bi-plus-lg"></i>
                         </div>

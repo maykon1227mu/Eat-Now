@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Administradores";
+}
+
+@model IEnumerable<Administrador>
+
+
+<main class="products-index">
+    <h1>Painel de Administradores</h1>
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Data de Admissão</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var administrador in Model)
+            {
+                <tr class="tr-products">
+                    <td>@administrador.IdAdmin</td>
+                    <td>@administrador.usuario</td>
+                    <td>@administrador.email</td>
+                    <td>@administrador.Estado</td>
+                    <td>@administrador.DataAdmissao</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

@@ -100,7 +100,7 @@ namespace TCM.Controllers
             return View(pedidos);
         }
 
-        [Authorize(Roles = "Fornecedor")]
+        [Authorize(Roles = "Colaborador")]
         public IActionResult PainelColaborador()
         {
             int id = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
@@ -134,30 +134,12 @@ namespace TCM.Controllers
         {
             var pedido = _produtoRepositorio.AcharPedido(id);
             ViewBag.Endereco = _enderecoRepositorio.AcharEndereco(pedido.IdEndereco);
-            var produto = _produtoRepositorio.AcharProduto(pedido.ProdutoId);
-            if(produto.Imagem != null)
-            {
-                produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
-            }
-            ViewBag.Produto = produto;
+            var produtos = _produtoRepositorio.AcharProdutosPedido(pedido.CodPed);
+            ViewBag.Produtos = produtos;
             ViewBag.Usuario = _loginRepositorio.AcharUsuario(pedido.UserId);
 
             if (pedido.UserId != Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value)) return NotFound();
 
-            return View(pedido);
-        }
-        
-        public IActionResult DetalhesPedidoFuncionario(int id)
-        {
-            var pedido = _produtoRepositorio.AcharPedido(id);
-            ViewBag.Endereco = _enderecoRepositorio.AcharEndereco(pedido.IdEndereco);
-            var produto = _produtoRepositorio.AcharProduto(pedido.ProdutoId);
-            if (produto.Imagem != null)
-            {
-                pedido.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
-            }
-            ViewBag.Produto = produto;
-            ViewBag.Usuario = _loginRepositorio.AcharUsuario(pedido.UserId);
             return View(pedido);
         }
     }

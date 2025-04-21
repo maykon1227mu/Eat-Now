@@ -13,7 +13,7 @@ namespace TCM.Repositorio
         Produto AcharProduto(int id);
         //Buscar todos os produtos
         IEnumerable<Produto> TodosProdutos();
-        IEnumerable<Produto> TodosProdutosFornecedor(int id);
+        IEnumerable<Produto> TodosProdutosColaborador(int id);
         IEnumerable<Produto> Pesquisa(string nome);
         void FinalizarCompra(int userId, int produtoId, int qtd, int idend);
         IEnumerable<Pedido> TodosPedidos(int userId);

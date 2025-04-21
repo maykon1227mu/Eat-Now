@@ -77,7 +77,7 @@ namespace TCM.Repositorio
                         // Atribuindo dados ao usuário, se encontrados no banco
                         colaborador.usuario = Convert.ToString(dr["usuario"]);
                         colaborador.senha = Convert.ToString(dr["senha"]);
-                        colaborador.IdColaborador = Convert.ToInt32(dr["IdColaborador"]);
+                        colaborador.IdColaborador = Convert.ToInt32(dr["IdLogin"]);
                         colaborador.CNPJ = Convert.ToString(dr["cnpj"]);
                         colaborador.tipo = Convert.ToString(dr["tipo"]);
 
@@ -108,8 +108,8 @@ namespace TCM.Repositorio
                             // Atribuindo dados ao usuário, se encontrados no banco
                             administrador.usuario = Convert.ToString(dr["usuario"]);
                             administrador.senha = Convert.ToString(dr["senha"]);
-                            administrador.IdAdmin = Convert.ToInt32(dr["IdAdmin"]);
-                            administrador.DataAdmissao = (DateOnly)(dr["DataAdmissao"]);
+                            administrador.IdAdmin = Convert.ToInt32(dr["IdLogin"]);
+                            administrador.DataAdmissao = DateOnly.FromDateTime((DateTime)dr["DataAdmissao"]);
                             administrador.Estado = (string)(dr["Estado"]);
                             administrador.tipo = Convert.ToString(dr["tipo"]);
 
@@ -148,7 +148,7 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
                 //Lembrar de fazer o select na tbadmin para depois fazer os joins
-                MySqlCommand cmd = new MySqlCommand("SELECT * FROM tblogin JOIN tbadmin where tipo = 'Administrador'", conexao);
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM tblogin JOIN tbadmin WHERE tipo = 'Administrador'", conexao);
 
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
 
@@ -166,9 +166,10 @@ namespace TCM.Repositorio
                         new Administrador
                         {
                             usuario = Convert.ToString(dr["usuario"]),
+                            email = Convert.ToString(dr["email"]),
                             senha = Convert.ToString(dr["senha"]),
                             IdAdmin = Convert.ToInt32(dr["IdAdmin"]),
-                            DataAdmissao = (DateOnly)(dr["DataAdmissao"]),
+                            DataAdmissao = DateOnly.FromDateTime((DateTime)dr["DataAdmissao"]),
                             Estado = (string)(dr["Estado"]),
                             tipo = Convert.ToString(dr["tipo"]),
                         });
@@ -202,7 +203,7 @@ namespace TCM.Repositorio
                         usuario = Convert.ToString(dr["Usuario"]),
                         senha = Convert.ToString(dr["Senha"]),
                         Estado = Convert.ToString(dr["Estado"]),
-                        DataAdmissao = ((DateOnly)dr["DataNasc"]),
+                        DataAdmissao = DateOnly.FromDateTime((DateTime)dr["DataAdmissao"]),
 
                     };
                 }
