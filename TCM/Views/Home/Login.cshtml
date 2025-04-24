@@ -6,6 +6,10 @@
 
 <main class="container-login">
     <div class="login">
+        <div class="box-left-login">
+
+        </div>
+        <div class="box-right-login">
             <form asp-controller="Home" asp-action="Login">
                 @if (ViewData["msg"] != null)
                 {
@@ -34,5 +38,6 @@
                     <button type="submit">Login</button>
                 </div>
             </form>
+        </div>
     </div>
 </main>

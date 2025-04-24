@@ -10,29 +10,47 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 500px;
-    height: 600px;
+    width: 60vw;
+    height: 700px;
     background-color: var(--bg-color-sec);
-    border-radius: 26px;
+    border-radius: 32px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     color: var(--color-font-sec);
+}
+.box-left-login {
+    background: url(/img/bg-login.jpg);
+    background-position:center;
+    background-size:cover;
+    opacity:0.8;
+    border-radius:20px;
+    width:50%;
+    height:95%;
+    margin:20px;
+}
+.box-right-login {
+    display: flex;
+    justify-content: center;
+    width: 50%;
 }
 
 .cadastro {
     width:500px;
-    height: 700px;
+    height: auto;
+    padding:30px;
+
 }
 
 .login form {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height:100%;    
+    height: 100%;
+    gap: 30px;
 }
 
 .login-inputs {
     display: flex;
-    flex-direction:column;
+    flex-direction:column;  
     align-items: start;
     gap:10px;
 }

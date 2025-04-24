@@ -1,4 +1,4 @@
--- drop database dbtcm;
+drop database dbtcm;
 create database dbtcm;
 use dbtcm;
 
@@ -22,12 +22,9 @@ constraint FK_IdUserCliente foreign key (IdCliente) references tblogin(IdLogin) 
 
 create table tbadmin(
 IdAdmin int primary key,
-Salario decimal(9,2) not null,
-UserId int not null,
-DataNasc date not null,
-CPF varchar(14) not null unique,
-foreign key (IdAdmin) references tblogin(IdLogin) on delete cascade,
-foreign key (UserId) references tblogin(IdLogin) on delete cascade
+DataAdmissao date,
+Estado ENUM("Ativo", "Inativo"),
+foreign key (IdAdmin) references tblogin(IdLogin) on delete cascade
 );
 
 create table tbcolaborador(
@@ -39,17 +36,6 @@ foreign key (IdColaborador) references tblogin(IdLogin) on delete cascade
 create table tbcategoria(
 CodCat int primary key auto_increment,
 Categoria varchar(40) not null
-);
-
-
-create table tbcarrinho (
-Id int primary key auto_increment,
-UserId int not null,
-ProdutoId int not null,
-Quantidade int unsigned not null,
-PrecoCar decimal(9,2) not null,
-foreign key (ProdutoId) references tbproduto(CodProd),
-foreign key (UserId) references tblogin(IdLogin)
 );
 
 create table tbproduto(
@@ -76,21 +62,41 @@ foreign key (ProdutoId) references tbproduto(CodProd),
 foreign key (UserId) references tblogin(IdLogin)
 );
 
+CREATE TABLE tbEndereco (
+    IdEndereco INT AUTO_INCREMENT PRIMARY KEY,
+    Logradouro VARCHAR(150) NOT NULL,
+    Numero VARCHAR(10),                   
+    Complemento VARCHAR(50),              
+    Bairro varchar(50) NOT NULL,
+    Cidade varchar(50) NOT NULL,
+    IdEstado int NOT NULL,    
+    UserId int not null,
+    CEP VARCHAR(9) NOT NULL         
+);
+
+create table tbEstado(
+IdEstado int primary key auto_increment,
+NomeEstado varchar(35),
+SiglaEstado char(2)
+);
+
 create table tbpedido(
 CodPed int primary key auto_increment,
 UserId int not null,
-QtdPed int unsigned not null,
-PrecoPed decimal(9,2) not null,
-DataPed datetime default current_timestamp,
-StatusPed varchar(150) default "Pagamento Aprovado"
+IdEndereco int not null,
+StatusPed varchar(150) default "Pagamento Aprovado",
+foreign key (IdEndereco) references tbendereco(IdEndereco)
 );
 
 create table tbitempedido(
 IdItemPedido int primary key auto_increment,
 IdPedido int not null,
 IdProduto int not null,
+QtdItem int not null,
+PrecoItem decimal(9,2) not null,
+DataPed datetime default current_timestamp,
 foreign key (IdPedido) references tbpedido(CodPed),
-foreign key (IdProduto) references tbproduto(CodProd)
+foreign key (IdProduto) references tbproduto(CodProd) on delete cascade
 );
 
 create table tbPromocao(
@@ -120,24 +126,6 @@ ProdutoId int not null,
 Comentario varchar(255),
 DataComent datetime default	current_timestamp,
 Avaliacao int not null
-);
-
-CREATE TABLE tbEndereco (
-    IdEndereco INT AUTO_INCREMENT PRIMARY KEY,
-    Logradouro VARCHAR(150) NOT NULL,
-    Numero VARCHAR(10),                   
-    Complemento VARCHAR(50),              
-    Bairro varchar(50) NOT NULL,
-    Cidade varchar(50) NOT NULL,
-    IdEstado int NOT NULL,    
-    UserId int not null,
-    CEP VARCHAR(9) NOT NULL         
-);
-
-create table tbEstado(
-IdEstado int primary key auto_increment,
-NomeEstado varchar(35),
-SiglaEstado char(2)
 );
 
 INSERT INTO tbEstado (NomeEstado, SiglaEstado) VALUES ('Acre', 'AC');
@@ -174,15 +162,12 @@ alter table tbEndereco add constraint FK_UserIdEndereco foreign key (UserId) ref
 alter table tbcomentario add constraint FK_UserIdComentario foreign key (UserId) references tblogin(IdLogin);
 alter table tbcomentario add constraint FK_ProdutoIdComentario foreign key (ProdutoId) references tbproduto(CodProd);
 
-
 alter table tbproduto add constraint FK_UserId_tbProduto foreign key (UserId) references tblogin(IdLogin) on delete cascade;
 alter table tbproduto add constraint FK_CategoriaId_tbProduto foreign key (CategoriaId) references tbcategoria(CodCat);
 
 select * from tblogin;
 
-select tbpedido.CodPed, tbpedido.ProdutoId, tbpedido.UserId, tbpedido.DataPed, tbproduto.NomeProd, tbproduto.Preco, tbpedido.QtdPed from tbpedido join tbproduto on tbpedido.ProdutoId = tbproduto.CodProd where tbpedido.UserId = 1;
-
-alter table tbpedido add constraint FK_ProdutoIdPedido foreign key (ProdutoId) references tbproduto(CodProd);
+alter table tbitempedido add constraint FK_IdProdutoItemPedido foreign key (IdProduto) references tbproduto(CodProd);
 alter table tbpedido add constraint FK_UserIdPedido foreign key (UserId) references tblogin(IdLogin);
 alter table tbpromocao add constraint FK_CategoriaIdPromocao foreign key (CategoriaId) references tbcategoria(CodCat);
 
@@ -251,32 +236,19 @@ BEGIN
     SET vId := (SELECT IdLogin FROM tblogin WHERE Email = vUsuario AND Senha = vSenha);
 
     IF vId IS NOT NULL THEN
-        -- Verifica se o usuário é um fornecedor
-        IF EXISTS (SELECT 1 FROM tbcolaborador WHERE IdColaborador = vId) THEN
-            SELECT u.IdLogin, u.Nome, u.Email, u.Usuario, u.Senha, u.Tipo, 
-                   f.IdColaborador, f.CNPJ 
-            FROM tblogin u
-            JOIN tbcolaborador f ON u.IdLogin = f.IdColaborador
-            WHERE u.IdLogin = vId;
-
-        -- Verifica se o usuário é um funcionário
-        ELSEIF EXISTS (SELECT 1 FROM tbadmin WHERE IdAdmin = vId) THEN
-            SELECT u.IdLogin, u.Nome, u.Email, u.Usuario, u.Senha, u.Tipo, 
-                   f.IdAdmin, f.Salario, f.UserId 
-            FROM tblogin u
-            JOIN tbadmin f ON u.IdLogin = f.IdAdmin
-            WHERE u.IdLogin = vId;
-
-        -- Caso contrário, retorna apenas os dados do usuário normal
-        ELSE
-            SELECT u.IdLogin, u.Nome, u.Email, u.Usuario, u.Senha, u.Tipo 
-            FROM tblogin u
-            WHERE u.IdLogin = vId;
-        END IF;
-    ELSE
-        -- Retorna um resultado vazio se o login falhar
-        SELECT NULL AS IdLogin, NULL AS Nome, NULL AS Email, NULL AS Usuario, 
-               NULL AS Senha, NULL AS Tipo;
+    
+		IF EXISTS (SELECT 1 FROM tbColaborador WHERE IdColaborador = vId) THEN
+			SELECT tbLogin.IdLogin, tbLogin.Nome, tbLogin.Email, tbLogin.Usuario, tbLogin.Senha, tbLogin.Tipo, tbColaborador.CNPJ FROM tbLogin JOIN tbColaborador WHERE IdLogin = vId;
+		END IF;
+        
+        IF EXISTS (SELECT 1 FROM tbAdmin WHERE IdAdmin = vId) THEN
+			SELECT tbLogin.IdLogin, tbLogin.Nome, tbLogin.Email, tbLogin.Usuario, tbLogin.Senha, tbLogin.Tipo, tbAdmin.Estado, tbAdmin.DataAdmissao FROM tbLogin JOIN tbAdmin WHERE IdLogin = vId;
+		END IF;
+        
+        IF EXISTS (SELECT 1 FROM tbCliente WHERE IdCliente = vId) THEN
+			SELECT tbLogin.IdLogin, tbLogin.Nome, tbLogin.Email, tbLogin.Usuario, tbLogin.Senha, tbLogin.Tipo, tbCliente.CPF, tbCliente.DataNasc FROM tbLogin JOIN tbCliente WHERE IdLogin = vId;
+		END IF;
+        
     END IF;
 END
 $$
@@ -295,19 +267,26 @@ end$$
 delimiter ;
 
 delimiter $$
-create procedure spFinalizarCompra(vUserId int, vProdutoId int, vQtdVenda int, vVenda int)
+create procedure spFinalizarCompra(vUserId int, vProdutoId int, vQtd int, vVenda int, vIdEnd int)
 begin
+
 	declare vPreco decimal(9,2);
+    
 	if exists(select ProdutoId from tbpromocaoitem where ProdutoId = vProdutoId) then
 		set vPreco := (select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId);
-		insert into tbpedido (ProdutoId, UserId, PrecoPed, QtdPed) values (vProdutoId, vUserId, vPreco, vQtdVenda);
+		insert into tbpedido (UserId, IdEndereco) values (vUserId, vIdEnd);
+		insert into tbitempedido (IdProduto, PrecoItem, QtdItem, IdPedido) values (vProdutoId, vPreco, vQtd, last_insert_id());
         update tbproduto set Vendas = Vendas + vVenda where CodProd = vProdutoId;
 	else
 		set vPreco := (select Preco from tbproduto where CodProd = vProdutoId);
-        insert into tbpedido (ProdutoId, UserId, PrecoPed, QtdPed) values (vProdutoId, vUserId, vPreco, vQtdVenda);
+        insert into tbpedido (UserId, IdEndereco) values (vUserId, vIdEnd);
+        insert into tbitempedido (IdProduto, PrecoItem, QtdItem, IdPedido) values (vProdutoId, vPreco, vQtd, last_insert_id());
         update tbproduto set Vendas = Vendas + vVenda where CodProd = vProdutoId;
+        
 	end if;
+    
 end$$
+
 delimiter ;
 
 delimiter $$
@@ -323,20 +302,10 @@ delimiter ;
 
 delimiter $$
 
-create procedure spCadastrarAdministrador(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vFoto blob)
+create procedure spCadastrarAdministrador(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vFoto blob, vEstado varchar(12), vData date)
 begin
 	insert into tblogin(Nome, Email, Usuario, Senha, FotoPerfil, Tipo) values (vNome, vEmail, vUsuario, vSenha, vFoto, "Administrador");
-end
-$$
-
-delimiter ;
-
-delimiter $$
-
-create procedure spCadastrarFuncionario(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vSalario decimal(9,2), vUserId int, vData date, vCPF varchar(14))
-begin
-	insert into tblogin(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Funcionario");
-    insert into tbadmin(IdAdmin, Salario, UserId, DataNasc, CPF) values (last_insert_id(), vSalario, vUserId, vData, vCPF);
+	insert into tbadmin(IdAdmin, Estado, DataAdmissao) values (last_insert_id(), vEstado, vData);
 end
 $$
 
@@ -346,7 +315,7 @@ delimiter $$
 
 create procedure spCadastrarColaborador(vNome varchar(80), vEmail varchar(40), vUsuario varchar(40), vSenha varchar(16), vCNPJ varchar(20))
 begin
-	insert into tblogin(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Fornecedor");
+	insert into tblogin(Nome, Email, Usuario, Senha, Tipo) values (vNome, vEmail, vUsuario, vSenha, "Colaborador");
     insert into tbcolaborador(IdColaborador, CNPJ) values (last_insert_id(), vCNPJ);
 end
 $$
@@ -446,12 +415,18 @@ call spCadastrarColaborador("nome da empresa real", "fornecedorteste@gmail.com",
 call spCadastrarUsuario("Nathan", "nathanbs1227@gmail.com", "Nathanbsy", "12345", null, "2005-08-15", "333.333.333.33");
 
 select * from tblogin join tbcolaborador where tipo = "Fornecedor";
-select * from tblogin join tbadmin where tipo = "Funcionario";
+select * from tblogin join tbadmin where tipo = "Administrador";
 select * from tblogin join tbcliente on tblogin.IdLogin = tbCliente.IdCliente;
 select * from tbcarrinho;
 select * from tbproduto;
+select * from tbpedido;
+select * from tbItempedido;
 select * from tbcategoria;
 select * from tbcomentario;
 
 SELECT SUM(Avaliacao) FROM tbcomentario WHERE ProdutoId = 1;
 select sum(Vendas) from tbproduto where UserId = 1;
+
+call spLogin("fornecedorteste@gmail.com", "12345");
+
+SELECT tbitempedido.IdPedido, tbpedido.UserId, tbitempedido.IdItemPedido, tbitempedido.IdProduto, tbproduto.NomeProd, tbproduto.Descricao, tbitempedido.PrecoItem as preco, tbitempedido.qtditem as quantidade, tbproduto.Imagem FROM tbitempedido JOIN tbproduto ON tbitempedido.IdProduto = tbproduto.CodProd JOIN tbpedido ON tbitempedido.IdPedido = tbpedido.CodPed WHERE tbpedido.UserId = 1;
