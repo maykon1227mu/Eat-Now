@@ -49,3 +49,179 @@
     position: absolute;
     z-index: 3;
 }
+
+/* Cards que linkam para as paginas de produtos*/
+
+.cards-links {
+    width:100%;
+    height:auto;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:center;
+    gap:100px;
+    margin: 150px 0;
+
+}
+.card-box-link {
+    width: 310px;
+    height: 370px;
+    border-radius: 50% 50% 0 0;
+    position:relative;
+}
+
+
+.card-box-link::before {
+    display:flex;
+    justify-content:center;
+    content:'';
+    width: 100%;
+    height:2px;
+    background: var(--color-secundaria);
+    position:absolute;
+    bottom:-60px;
+
+}
+
+.cards-links a {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-decoration:none;
+}
+.title-card-link{
+    font-size:24px;
+    margin:20px;
+    color:var(--color-font);
+    
+}
+#box-pizza {
+    background: url(/img/pizza.jpg);
+}
+#box-motoboy {
+    background: url(/img/mcGreggor.jpg);
+    background-position: center;
+    background-size: cover;
+
+}
+#box-hamburguer {
+    background: url(/img/hambuerguer.jpg);
+    background-position: center;
+    background-size: cover;
+}
+/* Imagens instagram, whatsapp e facebook */
+footer i {
+    margin-left: 10px;
+    padding:5px 10px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.5em;
+    transition: all 0.2s ease-in-out;
+    background-color: rgb(44, 44, 44);
+}
+
+.center-footer {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+#social_face:hover {
+    background: linear-gradient(-20deg, #000000, #30a50c, #47863e);
+}
+
+#social_insta:hover {
+    background: linear-gradient(80deg, #47863e, #1fa70d, #0cb868);
+}
+
+#social_what:hover {
+    background: linear-gradient(30deg, #1fa70d, #2cdb3b, #0cb868, #30a50c);
+}
+
+
+/* todos as divs */
+.box_footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4em 0 3em;
+    gap: 8vw;
+}
+
+
+/* Tiutlos  */
+.titulo_footer {
+    font-size: 16px;
+    font-weight: 800;
+    padding-bottom: 1em;
+    transition: 0.2s ease-in-out;
+    cursor: default;
+    color:#47863e;
+}
+.titulo_footer:hover {
+    transform: scale(1.07);
+}
+
+.textos_footer {
+    font-size: 16px;
+}
+
+footer li {
+    padding: 3.5px;
+}
+
+.redes_sociais {
+    text-align: center;
+    margin-bottom: auto;
+}
+
+
+.box_link {
+    text-decoration: none;
+    color: var(--cor-font);
+    transition: all .4s ease;
+}
+.box_link:hover {
+    color: #66cb64;
+    text-decoration: underline;
+}
+
+.local_titulo {
+    font-size: 28px;
+    text-align: center;
+    font-family: var(--fonte-principal);
+    margin-bottom: 1em;
+}
+
+.local {
+    display: flex;
+    justify-content: center;
+    margin: 8em 0 5em;
+}
+
+
+@media screen and (min-width: 1024px) and (max-width: 1728px) {
+    .titulo_footer {
+        font-size: 26px;
+    }
+}
+
+
+@media screen and (min-width: 0px) and (max-width: 500px) {
+    footer {
+        display:none;
+    }
+}
+/* MODO CLARO */
+
+.local.dark {
+    background-color: white;
+    color: black;
+    margin: 0;
+    padding: 100px;
+}
+
+.titulo_footer.dark {
+    color: black;
+}

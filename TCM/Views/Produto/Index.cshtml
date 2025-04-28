@@ -39,6 +39,15 @@
             </tbody>
         </table>
         <div>
-            <a class="btn-comprar-f" asp-controller="Produto" asp-action="CadastrarProduto">Novo Produto</a>
+        <a class="btn-comprar-f" id="btnPopup" asp-controller="Produto" asp-action="CadastrarProduto">Novo Produto</a>
         </div>
+    <div id="overlay"></div>
+    <div id="popup">
+        <h2>Popup</h2>
+        <p>Este popup ficará aberto por 6 segundos.</p>
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+    </div>
+
 </main>

@@ -10,28 +10,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60vw;
+    width: auto;
+    padding: 30px 50px;
     height: 700px;
-    background-color: var(--bg-color-sec);
+    background-color: var(--bg-color);
     border-radius: 32px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: var(--color-font-sec);
+    color: var(--color-font);
 }
-.box-left-login {
-    background: url(/img/bg-login.jpg);
-    background-position:center;
-    background-size:cover;
-    opacity:0.8;
-    border-radius:20px;
-    width:50%;
-    height:95%;
-    margin:20px;
-}
-.box-right-login {
-    display: flex;
-    justify-content: center;
-    width: 50%;
-}
+
 
 .cadastro {
     width:500px;
@@ -61,8 +47,8 @@
 
 .login-inputs input {
     background: transparent;
-    color: var(--color-font-sec);
-    border-bottom: 1px solid var(--color-principal);
+    color: var(--color-font);
+    border-bottom: 1px solid var(--color-secundaria);
     outline:none;
     width: 400px;
 }
@@ -96,7 +82,7 @@
     background-color: #5EA963;
     border-radius: 12px;
     padding: 5px;
-    color: var(--color-font-alt);
+    color: var(--color-font);
     width: 100px;
 }
 

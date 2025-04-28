@@ -30,7 +30,13 @@
         <form asp-controller="Produto" asp-action="Pesquisar">
             <input class="barra-pesquisa" type="text" name="txtpesq" id="txtpesq" placeholder="Pesquisar">
         </form>
+        <a asp-controller="Carrinho" asp-action="Index">
+            <div class="icon-cart-nav">
+                <i class="bi bi-basket3"></i>
+            </div>
+        </a>
     </header>
+
         
     <nav class="navprincipal">
        <div class="container-toggle">

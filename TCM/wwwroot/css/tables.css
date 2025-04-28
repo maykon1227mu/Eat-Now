@@ -45,6 +45,7 @@
 
 .content-table td {
     padding: 12px 20px;
+    background: var(--bg-color-sec);
 }
 
 .content-table i {
