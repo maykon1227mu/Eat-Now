@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="~/css/minhaconta.css" asp-append-version="true" />  
     <link rel="stylesheet" href="~/css/endereco.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/vendas.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/mediaquerys.css" asp-append-version="true" />
+   
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -32,7 +34,7 @@
         </form>
         <a asp-controller="Carrinho" asp-action="Index">
             <div class="icon-cart-nav">
-                <i class="bi bi-basket3"></i>
+                <i style="border:1px solid white;" class="bi bi-basket3"></i>
             </div>
         </a>
     </header>
@@ -191,7 +193,6 @@
                     <div class="icon">
                         <i class="bi bi-house"></i>
                     </div>
-                    <div class="text">Home</div>
                 </a>
             </li>
 
@@ -202,7 +203,6 @@
                         <div class="icon">
                             <i class="bi bi-person"></i>
                         </div>
-                        <div class="text">Login</div>
                     </a>
                 </li>
                 <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "CadastrarUsuario" ? "active" : "")">
@@ -210,7 +210,6 @@
                         <div class="icon">
                             <i class="bi bi-person-add"></i>
                         </div>
-                        <div class="text">Cadastro</div>
                     </a>
                 </li>
             }
@@ -220,7 +219,6 @@
                     <div class="icon">
                         <i class="bi bi-cart"></i>
                     </div>
-                    <div class="text">Carrinho</div>
                 </a>
             </li>
 
@@ -231,7 +229,6 @@
                         <div class="icon">
                             <i class="bi bi-receipt"></i>
                         </div>
-                        <div class="text">Histórico</div>
                     </a>
                 </li>
             }
@@ -243,7 +240,6 @@
                         <div class="icon">
                             <i class="bi bi-plus-lg"></i>
                         </div>
-                        <div class="text">Admin</div>
                     </a>
                 </li>
             }
@@ -255,7 +251,6 @@
                         <div class="iconeNav">
                             <i class="bi bi-tags"></i>
                         </div>
-                        <div class="text">Minha Conta</div>
                     </a>
                 </li>
             }
@@ -267,7 +262,6 @@
                         <div class="icon">
                             <i class="bi bi-plus-lg"></i>
                         </div>
-                        <div class="text">Fornecedor</div>
                     </a>
                 </li>
             }
@@ -279,7 +273,6 @@
                         <div class="icon">
                             <i class="bi bi-person"></i>
                         </div>
-                        <div class="text">@User.Identity.Name</div>
                     </a>
                 </li>
             }
@@ -289,7 +282,6 @@
                     <div class="icon">
                         <i style="color:red;" class="bi bi-door-closed"></i>
                     </div>
-                    <div class="text">Logout</div>
                 </a>
             </li>
             <div class="bolinha"></div>
@@ -336,11 +328,15 @@
                  });
              });
          });
+
     </script>
+   
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/script.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/cubo.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

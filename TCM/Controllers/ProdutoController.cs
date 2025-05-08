@@ -30,6 +30,7 @@ namespace TCM.Controllers
         }
 
 
+
         [Authorize(Roles = "Administrador, Colaborador")]
         public IActionResult CadastrarProduto()
         {

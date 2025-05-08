@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (activeItem) {
             const index = Array.from(items).indexOf(activeItem);
 
-            const position = index * 86; // Multiplica pelo tamanho do item (86px)
+            const position = index * 102; // Multiplica pelo tamanho do item (86px)
 
             bolinha.style.setProperty("--translateX", `${position}px`);
 

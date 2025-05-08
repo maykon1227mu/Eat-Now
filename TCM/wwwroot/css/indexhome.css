@@ -5,9 +5,6 @@
 
 }
 
-.container-intro h1 {
-
-}
 
 .categoria {
     display: flex;
@@ -39,16 +36,19 @@
     left:0;
     position: absolute;
     z-index: 1;
+    animation: latasMov 3s ease-in-out infinite;
 }
 
 #can-yellow {
     min-width: 100px;
-    width:35vw;
+    width: 35vw;
     top: -70%;
     right: -15%;
     position: absolute;
     z-index: 3;
+    animation: latasMov 3.4s ease-in-out infinite;
 }
+
 
 /* Cards que linkam para as paginas de produtos*/
 
@@ -224,4 +224,47 @@ footer li {
 
 .titulo_footer.dark {
     color: black;
+}
+
+
+/* MEDIA QUARY*/
+
+@media (max-width: 500px) {
+    .intro #can-yellow {
+        width: 300px;
+        top: -250px;
+        right: -120px;
+    }
+    .intro #can-green {
+        width: 250px;
+        top: 40px;
+        left:-80px;
+    }
+
+    .intro #title-home {
+        font-size: 90px;
+        -webkit-text-stroke: 1px var(--color-font);
+    }
+    .intro span {
+        -webkit-text-stroke: 1.5px #5CB338;
+    }
+    .intro .subtitle-intro p {
+        font-size:15px;
+    }
+
+}
+
+/* ANIMAÇÃO LATAS*/
+
+
+@keyframes latasMov {
+    0% {
+        transform:translateY(20px);
+    }
+    50% {
+        transform: translateY(0px);
+    }
+    100% {
+        transform: translateY(20px);
+    }
 }

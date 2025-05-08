@@ -37,6 +37,9 @@
     --color-nav: #fff;
 }
 
+html {
+    overflow-x: hidden;
+}
 body {
     font-family: "Poppins";
     color: var(--color-font);
@@ -195,9 +198,10 @@ header {
 }
 
 .icon-cart-nav {
-    position:fixed;
-    top:50px;
-    right:40px;
+    position: fixed;
+    top: 50px;
+    right: 40px;
+    z-index: 100;
 }
 
 .icon-cart-nav i {
@@ -208,6 +212,7 @@ header {
     color:var(--color-font-alt);
     font-size:20px;
     border-radius:50%; 
+
 }
 
 #popup {

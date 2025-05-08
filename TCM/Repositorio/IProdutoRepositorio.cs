@@ -37,5 +37,7 @@ namespace TCM.Repositorio
         IEnumerable<Comentario> TodosComentarios();
         IEnumerable<Comentario> ComentariosProduto(int produtoId);
         double TotalAvaliacoes(int produtoId);
+
+
     }
 }

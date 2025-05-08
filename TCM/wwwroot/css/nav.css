@@ -9,8 +9,9 @@
     display: none;
     justify-content: center;
     align-items: center;
-    border-radius: 30px;
+    border-radius: 90px;
     padding: 2rem;
+    z-index:100;
 }
 
 .mobileNav ul {
@@ -18,13 +19,14 @@
     position: relative;
     padding-left: 0;
     margin-bottom: 0;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .mobileNav ul li {
     position: relative;
     display: flex;
     text-align: center;
+    justify-content:center;
     flex-direction: column;
     width: 70px;
     height: 70px;
@@ -35,11 +37,6 @@
 .mobileNav ul li .icon {
     font-size: 20px;
     color: var(--bg-color);
-    transition: all ease .2s;
-}
-.mobileNav ul li .text {
-    font-size: 14px;
-    text-transform: uppercase;
     transition: all ease .2s;
 }
 
@@ -262,12 +259,17 @@ nav ul li.ativo a .iconeNav::before {
     }
 }
 
+
 @media (width <= 500px) {
     .mobileNav {
         padding: 0;
     }
+    .mobileNav ul {
+        gap: 20px;
+    }
     .mobileNav ul li{
         width: 10vw;
+
     }
 
     .mobileNav ul li .text {
@@ -278,21 +280,14 @@ nav ul li.ativo a .iconeNav::before {
     }
 
     .mobileNav ul li .icon {
-        margin-top: 1rem;
         transition: 0.5s
     }
 
-    .mobileNav ul li.active {
-        .text {
-                  color: #5CB338;
-                  opacity: 1;
-                  margin-top: 1rem;
-              }
-        .icon {
-            color: #5CB338;
-            margin-top: 0;
-        }
+    .mobileNav ul li.active .icon {
+        color: #5CB338;
+        margin-top: 0;
     }
+
 
     .bolinha {
         display: none;

@@ -11,4 +11,12 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\models\soda.glb" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\objects\" />
+  </ItemGroup>
+
 </Project>

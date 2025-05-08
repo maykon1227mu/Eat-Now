@@ -36,7 +36,9 @@ namespace TCM.Controllers
             ViewBag.Categorias = _produtoRepositorio.TodasCategorias();
             ViewBag.ProdutosPromo = _produtoRepositorio.ProdutosEmPromocao();
             ViewBag.TodosProdutosPromo = _produtoRepositorio.TodosProdutosDaPromocao();
-            
+            ViewBag.CategoriasComProdutos = _produtoRepositorio.CategoriasComProdutos();
+
+
 
             // Converte as imagens para Base64
             foreach (var produto in produtos)
