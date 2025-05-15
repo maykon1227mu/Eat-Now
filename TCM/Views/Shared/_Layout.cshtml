@@ -39,6 +39,7 @@
         </a>
     </header>
 
+
         
     <nav class="navprincipal">
        <div class="container-toggle">
@@ -151,7 +152,7 @@
                 }
                 @if(User.Identity.Name != null)
                 {
-                <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "ativo" : "")">
+                <li onclick="fazerLogout(event)" class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "ativo" : "")">
                     <a asp-controller="Home" asp-action="Logout">
                         <div class="iconeNav door-logout">
                             <i class="bi bi-door-open"></i>

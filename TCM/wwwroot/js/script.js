@@ -145,3 +145,31 @@ async function verificaCEP() {
 
 
 }
+
+function fazerLogout(event) {
+    event.preventDefault(); // evita o redirecionamento imediato
+
+    // Cria o container da mensagem
+    const div = document.createElement('div');
+    div.id = 'mensagemLogout';
+    div.innerHTML = `
+            Você foi deslogado com sucesso.
+            <div id="progressBarContainer">
+                <div id="progressBar"></div>
+            </div>
+        `;
+    document.body.appendChild(div);
+
+    // Atualiza a progress bar de forma gradual
+    let progress = 0;
+    const bar = div.querySelector('#progressBar');
+    const interval = setInterval(() => {
+        progress += 1;
+        bar.style.width = `${progress}%`;
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            window.location.href = '/Home/Logout'; // Redireciona após completar
+        }
+    }, 20); // 100% em 2 segundos (20ms * 100)
+}

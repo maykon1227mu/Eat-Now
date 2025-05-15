@@ -20,6 +20,7 @@
     --cinza-escuro: #363636;
     --card-product: #0E0E0E;
     --card-price: #0E0E0E;
+    --btn-compra: #000;
 }
 
 .dark:root {
@@ -35,6 +36,7 @@
     --card-product: #fff;
     --card-price: #fff;
     --color-nav: #fff;
+    --btn-compra: #dcdcdc;
 }
 
 html {
@@ -77,6 +79,10 @@ header {
 }
 
 .barra-pesquisa {
+    position: fixed;
+    top: 30px;
+    right: 50%;
+    transform: translateX(50%);
     background-color: transparent;
     color: var(--color-font);
     border-radius: 57px;
@@ -84,6 +90,7 @@ header {
     width: 50vw;
     padding: 5px;
     margin-top: 1rem;
+    z-index:1000;
 }
 
 .barra-pesquisa::placeholder {
@@ -215,41 +222,33 @@ header {
 
 }
 
-#popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 20px;
-    border: 2px solid #000;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    z-index: 1000;
-    width: 300px;
-    text-align: center;
-}
 
-#overlay {
-    display: none;
+#mensagemLogout {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--bg-color);
+    color: var(--color-font);
+    padding: 15px 20px;
+    border-radius: 8px;
+    z-index: 9999;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    width: 300px;
+    font-family: Arial, sans-serif;
 }
 
 #progressBarContainer {
     width: 100%;
-    height: 10px;
-    background-color: #ddd;
+    background-color: #e0e0e0;
+    border-radius: 6px;
     margin-top: 10px;
+    overflow: hidden;
+    height: 10px;
 }
 
 #progressBar {
-    height: 10px;
+    height: 100%;
     width: 0%;
-    background-color: #4caf50;
+    background-color: white;
+    transition: width 0.1s linear;
 }

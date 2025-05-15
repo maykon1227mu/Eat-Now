@@ -16,8 +16,8 @@
             <img src="data:image/png;base64,@Model.ImagemBase64" alt="Imagem do Produto" />
         </div>
         <div class="compra-infos">
-            <h3 class="title-product-comprar"><span id="product-sublinhed"> @Model.NomeProd</span>@Model.NomeProd</h3>
-            <p>@Model.Descricao</p>
+            <h3 class="title-product-comprar">@Model.NomeProd</h3>
+            <p> Descrição: @Model.Descricao</p>
             @if (Model.Nota < 1)
             {
                 <div class="product-star">
@@ -110,16 +110,7 @@
                 <i class="bi bi-star-fill"></i>
                 <p>@Model.Nota</p>
             }
-            
-            @if (produtosEmPromocao.Contains(Convert.ToInt32(Model.CodProd)))
-            {
-                <h3>De: R$@Model.Preco</h3>
-                <h3>Por: R$@produtoPromocao.PrecoPromo<sup>@produtoPromocao.Porcentagem% OFF</sup></h3>
-            } 
-            else
-            {
-                <h3>R$@Model.Preco</h3>
-            }
+           
             <p>Quantidade: @Model.Qtd</p>
             <p>Publicado por: @Model.Usuario</p>
             
@@ -135,14 +126,24 @@
                         <input type="number" name="qtd" id="qtd" value="1" min="1" max="@Model.Qtd" />
                     </div>
                     
-                    <div>
-                        <button class="btn-basico" type="submit">Comprar</button>
+                    <div class="box-price-button">
+                        @if (produtosEmPromocao.Contains(Convert.ToInt32(Model.CodProd)))
+                        {
+                            <h3>De: R$@Model.Preco</h3>
+                            <h3>Por: R$@produtoPromocao.PrecoPromo<sup>@produtoPromocao.Porcentagem% OFF</sup></h3>
+                        }
+                        else
+                        {
+                            <h3>R$@Model.Preco</h3>
+                        }
+                        <button class="btn-all-type" type="submit">Comprar</button>
                     </div>
                     
                 </form>
             }
         </div>
-    </div>
+    </div> @* Compra *@
+    <div class="container-all-comments">
     <div class="container-comentarios">
         <div>
             <h3>Comentários</h3>
@@ -163,7 +164,7 @@
                     </div>
                 </div>
                 <textarea class="text-comentario" placeholder="Comentario" name="comentario" id="comentario" maxlength="255" style="resize: none"></textarea>
-                <button class="btn-basico" type="submit">Comentar</button>
+                <button class="btn-all-type"submit">Comentar</button>
             </form>
             <div class="comentarios">
                 @foreach (var comentario in comentarios)
@@ -254,5 +255,6 @@
             </div>
 
         </div>
+    </div>
     </div>
 </div>

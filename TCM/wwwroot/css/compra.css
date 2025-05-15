@@ -1,23 +1,23 @@
 ﻿.container-compra {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: auto;
+    height: fit-content;
     color: var(--color-font);
-    margin-top:150px;
     margin-bottom: 100px;
-    gap:100px;
+    flex-wrap:wrap;
+    gap:40px;
 }
 
 .compra {
     display: flex;
+    flex-direction:column;
     justify-content: center;
     align-items: center;
-    width: 100%;
     height: 100%;
-    gap: 10rem;
+    gap:20px;
+
 }
     
 .compra .compra-img img {
@@ -31,41 +31,55 @@
     z-index:2;
 }
 
-.compra .title-product-comprar span {
-    position:absolute;
-    top:3px;
-    left:5px;
-    color:transparent;
-    -webkit-text-stroke: 1px var(--color-font);
-
+.container-all-comments {
+    width:auto;
+    height:100%;
 
 }
-.container-comentario {
+
+.container-comentarios {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-width:200px;
     width: 100%;
     height: 100%;
+    background-color: #101010;
+    padding: 50px;
+    color: white;
+}
+.box-price-button {
+    margin-top:20px;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
 }
 
-.container-comentario form {
+.container-comentarios form {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction:column;
+    gap:15px;
+
+
 }
 
 .compra form {
     display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
-    gap: 25px;
 }
 
 .text-comentario {
-    width: 500px;
+    width: 100%;
     height: 30px;
     background-color: transparent;
-    border-bottom: 1px solid var(--color-font);
+    border-bottom: 1px solid white;
+    color: white;
 }
 
 .comentarios {
@@ -73,6 +87,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
 }
 
 .comentario {
@@ -80,9 +95,9 @@
     flex-direction: column;
     padding: 1rem;
     width: 500px;
-    background-color: var(--bg-color-sec);
+    background-color: var(--bg-color);
     margin-top: 1rem;
-    color: var(--color-font-alt);
+    color: var(--color-font);
 }
 
 .comentario-infos {
@@ -100,4 +115,10 @@
 }
 .product-star p {
     margin-left: 10px;
+}
+
+.btn-all-type {
+    background: var(--btn-compra);
+    padding: 5px 15px;
+    color:var(--color-font-sec);
 }
