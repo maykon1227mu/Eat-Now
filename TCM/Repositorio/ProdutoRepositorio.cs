@@ -39,28 +39,6 @@ namespace TCM.Repositorio
             }
         }
 
-        public IActionResult AdicionarProdutoPredefinido()
-        {
-            var produto = new Produto
-            {
-                NomeProd = "Produto Teste",
-                Descricao = "Descrição de teste",
-                Preco = 9.99m,
-                Qtd = 10,
-                UserId = 1,
-                CategoriaId = 1,
-                Imagem = new byte[0]
-            };
-
-            AdicionarProduto(produto);
-            
-
-        }
-
-
-
-
-
         public void EditarProduto(Produto produto)
         {
 

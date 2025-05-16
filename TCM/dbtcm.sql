@@ -322,19 +322,42 @@ $$
 
 delimiter ;
 
-delimiter $$
+DELIMITER $$
 
-create procedure spComentar(vUserId int, vProdutoId int, vComentario varchar(255), vAvaliacao int)
-begin
-declare vNota double;
-	insert into tbcomentario (UserId, ProdutoId, Comentario, Avaliacao) values (vUserId, vProdutoId, vComentario, vAvaliacao); 
-    update tbproduto set avaliacoes = avaliacoes + 1 where CodProd = vProdutoId;
-    set vNota := (select sum(tbcomentario.avaliacao / tbproduto.avaliacoes) from tbcomentario join tbproduto where ProdutoId = vProdutoId);
-    update tbproduto set nota = vNota;
-end
+CREATE PROCEDURE spComentar(
+    IN vUserId INT, 
+    IN vProdutoId INT, 
+    IN vComentario VARCHAR(255), 
+    IN vAvaliacao INT
+)
+BEGIN
+    DECLARE vNota DOUBLE;
+
+    -- Inserir o comentário
+    INSERT INTO tbcomentario (UserId, ProdutoId, Comentario, Avaliacao) 
+    VALUES (vUserId, vProdutoId, vComentario, vAvaliacao); 
+
+    -- Incrementar a quantidade de avaliações
+    UPDATE tbproduto 
+    SET avaliacoes = avaliacoes + 1 
+    WHERE CodProd = vProdutoId;
+
+    -- Calcular nova nota como média das avaliações
+    SELECT AVG(c.avaliacao) 
+    INTO vNota
+    FROM tbcomentario c
+    WHERE c.ProdutoId = vProdutoId;
+
+    -- Atualizar a nota do produto
+    UPDATE tbproduto 
+    SET nota = vNota 
+    WHERE CodProd = vProdutoId;
+END
 $$
 
-delimiter ;
+DELIMITER ;
+
+select * from tbproduto;
 
 delimiter $$
 
