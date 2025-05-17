@@ -1,12 +1,13 @@
 ﻿
 .products-index {
     width: 100%;
+    min-height:100vh;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    margin-top: 10vh
+    margin-top: 15  vh;
 }
 
 .btn-primary {
@@ -65,4 +66,78 @@
 
 .btn-comprar-f:hover {
     color: white;
+}
+
+
+/* RESPONSIVIDADE ELEGANTE */
+@media screen and (max-width: 768px) {
+
+    .products-index {
+        min-height: 140vh;
+    }
+    .content-table,
+    .content-table thead,
+    .content-table tbody,
+    .content-table th,
+    .content-table td,
+    .content-table tr {
+        display: block;
+        width: 100%;
+    }
+
+        .content-table thead {
+            display: none;
+        }
+
+    .tr-products {
+        margin-bottom: 20px;
+        background-color: #1a1a1a;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        padding: 10px;
+    }
+
+    .content-table td {
+        padding: 12px 15px;
+        text-align: left;
+        position: relative;
+        border: none;
+        background-color: transparent;
+        color: #f1f1f1;
+    }
+
+        .content-table td::before {
+            content: attr(data-label);
+            position: absolute;
+            top: 12px;
+            left: 15px;
+            font-weight: bold;
+            color: #ccc;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+    .content-table td {
+        padding-left: 50%;
+        border-bottom: 1px solid #333;
+    }
+
+        .content-table td:last-child {
+            border-bottom: none;
+        }
+
+    .btn-primary,
+    .btn-danger {
+        width: 100%;
+        margin-top: 10px;
+        font-size: 0.95rem;
+        border-radius: 6px;
+    }
+
+    .btn-comprar-f {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+
 }

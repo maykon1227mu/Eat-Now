@@ -2,7 +2,7 @@
         display: grid;
         justify-items:center;
         align-items: center;
-        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-rows: repeat();
         padding: 1.5rem;
         background-color: var(--card-product);
         color: var(--color-font-alt);

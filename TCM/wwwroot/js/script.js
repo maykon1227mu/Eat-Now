@@ -173,3 +173,100 @@ function fazerLogout(event) {
         }
     }, 20); // 100% em 2 segundos (20ms * 100)
 }
+
+let interval;
+function abrirPopup() {
+    const popup = document.getElementById('popup');
+    const steps = document.querySelectorAll('.step');
+    popup.classList.add('show');
+
+    // Resetando os passos
+    steps.forEach(step => step.classList.remove('active'));
+
+    let i = 0;
+    clearInterval(interval);
+    interval = setInterval(() => {
+        if (i > 0) steps[i - 1].classList.remove('active');
+        if (i < steps.length) {
+            steps[i].classList.add('active');
+            i++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 3000);
+}
+
+function fecharPopup() {
+    const popup = document.getElementById('popup');
+    popup.classList.remove('show');
+    clearInterval(interval); // interrompe a animação se fechar antes
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// DASHBOARD
+
+    // Lucro Mensal (Barra)
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+        type: 'bar',
+    data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+    datasets: [{
+        label: 'Lucro (R$)',
+    data: [1200, 1900, 3000, 2500, 4000, 3500],
+    backgroundColor: '#34d399'
+            }]
+        },
+    options: {
+        responsive: true,
+    plugins: {
+        legend: {display: false }
+            }
+        }
+    });
+
+    // Vendas por Categoria (Pizza)
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    new Chart(pieCtx, {
+        type: 'pie',
+    data: {
+        labels: ['Bebidas', 'Lanches', 'Sobremesas'],
+    datasets: [{
+        data: [35, 45, 20],
+    backgroundColor: ['#fbbf24', '#60a5fa', '#f472b6']
+            }]
+        }
+    });
+
+    // Evolução das Vendas (Linha)
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    new Chart(lineCtx, {
+        type: 'line',
+    data: {
+        labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+    datasets: [{
+        label: 'Vendas',
+    data: [100, 120, 150, 170, 200, 250],
+    borderColor: '#4ade80',
+    tension: 0.3,
+    fill: false
+            }]
+        },
+    options: {
+        responsive: true,
+    scales: {
+        y: {beginAtZero: true }
+            }
+        }
+    });

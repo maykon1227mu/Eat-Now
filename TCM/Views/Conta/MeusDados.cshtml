@@ -3,39 +3,44 @@
 }
 @model TCM.Models.Usuario
 
-<div class="container-dados">
-    <div class="dados">
-        <div class="imgUser">
-            @if(Model.FotoPerfil != null)
-            {
-                <img src="data:image/png;base64,@Model.FotoPerfilBase64" alt="Foto de Perfil" />
-                <a asp-controller="Conta" asp-action="EditarConta"><i class="bi bi-pencil-fill"></i></a>
-            } 
-            else
-            {
-                <img src="~/img/perfil.png" alt="Foto de Perfil"/>
-                <a asp-controller="Conta" asp-action="EditarConta"><i class="bi bi-pencil-fill"></i></a>
-            }
+<div class="profile-wrapper">
+    <div class="profile-card animate-fadein">
+        <div class="profile-header">
+            <div class="profile-image">
+                @if (Model.FotoPerfil != null)
+                {
+                    <img src="data:image/png;base64,@Model.FotoPerfilBase64" alt="Foto de Perfil" />
+                }
+                else
+                {
+                    <img src="~/img/perfil.png" alt="Foto de Perfil" />
+                }
+                <a asp-controller="Conta" asp-action="EditarConta" class="edit-icon">
+                    <i class="bi bi-pencil-fill"></i>
+                </a>
+            </div>
+            <h2 class="user-name">@Model.Nome</h2>
+            <div class="badge-nivel">
+                <i class="bi bi-award-fill"></i>
+                <span>@Model.tipo</span>
+            </div>
+        </div>
 
+        <div class="profile-info">
+            <ul>
+                @if (!(User.IsInRole("Colaborador") || User.IsInRole("Administrador")))
+                {
+                    <li><strong>CPF:</strong> @Model.CPF</li>
+                    <li><strong>Data de nascimento:</strong> @Model.DataNascimento.ToString("dd/MM/yyyy")</li>
+                }
+                <li><strong>Email:</strong> @Model.email</li>
+                <li><strong>Último login:</strong> @(DateTime.Now.ToString("dd/MM/yyyy HH:mm"))</li> <!-- Simulado -->
+            </ul>
         </div>
-        <div class="dados-informacoes">
-            <h2>@Model.Nome</h2>
-            @if (User.IsInRole("Colaborador") || User.IsInRole("Administrador"))
-            {
-                
-            } 
-            else
-            {
-                <p>CPF: @Model.CPF</p>
-                <p>Data de nascimento: @Model.DataNascimento</p>
-            }
-            
-            <p>Email: @Model.email</p>
-            <p>Nivel da conta: @Model.tipo</p>
-        </div>
-        <div>
-            <a class="btn-comprar-f" asp-controller="Conta" asp-action="EditarConta">Editar</a>
+
+        <div class="profile-footer">
+            <a class="btn-editar" asp-controller="Conta" asp-action="EditarConta">Editar meus dados</a>
+            <a class="btn-sair @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Logout" ? "ativo" : "")" asp-controller="Home" asp-action="Logout">Sair da conta</a>
         </div>
     </div>
-    
 </div>

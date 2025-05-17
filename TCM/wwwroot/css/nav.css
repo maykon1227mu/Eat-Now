@@ -261,33 +261,34 @@ nav ul li.ativo a .iconeNav::before {
 }
 
 
-@media (width <= 500px) {
+@media (width <= 680px) {
     .mobileNav {
         padding: 0;
     }
-    .mobileNav ul {
-        gap: 20px;
-    }
-    .mobileNav ul li{
-        width: 10vw;
 
-    }
+        .mobileNav ul {
+            gap: 20px;
+        }
 
-    .mobileNav ul li .text {
-        opacity: 0;
-        transition: 0.5s;
-        margin-right: 1rem;
-        font-size: 16px;
-    }
+            .mobileNav ul li {
+                width: 10vw;
+            }
 
-    .mobileNav ul li .icon {
-        transition: 0.5s
-    }
+                .mobileNav ul li .text {
+                    opacity: 0;
+                    transition: 0.5s;
+                    margin-right: 1rem;
+                    font-size: 16px;
+                }
 
-    .mobileNav ul li.active .icon {
-        color: #5CB338;
-        margin-top: 0;
-    }
+                .mobileNav ul li .icon {
+                    transition: 0.5s
+                }
+
+                .mobileNav ul li.active .icon {
+                    color: #5CB338;
+                    margin-top: 0;
+                }
 
 
     .bolinha {

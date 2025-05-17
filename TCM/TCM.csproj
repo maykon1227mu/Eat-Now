@@ -7,16 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\js\objects\**" />
+    <Content Remove="wwwroot\js\objects\**" />
+    <EmbeddedResource Remove="wwwroot\js\objects\**" />
+    <None Remove="wwwroot\js\objects\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="9.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\models\soda.glb" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\js\objects\" />
   </ItemGroup>
 
 </Project>

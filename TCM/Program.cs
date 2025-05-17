@@ -5,20 +5,20 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicionando autenticação com cookies
+// Adicionando autenticaï¿½ï¿½o com cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Home/Login"; // Caminho para a página de login
+        options.LoginPath = "/Home/Login"; // Caminho para a pï¿½gina de login
     });
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Adicionando HttpContextAccessor (necessário para acessar o contexto HTTP)
+// Adicionando HttpContextAccessor (necessï¿½rio para acessar o contexto HTTP)
 builder.Services.AddHttpContextAccessor();
 
-// Adicionando a interface de login e outras dependências
+// Adicionando a interface de login e outras dependï¿½ncias
 builder.Services.AddScoped<IProdutoRepositorio, ProdutoRepositorio>();
 builder.Services.AddScoped<ICarrinhoRepositorio, CarrinhoRepositorio>();
 builder.Services.AddScoped<ILoginRepositorio, LoginRepositorio>();
@@ -27,21 +27,21 @@ builder.Services.AddScoped<Usuario>();
 builder.Services.AddScoped<TCM.Libraries.Sessao.Sessao>();
 builder.Services.AddScoped<LoginUsuarios>();
 
-// Adicionando o serviço de sessão
+// Adicionando o serviï¿½o de sessï¿½o
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);  // Define o tempo de expiração da sessão
-    options.Cookie.HttpOnly = true;  // Aumenta a segurança
-    options.Cookie.IsEssential = true;  // Necessário para conformidade com a GDPR
+    options.IdleTimeout = TimeSpan.FromMinutes(30);  // Define o tempo de expiraï¿½ï¿½o da sessï¿½o
+    options.Cookie.HttpOnly = true;  // Aumenta a seguranï¿½a
+    options.Cookie.IsEssential = true;  // Necessï¿½rio para conformidade com a GDPR
 });
 
 var app = builder.Build();
 
-// Ativar autenticação e autorização
-app.UseAuthentication(); // Ativa a autenticação com cookies
-app.UseAuthorization();  // Ativa a autorização
+// Ativar autenticaï¿½ï¿½o e autorizaï¿½ï¿½o
+app.UseAuthentication(); // Ativa a autenticaï¿½ï¿½o com cookies
+app.UseAuthorization();  // Ativa a autorizaï¿½ï¿½o
 
-// Configure o pipeline de requisições HTTP
+// Configure o pipeline de requisiï¿½ï¿½es HTTP
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -53,11 +53,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Ativar o middleware de sessão
-app.UseSession();  // Necessário para a sessão funcionar
+// Ativar o middleware de sessï¿½o
+app.UseSession();  // Necessï¿½rio para a sessï¿½o funcionar
 
-// Ativar autenticação e autorização
-app.UseAuthentication(); // Adicione esta linha para garantir que a autenticação funcione
+// Ativar autenticaï¿½ï¿½o e autorizaï¿½ï¿½o
+app.UseAuthentication(); // Adicione esta linha para garantir que a autenticaï¿½ï¿½o funcione
 app.UseAuthorization();
 
 app.MapControllerRoute(

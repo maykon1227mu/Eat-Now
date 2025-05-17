@@ -6,34 +6,56 @@
 }
 @model IEnumerable<Produto>
 
-<div class="container-detalhes">
-	<div class="detalhes">
-		<div class="detalhes-info">
-			<h2>Detalhes do Pedido</h2>
-			<h2>Pedido #@pedido.CodPed</h2>
-			@foreach (var produto in Model)
+
+<main class="container-pedido">
+	<section class="pedido-header">
+		<h1>Pedido #@pedido.CodPed</h1>
+		@{
+			var primeiroProduto = Model.FirstOrDefault();
+		}
+		@if (primeiroProduto != null)
+		{
+			<p class="data-pedido">Realizado em: @primeiroProduto.DataPed.ToString("dd/MM/yyyy HH:mm")</p>
+		}
+
+	</section>
+
+	<section class="produtos-lista">
+		@foreach (var produto in Model)
+		{
+			if (produto.Imagem != null)
 			{
-				if (produto.Imagem != null)
-				{
-					produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
-				}
-				
-				<h2>@produto.QuantidadeDoPedido x @produto.NomeProd</h2>
-				<p>@produto.QuantidadeDoPedido x R$@produto.Preco</p>
-				<img src="data:image/png;base64,@produto.ImagemBase64" alt="Produto" class="img-produto">
-				<p>Data e hora: @produto.DataPed</p>
+				produto.ImagemBase64 = Convert.ToBase64String(produto.Imagem);
 			}
-			
-			
-			<p>Nome do cliente: @usuario.Nome</p>
-			<p>Rua: @endereco.Logradouro, @endereco.Numero</p>
-			<p>Complemento: @endereco.Complemento</p>
-			<p>Bairro: @endereco.Bairro</p>
-			<p>Cidade: @endereco.Cidade</p>
-			<p>Estado: @endereco.Estado</p>
-			
-			
-			<a href="@Url.Action("MeusPedidos", "Conta")" class="btn-voltar">Voltar</a>
-		</div>
+			<article class="card-produto">
+				<img src="data:image/png;base64,@produto.ImagemBase64" alt="Produto" class="imagem-produto" />
+				<div class="info-produto">
+					<h2>@produto.NomeProd</h2>
+					<p><strong>Quantidade:</strong> @produto.QuantidadeDoPedido</p>
+					<p><strong>Preço unitário:</strong> R$@produto.Preco.ToString("N2")</p>
+					<p><strong>Total:</strong> R$@(produto.Preco * produto.QuantidadeDoPedido)</p>
+				</div>
+			</article>
+		}
+	</section>
+
+	<section class="info-cliente">
+		<h2>Dados do Cliente</h2>
+		<p><strong>Nome:</strong> @usuario.Nome</p>
+	</section>
+
+	<section class="info-endereco">
+		<h2>Endereço de Entrega</h2>
+		<p><strong>Rua:</strong> @endereco.Logradouro, @endereco.Numero</p>
+		@if (!string.IsNullOrWhiteSpace(endereco.Complemento))
+		{
+			<p><strong>Complemento:</strong> @endereco.Complemento</p>
+		}
+		<p><strong>Bairro:</strong> @endereco.Bairro</p>
+		<p><strong>Cidade:</strong> @endereco.Cidade - @endereco.Estado</p>
+	</section>
+
+	<div class="area-botao">
+		<a href="@Url.Action("MeusPedidos", "Conta")" class="btn-voltar">← Voltar aos pedidos</a>
 	</div>
-</div>
+</main>

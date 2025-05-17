@@ -1,4 +1,4 @@
-﻿@{
+﻿    @{
     ViewData["Title"] = "Painel Produtos";
 }
 
@@ -23,15 +23,15 @@
                 @foreach (var produto in Model)
                 {
                     <tr class="tr-products">
-                        <td>@produto.CodProd</td>
-                        <td>@produto.NomeProd</td>
-                        <td>@produto.Descricao</td>
-                        <td>R$@produto.Preco</td>
-                        <td>@produto.Qtd</td>
-                        <td>
+                    <td data-label="Código">@produto.CodProd</td>
+                    <td data-label="Nome">@produto.NomeProd</td>
+                    <td data-label="Descrição">@produto.Descricao</td>
+                    <td data-label="Preço">R$@produto.Preco</td>
+                    <td data-label="Quantidade">@produto.Qtd</td>
+                    <td data-label="Editar">
                             <a class="btn btn-primary" asp-controller="Produto" asp-action="EditarProduto" asp-route-id="@produto.CodProd">Editar</a>
                         </td>
-                        <td>
+                    <td data-label="Deletar">
                             <a class="btn btn-danger" asp-controller="Produto" asp-action="DeletarProduto" asp-route-id="@produto.CodProd" onclick="return confirm('Deseja excluir @produto.NomeProd ?')">Deletar</a>
                         </td>
                     </tr>
@@ -42,12 +42,5 @@
         <a class="btn-comprar-f" id="btnPopup" asp-controller="Produto" asp-action="CadastrarProduto">Novo Produto</a>
         </div>
     <div id="overlay"></div>
-    <div id="popup">
-        <h2>Popup</h2>
-        <p>Este popup ficará aberto por 6 segundos.</p>
-        <div id="progressBarContainer">
-            <div id="progressBar"></div>
-        </div>
-    </div>
 
 </main>
