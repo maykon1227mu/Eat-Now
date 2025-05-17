@@ -85,7 +85,7 @@ CodPed int primary key auto_increment,
 UserId int not null,
 IdEndereco int not null,
 StatusPed varchar(150) default "Pagamento Aprovado",
-foreign key (IdEndereco) references tbendereco(IdEndereco)
+foreign key (IdEndereco) references tbendereco(IdEndereco) on delete cascade
 );
 
 create table tbitempedido(
@@ -95,7 +95,7 @@ IdProduto int not null,
 QtdItem int not null,
 PrecoItem decimal(9,2) not null,
 DataPed datetime default current_timestamp,
-foreign key (IdPedido) references tbpedido(CodPed),
+foreign key (IdPedido) references tbpedido(CodPed) on delete cascade,
 foreign key (IdProduto) references tbproduto(CodProd) on delete cascade
 );
 
@@ -185,10 +185,8 @@ if(select Qtd from tbproduto where CodProd = vProdutoId != 0) then
 	if not exists(select * from tbcarrinho where UserId = vUserId and ProdutoId = vProdutoId) then
 		if exists(select PrecoPromo from tbpromocaoitem where ProdutoId = vProdutoId) then
             insert into tbcarrinho (UserId, ProdutoId, Quantidade, PrecoCar) values (vUserId, vProdutoId, vQuantidade, vPreco);
-            update tbproduto set Qtd = Qtd - vQuantidade where CodProd = vProdutoId;
 		else
 			insert into tbcarrinho (UserId, ProdutoId, Quantidade, PrecoCar) values (vUserId, vProdutoId, vQuantidade, vPreco);
-			update tbproduto set Qtd = Qtd - vQuantidade where CodProd = vProdutoId;
         end if;
 	else 
     update tbcarrinho set Quantidade = Quantidade + vQuantidade where UserId = vUserId and ProdutoId = vProdutoId;
@@ -208,10 +206,8 @@ declare vQtd int;
 set vQtd := (select Quantidade from tbcarrinho where UserId = vUserId and ProdutoId = vProdutoId);
 if(vQtd <= 0 or vQtd = 1)then
 	delete from tbcarrinho where UserId = vUserId and ProdutoId = vProdutoId;
-	update tbproduto set Qtd = Qtd + vQuantidade where CodProd = vProdutoId;
     else
     update tbcarrinho set Quantidade = Quantidade - vQuantidade where UserId = vUserId and ProdutoId = vProdutoId;
-    update tbproduto set Qtd = Qtd + vQuantidade where CodProd = vProdutoId;
     end if;
 end
 $$
@@ -277,12 +273,13 @@ begin
 		insert into tbpedido (UserId, IdEndereco) values (vUserId, vIdEnd);
 		insert into tbitempedido (IdProduto, PrecoItem, QtdItem, IdPedido) values (vProdutoId, vPreco, vQtd, last_insert_id());
         update tbproduto set Vendas = Vendas + vVenda where CodProd = vProdutoId;
+        update tbproduto set Qtd = Qtd - vQtd where CodProd = vProdutoId;
 	else
 		set vPreco := (select Preco from tbproduto where CodProd = vProdutoId);
         insert into tbpedido (UserId, IdEndereco) values (vUserId, vIdEnd);
         insert into tbitempedido (IdProduto, PrecoItem, QtdItem, IdPedido) values (vProdutoId, vPreco, vQtd, last_insert_id());
         update tbproduto set Vendas = Vendas + vVenda where CodProd = vProdutoId;
-        
+        update tbproduto set Qtd = Qtd - vQtd where CodProd = vProdutoId;
 	end if;
     
 end$$
