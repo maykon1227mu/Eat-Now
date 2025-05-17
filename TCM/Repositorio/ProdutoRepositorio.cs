@@ -67,7 +67,7 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("delete from tbproduto where CodProd = @codprod", conexao);
+                MySqlCommand cmd = new MySqlCommand("delete from tbitempedido where IdProduto = @codprod; delete from tbproduto where CodProd = @codprod;", conexao);
 
                 cmd.Parameters.Add("@codprod", MySqlDbType.Int32).Value = id;
 
