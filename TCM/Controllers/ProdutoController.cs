@@ -156,7 +156,7 @@ namespace TCM.Controllers
                 return RedirectToAction("NovoEndereco", "Conta");
             }
             
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("MeusPedidos", "Conta");
         }
 
 

@@ -54,3 +54,17 @@
             </form>
         </div>
 </main>
+<script>
+    (function () {
+          try {
+            const tema = localStorage.getItem("tema");
+            if (tema === "dark") {
+              document.getElementById('logoLogin').src = "/img/LogoDark.png";
+            } else {
+              document.getElementById("logoLogin").src = "/img/LogoLight.png";
+            }
+          } catch (e) {
+
+          }
+        })();
+</script>
