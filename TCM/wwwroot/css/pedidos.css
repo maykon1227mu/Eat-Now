@@ -202,7 +202,7 @@
     }
 
 .data-pedido {
-    color: #666;
+    color: var(--color-font-sec);
     font-size: 0.95rem;
 }
 

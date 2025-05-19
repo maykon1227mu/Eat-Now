@@ -4,6 +4,10 @@
 
 @model IEnumerable<Produto>
 
+<div>
+    <a class="btn-comprar-f" asp-controller="Produto" asp-action="CadastrarProduto">Novo Produto</a>
+</div>
+
 <table class="content-table">
     <thead>
         <tr>
@@ -33,8 +37,6 @@
         }
     </tbody>
 </table>
-<div>
-    <a class="btn-comprar-f" asp-controller="Produto" asp-action="CadastrarProduto">Novo </a>
-</div>
+
 
             

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Vendas";
+    ViewData["Title"] = "Dashboard de Vendas";
 }
 
 @{
@@ -8,8 +8,42 @@
     double totalReal = (total - (total * 0.8));
 }
 
-<div>
-    <h1>Vendas</h1>
-    <h2>Total de vendas: @vendas</h2>
-    <h2>Lucro total: R$@totalReal</h2>
-</div>
+<main class="dashboard-container">
+    <h1 class="dashboard-title">📈 Painel de Vendas</h1>
+
+    <div class="dashboard-cards">
+        <div class="card vendas">
+            <i class="fas fa-shopping-cart"></i>
+            <h2>@vendas</h2>
+            <p>Total de Vendas</p>
+        </div>
+
+        <div class="card bruto">
+            <i class="fas fa-coins"></i>
+            <h2>R$@total.ToString("F2")</h2>
+            <p>Receita Bruta</p>
+        </div>
+    </div>
+</main>
+<section class="dashboard-graficos">
+    <h2 class="section-title">📊 Análises Visuais</h2>
+
+    <div class="charts-wrapper">
+        <div class="chart-card">
+            <h3>Lucro Mensal</h3>
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>Vendas por Categoria</h3>
+            <canvas id="pieChart"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3>Evolução das Vendas</h3>
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+</section>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+

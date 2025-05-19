@@ -73,16 +73,7 @@ body {
     transition: .3s ease;
 }
 
-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .barra-pesquisa {
-    position: fixed;
-    top: 30px;
-    right: 50%;
     transform: translateX(50%);
     background-color: transparent;
     color: var(--color-font);
@@ -91,7 +82,7 @@ header {
     width: 50vw;
     padding: 5px;
     margin-top: 1rem;
-    z-index:1000;
+    z-index: 50;
 }
 
 .barra-pesquisa::placeholder {
@@ -252,3 +243,20 @@ header {
     transition: width 0.1s linear;
 }
 
+.seta {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    background-color: var(--bg-color-sec);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 46px;
+    top: 92%;
+}
+
+.seta i {
+    color: var(--color-font-sec);
+    font-size: 26px;
+}

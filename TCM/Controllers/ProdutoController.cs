@@ -14,12 +14,14 @@ namespace TCM.Controllers
         private readonly IProdutoRepositorio _produtoRepositorio;
         private readonly ICarrinhoRepositorio _carrinhoRepositorio;
         private readonly IEnderecoRepositorio _enderecoRepositorio;
+        private readonly ILoginRepositorio _loginRepositorio;
 
-        public ProdutoController(IProdutoRepositorio produtoRepositorio, ICarrinhoRepositorio carrinhoRepositorio, IEnderecoRepositorio enderecoRepositorio)
+        public ProdutoController(IProdutoRepositorio produtoRepositorio, ICarrinhoRepositorio carrinhoRepositorio, IEnderecoRepositorio enderecoRepositorio, ILoginRepositorio loginRepositorio)
         {
             _produtoRepositorio = produtoRepositorio;
             _carrinhoRepositorio = carrinhoRepositorio;
             _enderecoRepositorio = enderecoRepositorio;
+            _loginRepositorio = loginRepositorio;
         }
 
 
@@ -85,6 +87,9 @@ namespace TCM.Controllers
         public IActionResult DeletarProduto(int id)
         {
             _produtoRepositorio.DeletarProduto(id);
+            int idUser = Convert.ToInt32(User.FindFirst(ClaimTypes.SerialNumber)?.Value);
+            var user = _loginRepositorio.AcharUsuario(idUser);
+            if(user.tipo == "Colaborador") return RedirectToAction("ProdutosColaborador", "Produto");
             return RedirectToAction("Index", "Produto");
         }
 

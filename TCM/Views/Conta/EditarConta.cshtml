@@ -4,8 +4,10 @@
 }
 
 @model TCM.Models.Usuario
+<div style="display: flex; justify-content: center; align-items: center;">
+    <h2>Seus Dados</h2>
+</div>
 
-<h2>Seus Dados</h2>
 
 <div class="container-formulario">
     <form class="formulario" asp-action="EditarConta" enctype="multipart/form-data" method="post">
@@ -44,7 +46,7 @@
         </div>
 
         <div class="formulario-botao">
-            <button class="btn-comprar" type="submit">Editar</button>
+            <button class="btn-comprar-f" type="submit">Editar</button>
         </div>
     </form>
 </div>

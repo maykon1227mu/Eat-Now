@@ -13,9 +13,9 @@
     width: auto;
     padding: 30px 50px;
     height: 700px;
-    background-color: var(--bg-color);
+    background-color: var(--bg-color-sec);
     border-radius: 32px;
-    color: var(--color-font);
+    color: var(--color-font-sec);
 }
 
 
@@ -23,7 +23,6 @@
     width:500px;
     height: auto;
     padding:30px;
-
 }
 
 .login form {
@@ -47,8 +46,8 @@
 
 .login-inputs input {
     background: transparent;
-    color: var(--color-font);
-    border-bottom: 1px solid var(--color-secundaria);
+    color: var(--color-font-sec);
+    border-bottom: 1px solid var(--color-font-sec);
     outline:none;
     width: 400px;
 }

@@ -66,6 +66,10 @@
         color: #ff7b7b;
     }
 
+    .card.bruto p {
+        color: #aaa;
+    }
+
 .dashboard-graficos {
     margin: 60px auto;
     padding: 40px 20px;

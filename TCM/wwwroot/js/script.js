@@ -41,29 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
-
 const html = document.getElementById('html');
 const imgLogo = document.getElementById('logoNav');
 const imgLogin = document.getElementById('logoLogin');
 const btn = document.getElementById('btn-toggle');
-
-// Aplica o tema salvo ao carregar a página
-document.addEventListener('DOMContentLoaded', function () {
-    const tema = localStorage.getItem('tema');
-
-    if (tema === "dark") {
-        html.classList.add('dark');
-        btn.classList.add('dark');
-        if (imgLogo) imgLogo.src = "/img/LogoDark.png";
-        if (imgLogin) imgLogin.src = "/img/LogoLight.png";
-    } else {
-        html.classList.remove('dark');
-        btn.classList.remove('dark');
-        if (imgLogo) imgLogo.src = "/img/LogoLight.png";
-        if (imgLogin) imgLogin.src = "/img/LogoDark.png";
-    }
-});
 
 btn.addEventListener('click', function () {
     html.classList.toggle('dark');
@@ -72,11 +53,11 @@ btn.addEventListener('click', function () {
     if (html.classList.contains("dark")) {
         localStorage.setItem('tema', "dark");
         if (imgLogo) imgLogo.src = "/img/LogoDark.png";
-        if (imgLogin) imgLogin.src = "/img/LogoLight.png";
+        if (imgLogin) imgLogin.src = "/img/LogoDark.png";
     } else {
         localStorage.setItem('tema', "light");
         if (imgLogo) imgLogo.src = "/img/LogoLight.png";
-        if (imgLogin) imgLogin.src = "/img/LogoDark.png";
+        if (imgLogin) imgLogin.src = "/img/LogoLight.png";
     }
 });
 

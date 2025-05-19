@@ -252,8 +252,9 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("update tblogin set usuario = @usuario, email = @email, FotoPerfil = @foto where IdLogin = @IdLogin", conexao);
+                MySqlCommand cmd = new MySqlCommand("update tblogin set nome = @nome, usuario = @usuario, email = @email, FotoPerfil = @foto where IdLogin = @IdLogin", conexao);
 
+                cmd.Parameters.Add("@nome", MySqlDbType.VarChar).Value = user.Nome;
                 cmd.Parameters.Add("@usuario", MySqlDbType.VarChar).Value = user.usuario;
                 cmd.Parameters.Add("@email", MySqlDbType.VarChar).Value = user.email;
                 cmd.Parameters.Add("@foto", MySqlDbType.MediumBlob).Value = user.FotoPerfil;

@@ -56,7 +56,7 @@
                 <i class="bi bi-star"></i>
                 <p>@Model.Nota</p>
             }
-            else if (Model.Nota > 2 && Model.Nota >= 2.9)
+            else if (Model.Nota > 2 && Model.Nota <= 2.9)
             {
                 <i class="bi bi-star-fill"></i>
                 <i class="bi bi-star-fill"></i>
@@ -172,7 +172,14 @@
                     <div class="comentario">
                         <div class="comentario-infos">
                             <img src="data:image/png;base64,@comentario.FotoPerfilBase64" alt="" />
-                            <p>@comentario.UserName</p>
+                            <div class="comentario-coluna">
+                                <p>@comentario.UserName</p>
+                                <div class="comentario-texto">
+                                    <p>@comentario.comentario</p>
+                                    <p>@comentario.DataComent</p>
+                                </div> 
+                            </div>
+                            
                             @if (comentario.Avaliacao < 1)
                             {
                                 <div class="product-star">
@@ -245,10 +252,7 @@
                             }
                         </div>
                         
-                        <div class="comentario-texto">
-                            <p>@comentario.comentario</p>
-                            <p>@comentario.DataComent</p>
-                        </div> 
+                        
                     </div>
 
                 }

@@ -3,11 +3,16 @@
 }
 <link rel="stylesheet" href="~/css/fornecedor.css" asp-append-version="true" />
 
-<div class="container-fornecedor">
-    <div class="fornecedor">
-        <h1>Funções Fornecedor</h1>
-        <div class="link-fornecedor"><a asp-controller="Produto" asp-action="ProdutosFornecedor">Ver Produtos <i class="bi bi-box-seam"></i></a></div>
-        <div class="link-fornecedor"><a asp-controller="Produto" asp-action="ProdutosFornecedor">Alterar Produtos<i class="bi bi-person-vcard-fill"></i></a></div>
-        <div class="link-fornecedor"><a asp-controller="Produto" asp-action="ProdutosFornecedor">Excluir Produtos<i class="bi bi-bus-front"></i></a></div>
+<div class="container-admin">
+    <div class="admin">
+        <h1>Funções <span id="textAdmin">Fornecedor</span></h1>
+        <div class="link-admin">
+            <a asp-controller="Produto" asp-action="ProdutosColaborador">Produtos</a>
+            <i class="bi bi-basket3"></i>
+        </div>
+        <div class="link-admin">
+            <a asp-controller="Produto" asp-action="VendasColaborador">Vendas</a>
+            <i class="bi bi-basket3"></i>
+        </div>
     </div>
 </div>

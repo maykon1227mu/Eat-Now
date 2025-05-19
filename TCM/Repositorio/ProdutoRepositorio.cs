@@ -719,13 +719,12 @@ namespace TCM.Repositorio
             {
                 conexao.Open();
 
-                MySqlCommand cmd = new MySqlCommand("SELECT sum(vendas * preco) FROM tbproduto WHERE UserId = @userid", conexao);
-
+                MySqlCommand cmd = new MySqlCommand("SELECT SUM(vendas * preco) FROM tbproduto WHERE UserId = @userid", conexao);
                 cmd.Parameters.Add("@userid", MySqlDbType.Int32).Value = userId;
 
-                decimal total = Convert.ToDecimal(cmd.ExecuteScalar());
+                object resultado = cmd.ExecuteScalar();
 
-                conexao.Close();
+                decimal total = (resultado == DBNull.Value) ? 0 : Convert.ToDecimal(resultado);
 
                 return total;
             }

@@ -4,11 +4,11 @@
 
 @model IEnumerable<Produto>
 
-
-        
-
 <main class="products-index">
     <h1>Painel Produtos</h1>
+    <div>
+        <a class="btn-comprar-f" id="btnPopup" asp-controller="Produto" asp-action="CadastrarProduto" style="margin-top: 1rem;">Novo Produto</a>
+    </div>
         <table class="content-table">
             <thead>
                 <tr>
@@ -38,9 +38,7 @@
                 }
             </tbody>
         </table>
-        <div>
-        <a class="btn-comprar-f" id="btnPopup" asp-controller="Produto" asp-action="CadastrarProduto">Novo Produto</a>
-        </div>
+        
     <div id="overlay"></div>
 
 </main>

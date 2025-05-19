@@ -129,14 +129,14 @@
 
                 
 
-                @if (User.IsInRole("Fornecedor"))
+                @if (User.IsInRole("Colaborador"))
                 {
-                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "ativo" : "")">
+                    <li class="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelColaborador" ? "ativo" : "")">
                         <a asp-controller="Conta" asp-action="PainelColaborador">
                             <div class="iconeNav">
                                 <i class="bi bi-plus-circle"></i>
                             </div>
-                            <div class="textoNav">Fornecedor</div>
+                            <div class="textoNav">Colaborador</div>
                         </a>
                     </li>
                 }
@@ -258,9 +258,9 @@
                 </li>
             }
 
-            @if (User.IsInRole("Fornecedor"))
+            @if (User.IsInRole("Colaborador"))
             {
-                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelFornecedor" ? "active" : "")">
+                <li class="lista @(ViewContext.RouteData.Values["controller"]?.ToString() == "Conta" && ViewContext.RouteData.Values["action"]?.ToString() == "PainelColaborador" ? "active" : "")">
                     <a asp-controller="Conta" asp-action="PainelColaborador">
                         <div class="icon">
                             <i class="bi bi-plus-lg"></i>
@@ -291,6 +291,8 @@
         </ul>
 
     </div>
+
+    <a class="seta" href="#"><i class="bi bi-arrow-up-short"></i></a>
 
     <div class="container">
         <main role="main">
